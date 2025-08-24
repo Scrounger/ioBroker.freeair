@@ -1,0 +1,43 @@
+{
+	"cli": true,
+	"target": "directory",
+	"adapterName": "freeair",
+	"title": "FreeAir 100",
+	"description": "Connect your BluMartin FreeAir 100 ventilation system to ioBroker",
+	"contributors": [],
+	"keywords": [
+		"freeair",
+		"blumartin",
+		"ventilation"
+	],
+	"expert": "no",
+	"features": [
+		"adapter"
+	],
+	"adminFeatures": [],
+	"type": "iot-systems",
+	"startMode": "daemon",
+	"connectionType": "local",
+	"dataSource": "push",
+	"connectionIndicator": "no",
+	"language": "TypeScript",
+	"nodeVersion": "20",
+	"adminUi": "json",
+	"tools": [
+		"ESLint"
+	],
+	"releaseScript": "yes",
+	"devServer": "no",
+	"indentation": "Tab",
+	"quotes": "single",
+	"authorName": "Scrounger",
+	"authorGithub": "Scrounger",
+	"authorEmail": "scrounger@gmx.net",
+	"gitRemoteProtocol": "HTTPS",
+	"gitCommit": "no",
+	"defaultBranch": "main",
+	"license": "MIT License",
+	"dependabot": "yes",
+	"creatorVersion": "2.6.5",
+	"replay": "/mnt/sata/development/iobroker/adapter/iobroker.freeair/.create-adapter.json"
+}
