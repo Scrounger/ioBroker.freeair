@@ -51,6 +51,7 @@
     "tsc-watch": "7.1.1",
     "typescript": "~5.0.4"
   },
+  "type": "module",
   "main": "build/main.js",
   "files": [
     "admin{,/!(src)/**}/!(tsconfig|tsconfig.*|.eslintrc).{json,json5}",
@@ -62,7 +63,7 @@
   ],
   "scripts": {
     "prebuild": "rimraf build",
-    "build": "build-adapter ts",
+    "build": "tsc",
     "build-watch": "clear && tsc-watch --noClear --onSuccess 'iobroker restart freeair'",
     "watch": "build-adapter ts --watch",
     "prebuild:ts": "rimraf build",

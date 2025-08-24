@@ -1,90 +1,112 @@
 {
-	"common": {
-		"name": "freeair",
-		"version": "0.0.1",
-		"news": {
-			"0.0.1": {
-				"en": "initial release",
-				"de": "Erstveröffentlichung",
-				"ru": "Начальная версия",
-				"pt": "lançamento inicial",
-				"nl": "Eerste uitgave",
-				"fr": "Première version",
-				"it": "Versione iniziale",
-				"es": "Versión inicial",
-				"pl": "Pierwsze wydanie",
-				"uk": "Початкова версія",
-				"zh-cn": "首次出版"
-			}
-		},
-		"titleLang": {
-			"en": "FreeAir 100",
-			"de": "Freeair 100",
-			"ru": "Freeair 100",
-			"pt": "Freeair 100",
-			"nl": "Freeai 100",
-			"fr": "Freeair 100",
-			"it": "Freeair 100",
-			"es": "Freeair 100",
-			"pl": "Freeair 100",
-			"uk": "Freeair 100",
-			"zh-cn": "Freeair 100"
-		},
-		"desc": {
-			"en": "Connect your BluMartin FreeAir 100 ventilation system to ioBroker",
-			"de": "Schließen Sie Ihr Blumartin Freeairr 100 -Lüftungssystem an IOBROKER an",
-			"ru": "Подключите вашу систему вентиляции Blumartin Freeair 100 к iobroker",
-			"pt": "Conecte seu sistema de ventilação Blumartin Freeair 100 ao iobroker",
-			"nl": "Verbind uw Blumartin Freeai 100 -ventilatiesysteem met iObroker",
-			"fr": "Connectez votre système de ventilation Blumartin Freeair 100 à Iobroker",
-			"it": "Collega il tuo sistema di ventilazione Blumartin Freeair 100 a IoBroker",
-			"es": "Conecte su sistema de ventilación Blumartin Freeair 100 a Iobroker",
-			"pl": "Podłącz swój system wentylacji Blumartin Freeair 100 do IOBRAKER",
-			"uk": "Підключіть свою вентиляційну систему Blumartin Freeair 100",
-			"zh-cn": "将您的Blumartin Freeair 100通风系统连接到Iobroker"
-		},
-		"authors": [
-			"Scrounger <scrounger@gmx.net>"
-		],
-		"keywords": [
-			"freeair",
-			"blumartin",
-			"ventilation"
-		],
-		"licenseInformation": {
-			"type": "free",
-			"license": "MIT"
-		},
-		"platform": "Javascript/Node.js",
-		"icon": "freeair.png",
-		"enabled": true,
-		"extIcon": "https://raw.githubusercontent.com/Scrounger/ioBroker.freeair/main/admin/freeair.png",
-		"readme": "https://github.com/Scrounger/ioBroker.freeair/blob/main/README.md",
-		"loglevel": "info",
-		"tier": 3,
-		"mode": "daemon",
-		"type": "iot-systems",
-		"compact": true,
-		"connectionType": "local",
-		"dataSource": "push",
-		"adminUI": {
-			"config": "json"
-		},
-		"dependencies": [
-			{
-				"js-controller": ">=6.0.11"
-			}
-		],
-		"globalDependencies": [
-			{
-				"admin": ">=7.0.23"
-			}
-		]
-	},
-	"native": {
-		"option1": true,
-		"option2": "42"
-	},
-	"objects": [],
-	"instanceObjects": []
+    "common": {
+        "name": "freeair",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "uk": "Початкова версія",
+                "zh-cn": "首次出版"
+            }
+        },
+        "titleLang": {
+            "en": "FreeAir 100",
+            "de": "Freeair 100",
+            "ru": "Freeair 100",
+            "pt": "Freeair 100",
+            "nl": "Freeai 100",
+            "fr": "Freeair 100",
+            "it": "Freeair 100",
+            "es": "Freeair 100",
+            "pl": "Freeair 100",
+            "uk": "Freeair 100",
+            "zh-cn": "Freeair 100"
+        },
+        "desc": {
+            "en": "Connect your BluMartin FreeAir 100 ventilation system to ioBroker",
+            "de": "Schließen Sie Ihr Blumartin Freeairr 100 -Lüftungssystem an IOBROKER an",
+            "ru": "Подключите вашу систему вентиляции Blumartin Freeair 100 к iobroker",
+            "pt": "Conecte seu sistema de ventilação Blumartin Freeair 100 ao iobroker",
+            "nl": "Verbind uw Blumartin Freeai 100 -ventilatiesysteem met iObroker",
+            "fr": "Connectez votre système de ventilation Blumartin Freeair 100 à Iobroker",
+            "it": "Collega il tuo sistema di ventilazione Blumartin Freeair 100 a IoBroker",
+            "es": "Conecte su sistema de ventilación Blumartin Freeair 100 a Iobroker",
+            "pl": "Podłącz swój system wentylacji Blumartin Freeair 100 do IOBRAKER",
+            "uk": "Підключіть свою вентиляційну систему Blumartin Freeair 100",
+            "zh-cn": "将您的Blumartin Freeair 100通风系统连接到Iobroker"
+        },
+        "authors": [
+            "Scrounger <scrounger@gmx.net>"
+        ],
+        "keywords": [
+            "freeair",
+            "blumartin",
+            "ventilation"
+        ],
+        "licenseInformation": {
+            "type": "free",
+            "license": "MIT"
+        },
+        "platform": "Javascript/Node.js",
+        "icon": "freeair.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/Scrounger/ioBroker.freeair/main/admin/freeair.png",
+        "readme": "https://github.com/Scrounger/ioBroker.freeair/blob/main/README.md",
+        "loglevel": "info",
+        "tier": 3,
+        "mode": "daemon",
+        "type": "iot-systems",
+        "compact": true,
+        "connectionType": "local",
+        "dataSource": "push",
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=7.0.23"
+            }
+        ]
+    },
+    "native": {
+        "option1": true,
+        "option2": "42"
+    },
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "If master connected",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
 }

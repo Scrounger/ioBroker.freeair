@@ -1,0 +1,7 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "noImplicitAny": false
+    },
+    "include": ["./**/*.js", "unit.cjs", "package.cjs", "integration.cjs", "mocha.setup.cjs"]
+}
