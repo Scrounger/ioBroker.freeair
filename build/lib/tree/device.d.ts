@@ -1,0 +1,8 @@
+import type { myCommonChannelArray, myCommonState, myCommoneChannelObject } from '../myTypes.js';
+export declare namespace FreeAirDevice {
+    function get(): {
+        [key: string]: myCommonState | myCommoneChannelObject | myCommonChannelArray;
+    };
+    function getKeys(): string[];
+    function getStateIDs(): string[];
+}

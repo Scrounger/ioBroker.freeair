@@ -67,6 +67,7 @@
         "compact": true,
         "connectionType": "local",
         "dataSource": "push",
+        "messagebox": true,
         "adminUI": {
             "config": "json"
         },
@@ -81,9 +82,18 @@
             }
         ]
     },
+    "encryptedNative": [
+        "devices.password"
+    ],
+    "protectedNative": [
+        "devices.password"
+    ],
     "native": {
-        "option1": true,
-        "option2": "42"
+        "port": 80,
+        "adapterAddress": "0.0.0.0",
+        "devices": [],
+        "statesIsWhiteList": false,
+        "statesBlackList": []
     },
     "objects": [],
     "instanceObjects": [

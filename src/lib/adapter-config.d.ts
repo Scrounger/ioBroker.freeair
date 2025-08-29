@@ -4,11 +4,14 @@
 declare global {
 	namespace ioBroker {
 		interface AdapterConfig {
-			option1: boolean;
-			option2: string;
+			port: number;
+			adapterAddress: string;
+			devices: { serialNo: string, password: string }[];
+			statesIsWhiteList: boolean;
+			statesBlackList: { id: string }[];
 		}
 	}
 }
 
 // this is required so the above AdapterConfig is found by TypeScript / type checking
-export {};
+export { };

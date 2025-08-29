@@ -1,0 +1,35 @@
+import { Device } from "./types-device.js";
+export declare class DataParser {
+    private adapter;
+    private serialNo;
+    private clsLogPrefix;
+    private operationMode;
+    private program;
+    constructor(adapter: ioBroker.Adapter, serialNo: string);
+    parse(encryptedData: Uint8Array, timestamp: number, version: string, password: string): Device;
+    private processData;
+    private getOverview;
+    private getDetails;
+    private getMisc;
+    private getIndicatorLevel;
+    private lowPlusHigh;
+    private divideByte;
+    private byteToBits;
+    private getNumberFrBits;
+    private getPressure;
+    private getSecondRoomFlow;
+    private getRoomArea;
+    private getAbsHum;
+    private getAirDensity;
+    private roundVal;
+    private parseDIP;
+    private toSigned;
+    private getHeatRecoveryPercentage;
+    private getPowerRecovery;
+    private getCoolingPower;
+    private filterSupplyStatus;
+    private filterExtractStatus;
+    private filterStatus;
+    private correctVersion;
+    private sortByKey;
+}
