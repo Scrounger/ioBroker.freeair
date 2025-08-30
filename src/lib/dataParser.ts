@@ -137,7 +137,7 @@ export class DataParser {
         const logPrefix = `[${this.clsLogPrefix}.processData]: ${this.serialNo} - `;
 
         try {
-            let blobObject: Record<string, any> = {};
+            const blobObject: Record<string, any> = {};
 
             // Mapping: Byte-Index -> [Feldnamen...], Reihenfolge = Bits von divideByte
             const bitMappings: Record<number, string[]> = {
@@ -197,111 +197,117 @@ export class DataParser {
             }
 
             // Direktbytes (keine Division nötig)
-            values["uTempSupplyLow"] = decryptedData[2];
-            values["uTempOutdoorLow"] = decryptedData[3];
-            values["uTempExhaustLow"] = decryptedData[4];
-            values["uTempExtractLow"] = decryptedData[5];
-            values["uTempVirtSupExitLow"] = decryptedData[6];
-            values["uFanExtractRPMLow"] = decryptedData[7];
-            values["uDIPSwitchLow"] = decryptedData[8];
-            values["uFanSupplyRPMLow"] = decryptedData[9];
-            values["uErrorLineNrHigh"] = decryptedData[10];
-            values["uErrorLineNrLow"] = decryptedData[11];
-            values["uErrorCodeLow"] = decryptedData[12];
-            values["uCO2Low"] = decryptedData[13];
-            values["uOperatingHoursLow"] = decryptedData[14];
-            values["uOperatingHoursHigh"] = decryptedData[15];
-            values["uFilterHoursLow"] = decryptedData[16];
-            values["uFilterHoursHigh"] = decryptedData[17];
-            values["uFSCLow"] = decryptedData[18];
-            values["uFECLow"] = decryptedData[19];
-            values["uCSULow"] = decryptedData[20];
-            values["uCFALow"] = decryptedData[21];
-            values["uRSSILow"] = decryptedData[47];
+            values.uTempSupplyLow = decryptedData[2];
+            values.uTempOutdoorLow = decryptedData[3];
+            values.uTempExhaustLow = decryptedData[4];
+            values.uTempExtractLow = decryptedData[5];
+            values.uTempVirtSupExitLow = decryptedData[6];
+            values.uFanExtractRPMLow = decryptedData[7];
+            values.uDIPSwitchLow = decryptedData[8];
+            values.uFanSupplyRPMLow = decryptedData[9];
+            values.uErrorLineNrHigh = decryptedData[10];
+            values.uErrorLineNrLow = decryptedData[11];
+            values.uErrorCodeLow = decryptedData[12];
+            values.uCO2Low = decryptedData[13];
+            values.uOperatingHoursLow = decryptedData[14];
+            values.uOperatingHoursHigh = decryptedData[15];
+            values.uFilterHoursLow = decryptedData[16];
+            values.uFilterHoursHigh = decryptedData[17];
+            values.uFSCLow = decryptedData[18];
+            values.uFECLow = decryptedData[19];
+            values.uCSULow = decryptedData[20];
+            values.uCFALow = decryptedData[21];
+            values.uRSSILow = decryptedData[47];
 
             // Metadaten
-            if (timestamp != null) blobObject["timestamp"] = timestamp;
-            if (version != null) blobObject["version"] = version.replace("x", ".");
-            if (versionFA100 != null) blobObject["versionFA100"] = versionFA100.replace("x", ".");
+            if (timestamp != null) {
+                blobObject.timestamp = timestamp
+            };
+            if (version != null) {
+                blobObject.version = version.replace("x", ".")
+            };
+            if (versionFA100 != null) {
+                blobObject.versionFA100 = versionFA100.replace("x", ".")
+            };
 
-            blobObject["outdoorHum"] = decryptedData[0];
-            blobObject["extractHum"] = decryptedData[1];
+            blobObject.outdoorHum = decryptedData[0];
+            blobObject.extractHum = decryptedData[1];
 
-            let iTempSupply = this.lowPlusHigh(values["uTempSupplyLow"], values["uTempSupplyHigh"]);
-            blobObject["supplyTemp"] = this.toSigned(iTempSupply, 11) / 8;
+            const iTempSupply = this.lowPlusHigh(values.uTempSupplyLow, values.uTempSupplyHigh);
+            blobObject.supplyTemp = this.toSigned(iTempSupply, 11) / 8;
 
-            let iTempOutdoor = this.lowPlusHigh(values["uTempOutdoorLow"], values["uTempOutdoorHigh"]);
-            blobObject["outdoorTemp"] = this.toSigned(iTempOutdoor, 11) / 8;
+            const iTempOutdoor = this.lowPlusHigh(values.uTempOutdoorLow, values.uTempOutdoorHigh);
+            blobObject.outdoorTemp = this.toSigned(iTempOutdoor, 11) / 8;
 
-            let iTempExhaust = this.lowPlusHigh(values["uTempExhaustLow"], values["uTempExhaustHigh"]);
-            blobObject["exhaustTemp"] = this.toSigned(iTempExhaust, 11) / 8;
+            const iTempExhaust = this.lowPlusHigh(values.uTempExhaustLow, values.uTempExhaustHigh);
+            blobObject.exhaustTemp = this.toSigned(iTempExhaust, 11) / 8;
 
-            let iTempExtract = this.lowPlusHigh(values["uTempExtractLow"], values["uTempExtractHigh"]);
-            blobObject["extractTemp"] = this.toSigned(iTempExtract, 11) / 8;
+            const iTempExtract = this.lowPlusHigh(values.uTempExtractLow, values.uTempExtractHigh);
+            blobObject.extractTemp = this.toSigned(iTempExtract, 11) / 8;
 
-            let iTempVirtSupExit = this.lowPlusHigh(values["uTempVirtSupExitLow"], values["uTempVirtSupExitHigh"]);
-            blobObject["tempVirtSupExit"] = this.toSigned(iTempVirtSupExit, 11) / 8;
+            const iTempVirtSupExit = this.lowPlusHigh(values.uTempVirtSupExitLow, values.uTempVirtSupExitHigh);
+            blobObject.tempVirtSupExit = this.toSigned(iTempVirtSupExit, 11) / 8;
 
-            blobObject["co2"] = this.lowPlusHigh(values["uCO2Low"], values["uCO2High"]) * 16;
-            blobObject["pressure"] = this.getPressure(values["uPressure5MSB"], values["uPressure4LSB"]);
-            blobObject["comfortLevel"] = this.getNumberFrBits(values["uComfortLevel"]) + 1;
-            blobObject["state"] = this.getNumberFrBits(values["uState"]);
-            blobObject["humRedMode"] = this.getNumberFrBits(values["uHumRedMode"]);
-            blobObject["fanLim2ndRoom"] = this.getNumberFrBits(values["uFanLim2ndRoom"]);
-            blobObject["b2ndRoomOnly20"] = this.getNumberFrBits(values["u2ndRoomOnly20"]);
-            blobObject["bSumCooling"] = this.getNumberFrBits(values["uSumCooling"]);
-            blobObject["errorState"] = this.getNumberFrBits(values["uErrorState"]);
-            blobObject["fanSpeed"] = this.getNumberFrBits(values["uFanSpeed"]);
-            blobObject["supplyFanRPM"] = this.lowPlusHigh(values["uFanSupplyRPMLow"], values["uFanSupplyRPMHigh"]);
-            blobObject["extractFanRPM"] = this.lowPlusHigh(values["uFanExtractRPMLow"], values["uFanExtractRPMHigh"]);
-            blobObject["airFlowAve"] = this.getNumberFrBits(values["uAirFlowAve"]);
-            blobObject["supplyFilterFul"] = this.getNumberFrBits(values["uFilterSupplyFul"]);
-            blobObject["extractFilterFul"] = this.getNumberFrBits(values["uFilterExtractFul"]);
-            blobObject["extractVentPos"] = this.getNumberFrBits(values["uVentPosExtract"]);
-            blobObject["bathVentPos"] = this.getNumberFrBits(values["uVentPosBath"]);
-            blobObject["supplyVentPos"] = this.getNumberFrBits(values["uVentPosSupply"]);
-            blobObject["bypassVentPos"] = this.getNumberFrBits(values["uVentPosBypass"]);
-            blobObject["controlAuto"] = this.getNumberFrBits(values["uControlAuto"]);
-            blobObject["dipSwitch"] = this.lowPlusHigh(values["uDIPSwitchLow"], values["uDIPSwitchHigh"]);
-            blobObject["exhaustDefrost"] = this.getNumberFrBits(values["uDefrostExhaust"]);
-            blobObject["CtrlSetSupVent"] = this.getNumberFrBits(values["uCtrlSetSupVent"]);
-            blobObject["CtrlSetExtVent"] = this.getNumberFrBits(values["uCtrlSetExtVent"]);
-            blobObject["CtrlSet2ndVent"] = this.getNumberFrBits(values["uCtrlSet2ndVent"]);
-            blobObject["CtrlSetBypVent"] = this.getNumberFrBits(values["uCtrlSetBypVent"]);
-            blobObject["ErrorFileNr"] = this.getNumberFrBits(values["uErrorFileNr"]);
-            blobObject["ErrorLineNr"] = this.lowPlusHigh(values["uErrorLineNrLow"], values["uErrorLineNrHigh"]);
-            blobObject["ErrorCode"] = this.lowPlusHigh(values["uErrorCodeLow"], values["uErrorCodeHigh"]);
-            blobObject["filter_hours"] = this.lowPlusHigh(values["uFilterHoursLow"], values["uFilterHoursHigh"], values["uFilterHoursSuperHigh"]);
-            blobObject["operating_hours"] = this.lowPlusHigh(values["uOperatingHoursLow"], values["uOperatingHoursHigh"], values["uOperatingHoursSuperHigh"]);
-            blobObject["board_version"] = decryptedData[22];
-            blobObject["bDeicing"] = this.getNumberFrBits(values["uDeicing"]);
-            blobObject["FSC"] = this.lowPlusHigh(values["uFSCLow"], values["uFSCHigh"]);
-            blobObject["FEC"] = this.lowPlusHigh(values["uFECLow"], values["uFECHigh"]);
-            blobObject["CSU"] = this.lowPlusHigh(values["uCSULow"], values["uCSUHigh"]);
-            blobObject["CFA"] = this.lowPlusHigh(values["uCFALow"], values["uCFAHigh"]);
-            blobObject["roomArea"] = this.parseDIP(blobObject["dipSwitch"], 0);
-            blobObject["secondRoomFlow"] = this.parseDIP(blobObject["dipSwitch"], 1);
+            blobObject.co2 = this.lowPlusHigh(values.uCO2Low, values.uCO2High) * 16;
+            blobObject.pressure = this.getPressure(values.uPressure5MSB, values.uPressure4LSB);
+            blobObject.comfortLevel = this.getNumberFrBits(values.uComfortLevel) + 1;
+            blobObject.state = this.getNumberFrBits(values.uState);
+            blobObject.humRedMode = this.getNumberFrBits(values.uHumRedMode);
+            blobObject.fanLim2ndRoom = this.getNumberFrBits(values.uFanLim2ndRoom);
+            blobObject.b2ndRoomOnly20 = this.getNumberFrBits(values.u2ndRoomOnly20);
+            blobObject.bSumCooling = this.getNumberFrBits(values.uSumCooling);
+            blobObject.errorState = this.getNumberFrBits(values.uErrorState);
+            blobObject.fanSpeed = this.getNumberFrBits(values.uFanSpeed);
+            blobObject.supplyFanRPM = this.lowPlusHigh(values.uFanSupplyRPMLow, values.uFanSupplyRPMHigh);
+            blobObject.extractFanRPM = this.lowPlusHigh(values.uFanExtractRPMLow, values.uFanExtractRPMHigh);
+            blobObject.airFlowAve = this.getNumberFrBits(values.uAirFlowAve);
+            blobObject.supplyFilterFul = this.getNumberFrBits(values.uFilterSupplyFul);
+            blobObject.extractFilterFul = this.getNumberFrBits(values.uFilterExtractFul);
+            blobObject.extractVentPos = this.getNumberFrBits(values.uVentPosExtract);
+            blobObject.bathVentPos = this.getNumberFrBits(values.uVentPosBath);
+            blobObject.supplyVentPos = this.getNumberFrBits(values.uVentPosSupply);
+            blobObject.bypassVentPos = this.getNumberFrBits(values.uVentPosBypass);
+            blobObject.controlAuto = this.getNumberFrBits(values.uControlAuto);
+            blobObject.dipSwitch = this.lowPlusHigh(values.uDIPSwitchLow, values.uDIPSwitchHigh);
+            blobObject.exhaustDefrost = this.getNumberFrBits(values.uDefrostExhaust);
+            blobObject.CtrlSetSupVent = this.getNumberFrBits(values.uCtrlSetSupVent);
+            blobObject.CtrlSetExtVent = this.getNumberFrBits(values.uCtrlSetExtVent);
+            blobObject.CtrlSet2ndVent = this.getNumberFrBits(values.uCtrlSet2ndVent);
+            blobObject.CtrlSetBypVent = this.getNumberFrBits(values.uCtrlSetBypVent);
+            blobObject.ErrorFileNr = this.getNumberFrBits(values.uErrorFileNr);
+            blobObject.ErrorLineNr = this.lowPlusHigh(values.uErrorLineNrLow, values.uErrorLineNrHigh);
+            blobObject.ErrorCode = this.lowPlusHigh(values.uErrorCodeLow, values.uErrorCodeHigh);
+            blobObject.filter_hours = this.lowPlusHigh(values.uFilterHoursLow, values.uFilterHoursHigh, values.uFilterHoursSuperHigh);
+            blobObject.operating_hours = this.lowPlusHigh(values.uOperatingHoursLow, values.uOperatingHoursHigh, values.uOperatingHoursSuperHigh);
+            blobObject.board_version = decryptedData[22];
+            blobObject.bDeicing = this.getNumberFrBits(values.uDeicing);
+            blobObject.FSC = this.lowPlusHigh(values.uFSCLow, values.uFSCHigh);
+            blobObject.FEC = this.lowPlusHigh(values.uFECLow, values.uFECHigh);
+            blobObject.CSU = this.lowPlusHigh(values.uCSULow, values.uCSUHigh);
+            blobObject.CFA = this.lowPlusHigh(values.uCFALow, values.uCFAHigh);
+            blobObject.roomArea = this.parseDIP(blobObject.dipSwitch, 0);
+            blobObject.secondRoomFlow = this.parseDIP(blobObject.dipSwitch, 1);
 
-            let outdoorHumAbs = this.getAbsHum(blobObject["outdoorHum"], this.roundVal(blobObject["outdoorTemp"]));
-            let extractHumAbs = this.getAbsHum(blobObject["extractHum"], this.roundVal(blobObject["extractTemp"]));
-            let airDensity = this.getAirDensity(blobObject["pressure"], blobObject["extractTemp"]);
+            const outdoorHumAbs = this.getAbsHum(blobObject.outdoorHum, this.roundVal(blobObject.outdoorTemp));
+            const extractHumAbs = this.getAbsHum(blobObject.extractHum, this.roundVal(blobObject.extractTemp));
+            const airDensity = this.getAirDensity(blobObject.pressure, blobObject.extractTemp);
 
-            blobObject["extractHumAbs"] = extractHumAbs;
-            blobObject["outdoorHumAbs"] = outdoorHumAbs;
-            blobObject["airDensity"] = airDensity;
-            blobObject["rssi"] = this.toSigned(values["uRSSILow"], 8);
+            blobObject.extractHumAbs = extractHumAbs;
+            blobObject.outdoorHumAbs = outdoorHumAbs;
+            blobObject.airDensity = airDensity;
+            blobObject.rssi = this.toSigned(values.uRSSILow, 8);
 
-            blobObject["S1"] = decryptedData[41];
-            blobObject["S2"] = decryptedData[42];
-            blobObject["S3"] = decryptedData[43];
-            blobObject["S4"] = decryptedData[44];
-            blobObject["S5"] = decryptedData[45];
-            blobObject["S6"] = decryptedData[46];
+            blobObject.S1 = decryptedData[41];
+            blobObject.S2 = decryptedData[42];
+            blobObject.S3 = decryptedData[43];
+            blobObject.S4 = decryptedData[44];
+            blobObject.S5 = decryptedData[45];
+            blobObject.S6 = decryptedData[46];
 
-            if (blobObject["fanSpeed"] > 2) {
-                blobObject["airFlow"] = blobObject["fanSpeed"] * 10;
+            if (blobObject.fanSpeed > 2) {
+                blobObject.airFlow = blobObject.fanSpeed * 10;
             } else {
-                blobObject["airFlow"] = blobObject["airFlowAve"];
+                blobObject.airFlow = blobObject.airFlowAve;
             }
 
             const sorted = this.sortByKey(blobObject);
@@ -455,22 +461,22 @@ export class DataParser {
         return 0; // fallback
     }
 
-    private lowPlusHigh(low: number, high: any, superHigh: any = undefined) {
-        let arBitsTotal = [];
+    private lowPlusHigh(low: number, high: any, superHigh: any = undefined): number {
+        const arBitsTotal = [];
         for (let i = 0; i < 21; i++) {
             arBitsTotal.push(0);
         }
-        let LSB7 = this.byteToBits(low);
+        const LSB7 = this.byteToBits(low);
         let MSB7;
         for (let i = 0; i < 7; i++) {
             arBitsTotal[i] = LSB7[i];
         }
-        if (superHigh != undefined) {
+        if (superHigh != void 0) {
             MSB7 = this.byteToBits(high);
             if (MSB7.length != 8) {
-            }
-            for (let i = 0; i < 7; i++) {
-                arBitsTotal[i + 7] = MSB7[i];
+                for (let i = 0; i < 7; i++) {
+                    arBitsTotal[i + 7] = MSB7[i];
+                }
             }
             let superHighBit = 0;
             for (let i = 14; i < superHigh.length + 14; i++) {
@@ -492,9 +498,10 @@ export class DataParser {
         }
         return value;
     }
-    private divideByte(division: string | any[], byte: any) {
-        let bits = this.byteToBits(byte);
-        let dividedByte = [];
+
+    private divideByte(division: string | any[], byte: any): any[] {
+        const bits = this.byteToBits(byte);
+        const dividedByte = [];
         let bit = 0;
         for (let i = 0; i < division.length; i++) {
             dividedByte[i] = [];
@@ -503,31 +510,27 @@ export class DataParser {
                 bit += 1;
             }
         }
-        if (bit != 8) {
-        }
         let checkSumByte = 0;
         for (let i = 0; i < division.length; i++) {
             checkSumByte += dividedByte[i].length;
         }
-        if (checkSumByte != 7) {
-        }
         return dividedByte;
     }
-    private byteToBits(byte: any) {
-        let bits = [0, 0, 0, 0, 0, 0, 0, 0];
+
+    private byteToBits(byte: any): number[] {
+        const bits = [0, 0, 0, 0, 0, 0, 0, 0];
         let potenz = 128;
         for (let i = 7; i >= 0; i--) {
             if (byte / potenz >= 1) {
                 bits[i] = 1;
                 byte = byte - potenz;
-                if (i == 0 && byte > 0) {
-                }
             }
             potenz = potenz / 2;
         }
         return bits;
     }
-    private getNumberFrBits(arBits: any) {
+
+    private getNumberFrBits(arBits: any): number {
         let potenz = 1;
         let uNumber = 0;
         for (let i = 0; i < arBits.length; i++) {
@@ -536,8 +539,9 @@ export class DataParser {
         }
         return uNumber;
     }
-    private getPressure(Pressure5MSB: any, Pressure4LSB: any) {
-        let arBitsTotal = [];
+
+    private getPressure(Pressure5MSB: any, Pressure4LSB: any): number {
+        const arBitsTotal = [];
         for (let i = 0; i < 21; i++) {
             arBitsTotal.push(0);
         }
@@ -556,8 +560,8 @@ export class DataParser {
         return value + 700;
     }
 
-    private getSecondRoomFlow(dip7: number, dip8: number) {
-        let secRoomFlowCode = 2 * dip7 + dip8;
+    private getSecondRoomFlow(dip7: number, dip8: number): any {
+        const secRoomFlowCode = 2 * dip7 + dip8;
         let secondRoomFlow;
         switch (secRoomFlowCode) {
             case 0:
@@ -573,13 +577,14 @@ export class DataParser {
                 secondRoomFlow = 100;
                 break;
             default:
-                throw "invalid value of second room flow";
+                this.adapter.log.error(`invalid value of second room flow`);
                 break;
         }
         return secondRoomFlow;
     }
-    private getRoomArea(dip2: number, dip3: number, dip4: number) {
-        let roomAreaCode = 4 * dip2 + 2 * dip3 + dip4;
+
+    private getRoomArea(dip2: number, dip3: number, dip4: number): number {
+        const roomAreaCode = 4 * dip2 + 2 * dip3 + dip4;
         let roomArea = 0;
         switch (roomAreaCode) {
             case 0:
@@ -607,12 +612,13 @@ export class DataParser {
                 roomArea = 50;
                 break;
             default:
-                throw "invalid value of room area";
+                this.adapter.log.error('invalid value of room area');
                 break;
         }
         return roomArea;
     }
-    private getAbsHum(relHum: number, temp: number) {
+
+    private getAbsHum(relHum: number, temp: number): any {
         const ahPlusG10m3 = [
             49, 52, 56, 60, 64, 69, 73, 78, 84, 89, 95, 102, 108, 115, 123,
             131, 139, 148, 157, 167, 177, 188, 199, 212, 224, 238, 252, 267,
@@ -642,18 +648,19 @@ export class DataParser {
         }
         return absHum;
     }
-    private getAirDensity(pressure: number, tempExtract: number) {
+
+    private getAirDensity(pressure: number, tempExtract: number): number {
         let density = (pressure * 100) / ((tempExtract + 273.15) * 287.058);
         density = (density + 0);
         return density;
     }
 
-    private roundVal(val: number) {
+    private roundVal(val: number): number {
         return Math.round(val);
     }
 
-    private parseDIP(DIP: any, typ: number) {
-        let DIPbits = this.byteToBits(DIP);
+    private parseDIP(DIP: any, typ: number): any {
+        const DIPbits = this.byteToBits(DIP);
         if (typ == 0) {
             return this.getRoomArea(DIPbits[6], DIPbits[5], DIPbits[4]);
         } else {
@@ -661,7 +668,7 @@ export class DataParser {
         }
     }
 
-    private toSigned(num: number, potenz: number) {
+    private toSigned(num: number, potenz: number): number {
         let maxUn = 2;
         for (let i = 2; i <= potenz; i++) {
             maxUn = maxUn * 2;
@@ -672,7 +679,7 @@ export class DataParser {
         return num;
     }
 
-    private getHeatRecoveryPercentage(tempExtract: number, tempOutdoor: number, tempSupply: number, airFlow: number) {
+    private getHeatRecoveryPercentage(tempExtract: number, tempOutdoor: number, tempSupply: number, airFlow: number): number {
         // fillOverviewAndDetails.js
         if (airFlow == 0) {
             return 100;
@@ -680,23 +687,23 @@ export class DataParser {
         if (Math.abs(tempExtract - tempOutdoor) < 2) {
             return 100;
         }
-        let val = 100 * (1 - (tempExtract - tempSupply) / (tempExtract - tempOutdoor)) + 0.5;
+        const val = 100 * (1 - (tempExtract - tempSupply) / (tempExtract - tempOutdoor)) + 0.5;
         return val;
     }
 
-    private getPowerRecovery(tempExtract: number, tempOutdoor: number, tempSupply: number, airFlow: number) {
+    private getPowerRecovery(tempExtract: number, tempOutdoor: number, tempSupply: number, airFlow: number): number {
         if (Math.abs(tempExtract - tempOutdoor) < 2) {
             return 0;
         }
-        let recovery1 = airFlow * (tempSupply - tempOutdoor);
+        const recovery1 = airFlow * (tempSupply - tempOutdoor);
         return (recovery1 / 3 + 0.5);
     }
 
-    private getCoolingPower(airFlow: number, tempExtract: number, tempSupply: number) {
+    private getCoolingPower(airFlow: number, tempExtract: number, tempSupply: number): number {
         return ((airFlow * (tempExtract - tempSupply)) / 3 + 0.5);
     }
 
-    private filterSupplyStatus(fanSupplyRPM: any, fanSpeed: any) {
+    private filterSupplyStatus(fanSupplyRPM: any, fanSpeed: any): 100 | 2 | 1 | 3 | 4 {
         const fanSupplyRPMs = {
             0: [20, 870, 1510],
             1: [30, 1000, 1640],
@@ -712,7 +719,7 @@ export class DataParser {
         return this.filterStatus(fanSupplyRPM, fanSpeed, fanSupplyRPMs);
     }
 
-    private filterExtractStatus(fanExtractRPM: any, fanSpeed: any) {
+    private filterExtractStatus(fanExtractRPM: any, fanSpeed: any): 100 | 2 | 1 | 4 | 3 {
         const fanExtractRPMs = {
             0: [20, 920, 1560],
             1: [30, 1040, 1680],
@@ -728,7 +735,7 @@ export class DataParser {
         return this.filterStatus(fanExtractRPM, fanSpeed, fanExtractRPMs);
     }
 
-    private filterStatus(fanRPM: number, fanSpeed: number, filterRPMs: any) {
+    private filterStatus(fanRPM: number, fanSpeed: number, filterRPMs: any): 100 | 2 | 1 | 4 | 3 {
         // fillOverviewAndDetails.js
 
         fanSpeed = fanSpeed * 10;
@@ -736,52 +743,58 @@ export class DataParser {
             if (filterRPMs[i][0] < fanSpeed) {
                 continue;
             }
-            let nDiff = filterRPMs[i][2] - filterRPMs[i][1];
-            if (fanRPM < filterRPMs[i][1] - nDiff / 2) return 100;
-            if (fanRPM < filterRPMs[i][1] + nDiff * 0.4) return 1;
-            if (fanRPM < filterRPMs[i][1] + nDiff * 0.7) return 2;
-            if (fanRPM < filterRPMs[i][1] + nDiff * 0.95) return 3;
+            const nDiff = filterRPMs[i][2] - filterRPMs[i][1];
+            if (fanRPM < filterRPMs[i][1] - nDiff / 2) {
+                return 100
+            };
+            if (fanRPM < filterRPMs[i][1] + nDiff * 0.4) {
+                return 1
+            };
+            if (fanRPM < filterRPMs[i][1] + nDiff * 0.7) {
+                return 2
+            };
+            if (fanRPM < filterRPMs[i][1] + nDiff * 0.95) {
+                return 3
+            };
             return 4;
         }
 
         return undefined;
     }
 
-    private correctVersion(versionFrBlob: string) {
-        let indexDot = versionFrBlob.indexOf('.');
+    private correctVersion(versionFrBlob: string): string {
+        const indexDot = versionFrBlob.indexOf('.');
         let wantSubversion = false;
-        let indexUnderscore = versionFrBlob.indexOf('x');
+        const indexUnderscore = versionFrBlob.indexOf('x');
         let length = versionFrBlob.length;
         if (indexUnderscore > 0) {
-            let strPoUnderscore = versionFrBlob.substr(indexUnderscore + 1);
-            if (strPoUnderscore != '0')
+            const strPoUnderscore = versionFrBlob.substr(indexUnderscore + 1);
+            if (strPoUnderscore != '0') {
                 wantSubversion = true;
+            }
             length = indexUnderscore;
         }
         let versionNew: string;
         if (((length - indexDot) <= 3) && ((length - indexDot) >= 1)) {
-            let strDoDot = versionFrBlob.substr(0, indexDot + 1);
+            const strDoDot = versionFrBlob.substr(0, indexDot + 1);
             let strPoDot = versionFrBlob.substr(indexDot + 1);
             if (wantSubversion) {
                 //versionNew = strDoDot + '0' + strPoDot;
 
                 if ((length - indexDot) == 3) {
                     versionNew = strDoDot + strPoDot;
-                }
-                else {
-                    versionNew = strDoDot + '0' + strPoDot;
+                } else {
+                    versionNew = `${strDoDot}0${strPoDot}`;
                 }
                 versionNew = versionNew.replace("x", "_");
-            }
-            else {
+            } else {
 
                 if ((length - indexDot) == 3) {
                     strPoDot = strPoDot.substr(0, 2);
                     versionNew = strDoDot + strPoDot;
-                }
-                else {
+                } else {
                     strPoDot = strPoDot.substr(0, 1);
-                    versionNew = strDoDot + '0' + strPoDot;
+                    versionNew = `${strDoDot}0${strPoDot}`;
                 }
             }
             return versionNew;
