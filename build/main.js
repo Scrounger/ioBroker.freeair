@@ -46,6 +46,7 @@ class Freeair extends utils.Adapter {
             for (const device of this.config.devices) {
                 await this.createOrUpdateDevice(device.serialNo, device.serialNo, `${this.namespace}.${device.serialNo}.${tree.FreeAirDevice.get().isOnline.id}`, `${this.namespace}.${device.serialNo}.${tree.FreeAirDevice.get().hasErrors.id}`, undefined, true, true);
                 await this.createOrUpdateGenericState(device.serialNo, tree.FreeAirDevice.get(), {}, this.config.statesBlackList, this.config.statesIsWhiteList, {}, {}, true);
+                await this.setState(`${device.serialNo}.isOnline`, true, true);
             }
         }
         catch (error) {
@@ -615,7 +616,10 @@ class Freeair extends utils.Adapter {
             for (const id in isOnlineList) {
                 if (Date.now() - isOnlineList[id].ts > (this.config.aliveCheckInterval) * 1000) {
                     const serialNo = myHelper.getIdLastPart(myHelper.getIdWithoutLastPart(id));
-                    this.log.error(`${logPrefix} ${serialNo} - no data was sent from FreeAir 100 since ${this.config.aliveCheckInterval} s!`);
+                    if (isOnlineList[id].val) {
+                        this.log.warn(`${logPrefix} '${serialNo}' seems to be offline - no data was sent from FreeAir 100 since ${this.config.aliveCheckInterval} s!`);
+                    }
+                    this.log.debug(`${logPrefix} '${serialNo}' seems to be offline - no data was sent from FreeAir 100 since ${this.config.aliveCheckInterval} s!`);
                     await this.setDeviceConnectionStatus(serialNo, false);
                 }
                 this.clearTimeout(this.aliveTimeout);
