@@ -1,8 +1,10 @@
 import _ from 'lodash';
 /**
  * max. Anzahl Nachkommastellen
- * @param {number} places
- * @returns {number}
+ *
+ * @param val
+ * @param digits
+ * @returns
  */
 export function maxDigits(val, digits) {
     return Number(val.toFixed(digits));

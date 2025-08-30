@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import { Device, DeviceControl } from "./types-device.js";
+import type { Device, DeviceControl } from "./types-device.js";
 
 export class DataParser {
     private adapter: ioBroker.Adapter;

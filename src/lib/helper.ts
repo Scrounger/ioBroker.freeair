@@ -3,8 +3,10 @@ import type { myCommonState, myCommoneChannelObject, myCommonChannelArray } from
 
 /**
  * max. Anzahl Nachkommastellen
- * @param {number} places 
- * @returns {number}
+ * 
+ * @param val 
+ * @param digits 
+ * @returns
  */
 export function maxDigits(val: number, digits: number): number {
     return Number(val.toFixed(digits));

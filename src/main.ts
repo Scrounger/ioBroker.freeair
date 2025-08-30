@@ -7,13 +7,13 @@
 import * as utils from '@iobroker/adapter-core';
 import url from 'node:url';
 import _ from 'lodash';
-import * as http from 'http';
+import * as http from 'node:http';
 
 // Adapter imports
 import * as myI18n from './lib/i18n.js';
 import type { JsonConfigAutocompleteSendTo, myCommonState } from './lib/myTypes.js';
 import { DataParser } from './lib/dataParser.js';
-import { Device } from './lib/types-device.js';
+import type { Device } from './lib/types-device.js';
 import * as myHelper from './lib/helper.js';
 import * as tree from './lib/tree/index.js'
 
@@ -104,7 +104,7 @@ class Freeair extends utils.Adapter {
 	 * @param id
 	 * @param state
 	 */
-	private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
+	private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
 		const logPrefix = '[onStateChange]:';
 
 		try {
@@ -128,7 +128,7 @@ class Freeair extends utils.Adapter {
 	//  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
 	//  * Using this method requires "common.messagebox" property to be set to true in io-package.json
 	//  */
-	private async onMessage(obj: ioBroker.Message): Promise<void> {
+	private onMessage(obj: ioBroker.Message): void {
 		const logPrefix = '[onMessage]:';
 
 		try {
@@ -166,7 +166,7 @@ class Freeair extends utils.Adapter {
 		}
 	}
 
-	private async initServer() {
+	private async initServer(): Promise<void> {
 		const logPrefix = '[initServer]:';
 
 		try {
@@ -201,7 +201,7 @@ class Freeair extends utils.Adapter {
 		}
 	}
 
-	private async messageHandler(req: http.IncomingMessage, res: http.ServerResponse) {
+	private async messageHandler(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
 		const logPrefix = '[messageHandler]:';
 
 		try {
@@ -238,10 +238,10 @@ class Freeair extends utils.Adapter {
 						const result = dataParser.parseData(encryptedData, timestamp, version, deviceCred[0].password);
 
 						if (result) {
-							this.updateDevice(serialNo, result);
+							await this.updateDevice(serialNo, result);
 							this.sendResponse(res, 200, 'OK', logPrefix);
 						} else {
-							this.log.error(`${logPrefix} result is '${result}'`);
+							this.log.error(`${logPrefix} result is '${JSON.stringify(result)}'`);
 							this.sendResponse(res, 400, 'Bad Request', logPrefix);
 						}
 					} else if (url === this.endpoints.control) {
@@ -278,14 +278,14 @@ class Freeair extends utils.Adapter {
 		}
 	}
 
-	private sendResponse(res: http.ServerResponse, statusCode: number, message: string, logPrefix: string) {
+	private sendResponse(res: http.ServerResponse, statusCode: number, message: string, logPrefix: string): void {
 		res.statusCode = statusCode;
 		res.end(message);
 
 		this.log.debug(`${logPrefix} connection to freeair 100 closed (code: ${res.statusCode}, message: ${message})`);
 	}
 
-	private async updateDevice(serialNo: string, data: Device) {
+	private async updateDevice(serialNo: string, data: Device): Promise<void> {
 		const logPrefix = `[updateDevice]:  ${serialNo} - `;
 
 		try {

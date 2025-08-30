@@ -1,6 +1,6 @@
 import * as myHelper from '../helper.js';
 import type { myCommonChannelArray, myCommonState, myCommoneChannelObject } from '../myTypes.js';
-import { Device } from '../types-device.js';
+import type { Device } from '../types-device.js';
 
 
 export namespace FreeAirDevice {

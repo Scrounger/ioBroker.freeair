@@ -1,8 +1,10 @@
 import type { myCommonState, myCommoneChannelObject, myCommonChannelArray } from './myTypes.js';
 /**
  * max. Anzahl Nachkommastellen
- * @param {number} places
- * @returns {number}
+ *
+ * @param val
+ * @param digits
+ * @returns
  */
 export declare function maxDigits(val: number, digits: number): number;
 export declare function isDeviceCommonEqual(objCommon: ioBroker.DeviceCommon, myCommon: ioBroker.DeviceCommon): boolean;

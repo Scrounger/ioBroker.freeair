@@ -2,11 +2,12 @@ import { FreeAirDevice } from './device.js';
 export { FreeAirDevice };
 /**
  * generate a list with all defined names, that can be used for translation
+ *
  * @param tree
  * @param adapter
  */
 export function tree2Translation(tree, adapter) {
-    let tree2translation = {};
+    const tree2translation = {};
     for (const key in tree) {
         const prop = tree[key];
         if (prop && prop.name) {

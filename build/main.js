@@ -6,7 +6,7 @@
 import * as utils from '@iobroker/adapter-core';
 import url from 'node:url';
 import _ from 'lodash';
-import * as http from 'http';
+import * as http from 'node:http';
 // Adapter imports
 import * as myI18n from './lib/i18n.js';
 import { DataParser } from './lib/dataParser.js';
@@ -85,7 +85,7 @@ class Freeair extends utils.Adapter {
      * @param id
      * @param state
      */
-    async onStateChange(id, state) {
+    onStateChange(id, state) {
         const logPrefix = '[onStateChange]:';
         try {
             if (state && !state.ack) {
@@ -106,7 +106,7 @@ class Freeair extends utils.Adapter {
     //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
     //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
     //  */
-    async onMessage(obj) {
+    onMessage(obj) {
         const logPrefix = '[onMessage]:';
         try {
             if (typeof obj === 'object') {
@@ -197,11 +197,11 @@ class Freeair extends utils.Adapter {
                         const dataParser = new DataParser(this, serialNo);
                         const result = dataParser.parseData(encryptedData, timestamp, version, deviceCred[0].password);
                         if (result) {
-                            this.updateDevice(serialNo, result);
+                            await this.updateDevice(serialNo, result);
                             this.sendResponse(res, 200, 'OK', logPrefix);
                         }
                         else {
-                            this.log.error(`${logPrefix} result is '${result}'`);
+                            this.log.error(`${logPrefix} result is '${JSON.stringify(result)}'`);
                             this.sendResponse(res, 400, 'Bad Request', logPrefix);
                         }
                     }

@@ -1,4 +1,4 @@
-import { Device, DeviceControl } from "./types-device.js";
+import type { Device, DeviceControl } from "./types-device.js";
 export declare class DataParser {
     private adapter;
     private serialNo;
