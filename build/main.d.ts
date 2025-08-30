@@ -1,5 +1,6 @@
 import * as utils from '@iobroker/adapter-core';
 import type { JsonConfigAutocompleteSendTo, myCommonState } from './lib/myTypes.js';
+import type { DeviceControl } from './lib/types-device.js';
 declare class Freeair extends utils.Adapter {
     isConnected: boolean;
     aliveTimeout: ioBroker.Timeout | undefined;
@@ -7,6 +8,9 @@ declare class Freeair extends utils.Adapter {
     endpoints: {
         data: string;
         control: string;
+    };
+    commandTasks: {
+        [serialNo: string]: DeviceControl;
     };
     statesList: JsonConfigAutocompleteSendTo[];
     constructor(options?: Partial<utils.AdapterOptions>);

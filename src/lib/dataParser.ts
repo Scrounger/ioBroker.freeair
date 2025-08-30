@@ -473,11 +473,11 @@ export class DataParser {
         }
         if (superHigh != void 0) {
             MSB7 = this.byteToBits(high);
-            if (MSB7.length != 8) {
-                for (let i = 0; i < 7; i++) {
-                    arBitsTotal[i + 7] = MSB7[i];
-                }
+            // if (MSB7.length != 8) {
+            for (let i = 0; i < 7; i++) {
+                arBitsTotal[i + 7] = MSB7[i];
             }
+            // }
             let superHighBit = 0;
             for (let i = 14; i < superHigh.length + 14; i++) {
                 arBitsTotal[i] = superHigh[superHighBit];

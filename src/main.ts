@@ -13,7 +13,7 @@ import * as http from 'node:http';
 import * as myI18n from './lib/i18n.js';
 import type { JsonConfigAutocompleteSendTo, myCommonState } from './lib/myTypes.js';
 import { DataParser } from './lib/dataParser.js';
-import type { Device } from './lib/types-device.js';
+import type { Device, DeviceControl } from './lib/types-device.js';
 import * as myHelper from './lib/helper.js';
 import * as tree from './lib/tree/index.js'
 
@@ -30,6 +30,7 @@ class Freeair extends utils.Adapter {
 		control: '/apps/data/blucontrol/control/'
 	}
 
+	commandTasks: { [serialNo: string]: DeviceControl } = {}
 
 	statesList: JsonConfigAutocompleteSendTo[] = undefined;
 
@@ -104,7 +105,7 @@ class Freeair extends utils.Adapter {
 	 * @param id
 	 * @param state
 	 */
-	private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
+	private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
 		const logPrefix = '[onStateChange]:';
 
 		try {
@@ -114,7 +115,17 @@ class Freeair extends utils.Adapter {
 
 				} else {
 					// external changes
+					const serialNo = myHelper.getIdLastPart(myHelper.getIdWithoutLastPart(id));
 
+					const comfortLevel = await this.getStateAsync(`${myHelper.getIdWithoutLastPart(id)}.comfortLevel`);
+					const operatingMode = await this.getStateAsync(`${myHelper.getIdWithoutLastPart(id)}.operatingMode`);
+
+					this.commandTasks[serialNo] = {
+						comfortLevel: comfortLevel.val as number,
+						operatingMode: operatingMode.val as number
+					};
+
+					this.log.info(`${logPrefix} command added to task list (${serialNo}: ${JSON.stringify(this.commandTasks[serialNo])})`);
 				}
 			}
 
@@ -246,19 +257,27 @@ class Freeair extends utils.Adapter {
 						}
 					} else if (url === this.endpoints.control) {
 						// receiving control request from device -> here we can answer with control commands
-						const encoder = new TextEncoder();
-						const uint8 = encoder.encode(b_value);
+						// const encoder = new TextEncoder();
+						// const uint8 = encoder.encode(b_value);
 
-						const dataParser = new DataParser(this, serialNo);
-						const result = dataParser.parseControl(uint8, timestamp, version, deviceCred[0].password);
+						// const dataParser = new DataParser(this, serialNo);
+						// const result = dataParser.parseControl(uint8, timestamp, version, deviceCred[0].password);
 
 						await this.setDeviceConnectionStatus(serialNo, true);
 						this.sendResponse(res, 200, 'OK', logPrefix);
 
 						// ToDo: implementation of Control Handler
 
-						// res.writeHead(200, { 'Content-Type': 'text/plain' });
-						// res.end(`heart__beat11${comfort_level}${operation_mode}\n`);
+						if (this.commandTasks[serialNo]) {
+
+							// res.writeHead(200, { 'Content-Type': 'text/plain' });
+							// res.end(`heart__beat11${this.commandTasks[serialNo].comfortLevel}${this.commandTasks[serialNo].operatingMode}\n`);
+
+							this.log.info(`${logPrefix} command sent to device '${serialNo}' (${JSON.stringify(this.commandTasks[serialNo])})`);
+
+							delete this.commandTasks[serialNo];
+						}
+
 
 					} else {
 						this.log.error(`${logPrefix} endpoint '${url}' is unknown!`);

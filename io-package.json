@@ -31,17 +31,17 @@
             "zh-cn": "Freeair 100"
         },
         "desc": {
-            "en": "Connect your BluMartin FreeAir 100 ventilation system to ioBroker",
-            "de": "Schließen Sie Ihr Blumartin Freeairr 100 -Lüftungssystem an IOBROKER an",
-            "ru": "Подключите вашу систему вентиляции Blumartin Freeair 100 к iobroker",
-            "pt": "Conecte seu sistema de ventilação Blumartin Freeair 100 ao iobroker",
-            "nl": "Verbind uw Blumartin Freeai 100 -ventilatiesysteem met iObroker",
-            "fr": "Connectez votre système de ventilation Blumartin Freeair 100 à Iobroker",
-            "it": "Collega il tuo sistema di ventilazione Blumartin Freeair 100 a IoBroker",
-            "es": "Conecte su sistema de ventilación Blumartin Freeair 100 a Iobroker",
-            "pl": "Podłącz swój system wentylacji Blumartin Freeair 100 do IOBRAKER",
-            "uk": "Підключіть свою вентиляційну систему Blumartin Freeair 100",
-            "zh-cn": "将您的Blumartin Freeair 100通风系统连接到Iobroker"
+            "en": "locale connection to your BluMartin FreeAir 100 ventilation system",
+            "de": "lokale Verbindung zu Ihrem BluMartin FreeAir 100 Lüftungssystem",
+            "ru": "вентиляционная система BluMartin FreeAir 100",
+            "pt": "ligação local ao seu sistema de ventilação BluMartin FreeAir 100",
+            "nl": "lokale verbinding met uw BluMartin FreeAir 100 ventilatiesysteem",
+            "fr": "connexion locale à votre système de ventilation BluMartin FreeAir 100",
+            "it": "connessione locale al sistema di ventilazione BluMartin FreeAir 100",
+            "es": "conexión local con su sistema de ventilación BluMartin FreeAir 100",
+            "pl": "połączenie lokalne z systemem wentylacji BluMartin FreeAir 100",
+            "uk": "локальне підключення до системи вентиляції BluMartin FreeAir 100",
+            "zh-cn": "连接您的 BluMartin FreeAir 100 通风系统"
         },
         "authors": [
             "Scrounger <scrounger@gmx.net>"

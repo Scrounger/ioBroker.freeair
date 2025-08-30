@@ -188,12 +188,12 @@ export namespace FreeAirDevice {
                     2: "Sleep",
                     3: "Turbo",
                     4: "Turbo Cool",
-                    5: "Service",
-                    6: "Test",
-                    7: "Manufacturer",
-                    8: "Dehumidification"
+                    // 5: "Service",
+                    // 6: "Test",
+                    // 7: "Manufacturer",
+                    // 8: "Dehumidification"
                 },
-                min: 1,
+                min: 0,
                 max: 4,
                 def: 1,
             },
@@ -239,6 +239,9 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'power recovery',
                 unit: 'W',
+                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                    return myHelper.maxDigits(val, 1);
+                },
             },
             pressure: {
                 iobType: 'number',
