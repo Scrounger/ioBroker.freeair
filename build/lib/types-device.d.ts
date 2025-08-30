@@ -42,3 +42,7 @@ export interface Device {
     timestamp: number;
     version: string;
 }
+export interface DeviceControl {
+    comfortLevel: number;
+    operatingMode: number;
+}

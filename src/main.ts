@@ -211,8 +211,6 @@ class Freeair extends utils.Adapter {
 				headers: req.headers,
 			};
 
-			this.log.debug(`${logPrefix} request: ${JSON.stringify(data)}`);
-
 			const url = data.url.split("?")[0];
 			const params = new URLSearchParams(data.url.split("?")[1]);
 
@@ -224,36 +222,43 @@ class Freeair extends utils.Adapter {
 			const serialNo = parts[0].split('x')[2];
 			const timestamp = Date.now();
 
-			this.log.debug(`${logPrefix} s: ${s_value}, b: ${b_value}, version: ${version.replace(/x/g, '.')}, serialNo: ${serialNo}`);
-
-			const deviceCred = this.config.devices.filter(x => x.serialNo === serialNo);
-
-
 			if (serialNo) {
+				this.log.debug(`${logPrefix} url: ${url}, s: ${s_value}, b: ${b_value}, version: ${version.replace(/x/g, '.')}, serialNo: ${serialNo}`);
+
+				const deviceCred = this.config.devices.filter(x => x.serialNo === serialNo);
+
 				if (deviceCred && deviceCred.length === 1) {
 					if (url === this.endpoints.data) {
-						// await this.setDeviceConnectionStatus(serialNo, true);
+						// receiving data from device
+						await this.setDeviceConnectionStatus(serialNo, true);
 
-						// const encryptedData = this.base64UrlDecode(b_value);
+						const encryptedData = this.base64UrlDecode(b_value);
 
-						// const dataParser = new DataParser(this, serialNo);
-						// const result = dataParser.parse(encryptedData, timestamp, version, deviceCred[0].password);
+						const dataParser = new DataParser(this, serialNo);
+						const result = dataParser.parseData(encryptedData, timestamp, version, deviceCred[0].password);
 
-						// this.updateDevice(serialNo, result);
-
-						// this.sendResponse(res, 200, 'OK', logPrefix);
-
+						if (result) {
+							this.updateDevice(serialNo, result);
+							this.sendResponse(res, 200, 'OK', logPrefix);
+						} else {
+							this.log.error(`${logPrefix} result is '${result}'`);
+							this.sendResponse(res, 400, 'Bad Request', logPrefix);
+						}
 					} else if (url === this.endpoints.control) {
+						// receiving control request from device -> here we can answer with control commands
 						const encoder = new TextEncoder();
 						const uint8 = encoder.encode(b_value);
 
 						const dataParser = new DataParser(this, serialNo);
-						const result = dataParser.parse(uint8, timestamp, version, deviceCred[0].password);
-
-						this.log.warn(`comfortLevel: ${result.comfortLevel}, operatingMode: ${result.operatingMode}`)
+						const result = dataParser.parseControl(uint8, timestamp, version, deviceCred[0].password);
 
 						await this.setDeviceConnectionStatus(serialNo, true);
 						this.sendResponse(res, 200, 'OK', logPrefix);
+
+						// ToDo: implementation of Control Handler
+
+						// res.writeHead(200, { 'Content-Type': 'text/plain' });
+						// res.end(`heart__beat11${comfort_level}${operation_mode}\n`);
 
 					} else {
 						this.log.error(`${logPrefix} endpoint '${url}' is unknown!`);

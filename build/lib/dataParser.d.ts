@@ -1,4 +1,4 @@
-import { Device } from "./types-device.js";
+import { Device, DeviceControl } from "./types-device.js";
 export declare class DataParser {
     private adapter;
     private serialNo;
@@ -6,7 +6,9 @@ export declare class DataParser {
     private operationMode;
     private program;
     constructor(adapter: ioBroker.Adapter, serialNo: string);
-    parse(encryptedData: Uint8Array, timestamp: number, version: string, password: string): Device;
+    parseData(encryptedData: Uint8Array, timestamp: number, version: string, password: string): Device | undefined;
+    parseControl(encryptedData: Uint8Array, timestamp: number, version: string, password: string): DeviceControl | undefined;
+    private parse;
     private processData;
     private getOverview;
     private getDetails;

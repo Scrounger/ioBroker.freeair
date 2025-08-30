@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import { Device } from "./types-device.js";
+import { Device, DeviceControl } from "./types-device.js";
 
 export class DataParser {
     private adapter: ioBroker.Adapter;
@@ -35,7 +35,65 @@ export class DataParser {
         this.serialNo = serialNo;
     }
 
-    public parse(encryptedData: Uint8Array, timestamp: number, version: string, password: string): Device {
+    public parseData(encryptedData: Uint8Array, timestamp: number, version: string, password: string): Device | undefined {
+        const logPrefix = `[${this.clsLogPrefix}.parseData]: ${this.serialNo} - `;
+
+        try {
+            const decryptedData = this.parse(encryptedData, timestamp, version, password);
+
+            if (decryptedData) {
+                const processedData = this.processData(decryptedData, timestamp, version, version);
+
+                if (processedData) {
+                    return this.sortByKey({
+                        ...this.getOverview(processedData),
+                        ...this.getDetails(processedData),
+                        ...this.getMisc(processedData)
+                    }) as Device;
+                }
+
+            } else {
+                this.adapter.log.error(`${logPrefix} unable to decrypt data -> check password of device!`);
+            }
+
+        } catch (error: any) {
+            this.adapter.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
+        }
+
+        return undefined;
+    }
+
+    public parseControl(encryptedData: Uint8Array, timestamp: number, version: string, password: string): DeviceControl | undefined {
+        const logPrefix = `[${this.clsLogPrefix}.parseData]: ${this.serialNo} - `;
+
+        try {
+            const decryptedData = this.parse(encryptedData, timestamp, version, password);
+
+            if (decryptedData) {
+                const processedData = this.processData(decryptedData, timestamp, version, version);
+
+                if (processedData) {
+                    const result = {
+                        comfortLevel: processedData.comfortLevel,
+                        operatingMode: processedData.state
+                    }
+
+                    this.adapter.log.debug(`${logPrefix} ${JSON.stringify(result)}`);
+
+                    return result;
+                }
+
+            } else {
+                this.adapter.log.error(`${logPrefix} unable to decrypt data -> check password of device!`);
+            }
+        } catch (error: any) {
+            this.adapter.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
+        }
+
+        return undefined;
+    }
+
+    private parse(encryptedData: Uint8Array, timestamp: number, version: string, password: string): Uint8Array | undefined {
         const logPrefix = `[${this.clsLogPrefix}.parse]: ${this.serialNo} - `;
 
         try {
@@ -66,17 +124,8 @@ export class DataParser {
                 ])
             );
 
-            const processedData = this.processData(decryptedData, timestamp, version, version);
+            return decryptedData;
 
-            if (processedData) {
-                const result = this.sortByKey({
-                    ...this.getOverview(processedData),
-                    ...this.getDetails(processedData),
-                    ...this.getMisc(processedData)
-                });
-
-                return result as Device;
-            }
         } catch (error: any) {
             this.adapter.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
         }
@@ -84,7 +133,7 @@ export class DataParser {
         return undefined;
     }
 
-    private processData(decryptedData: any[] | Uint8Array, timestamp: number, version: string, versionFA100: string): {} {
+    private processData(decryptedData: any[] | Uint8Array, timestamp: number, version: string, versionFA100: string): any {
         const logPrefix = `[${this.clsLogPrefix}.processData]: ${this.serialNo} - `;
 
         try {

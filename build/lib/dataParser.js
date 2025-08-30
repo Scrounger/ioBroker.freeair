@@ -28,6 +28,53 @@ export class DataParser {
         this.adapter = adapter;
         this.serialNo = serialNo;
     }
+    parseData(encryptedData, timestamp, version, password) {
+        const logPrefix = `[${this.clsLogPrefix}.parseData]: ${this.serialNo} - `;
+        try {
+            const decryptedData = this.parse(encryptedData, timestamp, version, password);
+            if (decryptedData) {
+                const processedData = this.processData(decryptedData, timestamp, version, version);
+                if (processedData) {
+                    return this.sortByKey({
+                        ...this.getOverview(processedData),
+                        ...this.getDetails(processedData),
+                        ...this.getMisc(processedData)
+                    });
+                }
+            }
+            else {
+                this.adapter.log.error(`${logPrefix} unable to decrypt data -> check password of device!`);
+            }
+        }
+        catch (error) {
+            this.adapter.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
+        }
+        return undefined;
+    }
+    parseControl(encryptedData, timestamp, version, password) {
+        const logPrefix = `[${this.clsLogPrefix}.parseData]: ${this.serialNo} - `;
+        try {
+            const decryptedData = this.parse(encryptedData, timestamp, version, password);
+            if (decryptedData) {
+                const processedData = this.processData(decryptedData, timestamp, version, version);
+                if (processedData) {
+                    const result = {
+                        comfortLevel: processedData.comfortLevel,
+                        operatingMode: processedData.state
+                    };
+                    this.adapter.log.debug(`${logPrefix} ${JSON.stringify(result)}`);
+                    return result;
+                }
+            }
+            else {
+                this.adapter.log.error(`${logPrefix} unable to decrypt data -> check password of device!`);
+            }
+        }
+        catch (error) {
+            this.adapter.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
+        }
+        return undefined;
+    }
     parse(encryptedData, timestamp, version, password) {
         const logPrefix = `[${this.clsLogPrefix}.parse]: ${this.serialNo} - `;
         try {
@@ -49,15 +96,7 @@ export class DataParser {
                 (word >>> 8) & 0xff,
                 word & 0xff,
             ]));
-            const processedData = this.processData(decryptedData, timestamp, version, version);
-            if (processedData) {
-                const result = this.sortByKey({
-                    ...this.getOverview(processedData),
-                    ...this.getDetails(processedData),
-                    ...this.getMisc(processedData)
-                });
-                return result;
-            }
+            return decryptedData;
         }
         catch (error) {
             this.adapter.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
