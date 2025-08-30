@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.3.2",
-    "http-parser-js": "^0.5.10",
     "crypto-js": "^4.2.0",
     "lodash": "^4.17.21"
   },

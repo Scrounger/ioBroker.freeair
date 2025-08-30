@@ -150,7 +150,6 @@ export class DataParser {
                 blobObject["version"] = version.replace("x", ".");
             if (versionFA100 != null)
                 blobObject["versionFA100"] = versionFA100.replace("x", ".");
-            // --- Ab hier die gleichen Berechnungen wie vorher ---
             blobObject["outdoorHum"] = decryptedData[0];
             blobObject["extractHum"] = decryptedData[1];
             let iTempSupply = this.lowPlusHigh(values["uTempSupplyLow"], values["uTempSupplyHigh"]);

@@ -52,5 +52,6 @@
     "use as blacklist": "用作黑名单",
     "Datapoints Blacklist / Whitelist": "DataPoints黑名单 /白名单",
     "Choose which datapoint should be included": "选择应包括哪个数据点",
-    "Choose which datapoint should be excluded": "选择应排除哪个数据点"
+    "Choose which datapoint should be excluded": "选择应排除哪个数据点",
+    "alive check interval": "活着的检查间隔"
 }

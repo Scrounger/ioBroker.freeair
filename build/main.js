@@ -5,9 +5,8 @@
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
 import url from 'node:url';
-import * as net from 'net';
-import { HTTPParser } from 'http-parser-js';
 import _ from 'lodash';
+import * as http from 'http';
 // Adapter imports
 import * as myI18n from './lib/i18n.js';
 import { DataParser } from './lib/dataParser.js';
@@ -15,7 +14,6 @@ import * as myHelper from './lib/helper.js';
 import * as tree from './lib/tree/index.js';
 class Freeair extends utils.Adapter {
     isConnected = false;
-    aliveInterval = 30; // in seconds (FreeAir sends all 20s data)
     aliveTimeout = undefined;
     subscribedList = [];
     endpoints = {
@@ -145,65 +143,42 @@ class Freeair extends utils.Adapter {
     async initServer() {
         const logPrefix = '[initServer]:';
         try {
-            const server = net.createServer(async (socket) => {
-                this.log.debug(`${logPrefix} freeair 100 connected (${socket.remoteAddress})`);
-                await this.socketHandler(socket);
+            const server = http.createServer(async (req, res) => {
+                try {
+                    await this.messageHandler(req, res);
+                }
+                catch (err) {
+                    this.log.error(`${logPrefix} error in messageHandler: ${err}, stack: ${err.stack}`);
+                    this.sendResponse(res, 400, 'Internal Server Error', logPrefix);
+                }
             });
-            // Wenn der Server bereit ist
             server.listen(this.config.port, async () => {
-                this.log.info(`${logPrefix} listen to port: ${this.config.port}`);
+                this.log.info(`${logPrefix} listening on port: ${this.config.port}`);
                 await this.setConnectionStatus(true);
             });
-            // Fehlerbehandlung beim Server
             server.on('error', async (err) => {
                 this.log.error(`${logPrefix} server error: ${err}`);
                 await this.setConnectionStatus(false);
             });
+            // Alive-Checker starten
             this.aliveTimeout = this.setTimeout(async () => {
                 await this.aliveChecker();
-            }, (this.aliveInterval) * 1000);
+            }, this.config.aliveCheckInterval * 1000);
         }
         catch (error) {
             this.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
             await this.setConnectionStatus(false);
         }
     }
-    async socketHandler(socket) {
-        const logPrefix = '[socketHandler]:';
+    async messageHandler(req, res) {
+        const logPrefix = '[messageHandler]:';
         try {
-            const parser = new HTTPParser(HTTPParser.REQUEST);
-            let data = null;
-            parser[HTTPParser.kOnHeadersComplete] = (info) => {
-                data = {
-                    method: HTTPParser.methods[info.method],
-                    url: info.url,
-                    headers: info.headers,
-                };
+            const data = {
+                method: req.method,
+                url: req.url,
+                headers: req.headers,
             };
-            parser[HTTPParser.kOnMessageComplete] = async () => {
-                this.log.debug(`${logPrefix} [parser] message complete (${JSON.stringify(data)})`);
-                await this.parseUrl({ ...data });
-                socket.end();
-            };
-            socket.on('data', (buffer) => {
-                this.log.silly(`${logPrefix} [data] data received: ${buffer.toString('utf-8')}`);
-                parser.execute(buffer);
-            });
-            socket.on('end', () => {
-                this.log.debug(`${logPrefix} [end] connection to freeair 100 closed`);
-            });
-            // Fehlerbehandlung
-            socket.on('error', (err) => {
-                this.log.error(`${logPrefix} [error] socket error: ${err}`);
-            });
-        }
-        catch (error) {
-            this.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
-        }
-    }
-    async parseUrl(data) {
-        const logPrefix = '[parseUrl]:';
-        try {
+            this.log.debug(`${logPrefix} request: ${JSON.stringify(data)}`);
             const url = data.url.split("?")[0];
             const params = new URLSearchParams(data.url.split("?")[1]);
             const s_value = params.get("s");
@@ -214,28 +189,49 @@ class Freeair extends utils.Adapter {
             const timestamp = Date.now();
             this.log.debug(`${logPrefix} s: ${s_value}, b: ${b_value}, version: ${version.replace(/x/g, '.')}, serialNo: ${serialNo}`);
             const deviceCred = this.config.devices.filter(x => x.serialNo === serialNo);
-            if (deviceCred && deviceCred.length === 1) {
-                if (url === this.endpoints.data) {
-                    await this.setDeviceConnectionStatus(serialNo, true);
-                    const encryptedData = this.base64UrlDecode(b_value);
-                    const dataParser = new DataParser(this, serialNo);
-                    const result = dataParser.parse(encryptedData, timestamp, version, deviceCred[0].password);
-                    this.updateDevice(serialNo, result);
-                }
-                else if (url === this.endpoints.control) {
-                    await this.setDeviceConnectionStatus(serialNo, true);
+            if (serialNo) {
+                if (deviceCred && deviceCred.length === 1) {
+                    if (url === this.endpoints.data) {
+                        // await this.setDeviceConnectionStatus(serialNo, true);
+                        // const encryptedData = this.base64UrlDecode(b_value);
+                        // const dataParser = new DataParser(this, serialNo);
+                        // const result = dataParser.parse(encryptedData, timestamp, version, deviceCred[0].password);
+                        // this.updateDevice(serialNo, result);
+                        // this.sendResponse(res, 200, 'OK', logPrefix);
+                    }
+                    else if (url === this.endpoints.control) {
+                        const encoder = new TextEncoder();
+                        const uint8 = encoder.encode(b_value);
+                        const dataParser = new DataParser(this, serialNo);
+                        const result = dataParser.parse(uint8, timestamp, version, deviceCred[0].password);
+                        this.log.warn(`comfortLevel: ${result.comfortLevel}, operatingMode: ${result.operatingMode}`);
+                        await this.setDeviceConnectionStatus(serialNo, true);
+                        this.sendResponse(res, 200, 'OK', logPrefix);
+                    }
+                    else {
+                        this.log.error(`${logPrefix} endpoint '${url}' is unknown!`);
+                        this.sendResponse(res, 200, 'OK', logPrefix);
+                    }
                 }
                 else {
-                    this.log.error(`${logPrefix} endpoint '${url}' is unknown!`);
+                    this.log.warn(`${logPrefix} device '${serialNo}' credential missing -> skip device`);
+                    this.sendResponse(res, 200, 'OK', logPrefix);
                 }
             }
             else {
-                this.log.warn(`${logPrefix} device '${serialNo}' credential missing -> skip device`);
+                this.log.warn(`device serial number in message missing (code: ${res.statusCode})`);
+                this.sendResponse(res, 400, 'Bad Request', logPrefix);
             }
         }
         catch (error) {
             this.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
+            this.sendResponse(res, 400, 'Bad Request', logPrefix);
         }
+    }
+    sendResponse(res, statusCode, message, logPrefix) {
+        res.statusCode = statusCode;
+        res.end(message);
+        this.log.debug(`${logPrefix} connection to freeair 100 closed (code: ${res.statusCode}, message: ${message})`);
     }
     async updateDevice(serialNo, data) {
         const logPrefix = `[updateDevice]:  ${serialNo} - `;
@@ -595,15 +591,15 @@ class Freeair extends utils.Adapter {
         try {
             const isOnlineList = await this.getStatesAsync(`*.${tree.FreeAirDevice.get().isOnline.id}`);
             for (const id in isOnlineList) {
-                if (Date.now() - isOnlineList[id].ts > (this.aliveInterval) * 1000) {
+                if (Date.now() - isOnlineList[id].ts > (this.config.aliveCheckInterval) * 1000) {
                     const serialNo = myHelper.getIdLastPart(myHelper.getIdWithoutLastPart(id));
-                    this.log.error(`${logPrefix} ${serialNo} - no data was sent from FreeAir 100 since ${this.aliveInterval} s!`);
+                    this.log.error(`${logPrefix} ${serialNo} - no data was sent from FreeAir 100 since ${this.config.aliveCheckInterval} s!`);
                     await this.setDeviceConnectionStatus(serialNo, false);
                 }
                 this.clearTimeout(this.aliveTimeout);
                 this.aliveTimeout = this.setTimeout(async () => {
                     await this.aliveChecker();
-                }, (this.aliveInterval) * 1000);
+                }, (this.config.aliveCheckInterval) * 1000);
             }
         }
         catch (error) {

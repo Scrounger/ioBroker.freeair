@@ -2,7 +2,6 @@ import * as utils from '@iobroker/adapter-core';
 import type { JsonConfigAutocompleteSendTo, myCommonState } from './lib/myTypes.js';
 declare class Freeair extends utils.Adapter {
     isConnected: boolean;
-    aliveInterval: number;
     aliveTimeout: ioBroker.Timeout | undefined;
     subscribedList: string[];
     endpoints: {
@@ -30,8 +29,8 @@ declare class Freeair extends utils.Adapter {
     private onStateChange;
     private onMessage;
     private initServer;
-    private socketHandler;
-    private parseUrl;
+    private messageHandler;
+    private sendResponse;
     private updateDevice;
     /**
      * create or update a channel object, update will only be done on adapter start

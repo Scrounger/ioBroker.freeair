@@ -52,5 +52,6 @@
     "use as blacklist": "Gebruik als zwarte lijst",
     "Datapoints Blacklist / Whitelist": "Datapoints Blacklist / Whitelist",
     "Choose which datapoint should be included": "Kies welk DataPoint moet worden opgenomen",
-    "Choose which datapoint should be excluded": "Kies welk DataPoint moet worden uitgesloten"
+    "Choose which datapoint should be excluded": "Kies welk DataPoint moet worden uitgesloten",
+    "alive check interval": "levend controleren interval"
 }

@@ -52,5 +52,6 @@
     "use as blacklist": "Usar como lista negra",
     "Datapoints Blacklist / Whitelist": "DataPoints Blacklist / Whitelist",
     "Choose which datapoint should be included": "Elija qué punto de datos se debe incluir",
-    "Choose which datapoint should be excluded": "Elija qué punto de datos se debe excluir"
+    "Choose which datapoint should be excluded": "Elija qué punto de datos se debe excluir",
+    "alive check interval": "Intervalo de verificación vivo"
 }

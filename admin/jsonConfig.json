@@ -43,6 +43,19 @@
 			"sm": 12,
 			"xs": 12
 		},
+		"aliveCheckInterval": {
+			"type": "number",
+			"label": "alive check interval",
+			"unit": "s",
+			"min": 60,
+			"max": 7200,
+			"step": 1,
+			"xl": 1,
+			"lg": 1,
+			"md": 1,
+			"sm": 12,
+			"xs": 12
+		},
 		"dividerDevices": {
 			"newLine": true,
 			"type": "header",

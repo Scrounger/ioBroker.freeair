@@ -6,6 +6,7 @@ declare global {
 		interface AdapterConfig {
 			port: number;
 			adapterAddress: string;
+			aliveCheckInterval: number;
 			devices: { serialNo: string, password: string }[];
 			statesIsWhiteList: boolean;
 			statesBlackList: { id: string }[];

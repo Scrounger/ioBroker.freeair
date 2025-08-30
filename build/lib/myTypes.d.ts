@@ -1,9 +1,4 @@
 import { Device } from "./types-device";
-export interface requestData {
-    method: string;
-    url: string;
-    headers: string[];
-}
 export interface myCommonState {
     id?: string;
     iobType: ioBroker.CommonType;

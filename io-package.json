@@ -90,6 +90,7 @@
     ],
     "native": {
         "port": 80,
+        "aliveCheckInterval": 60,
         "adapterAddress": "0.0.0.0",
         "devices": [],
         "statesIsWhiteList": false,

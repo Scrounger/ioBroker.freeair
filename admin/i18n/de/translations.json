@@ -52,5 +52,6 @@
     "use as blacklist": "Verwenden Sie als Blacklist",
     "Datapoints Blacklist / Whitelist": "Datenpunkte Blacklist / Whitelist",
     "Choose which datapoint should be included": "Wählen Sie, welcher Datenpunkt enthalten sein soll",
-    "Choose which datapoint should be excluded": "Wählen Sie, welcher Datenpunkt ausgeschlossen werden soll"
+    "Choose which datapoint should be excluded": "Wählen Sie, welcher Datenpunkt ausgeschlossen werden soll",
+    "alive check interval": "Alive Check -Intervall"
 }

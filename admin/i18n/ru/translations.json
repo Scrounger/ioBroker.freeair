@@ -52,5 +52,6 @@
     "use as blacklist": "Используйте как черный список",
     "Datapoints Blacklist / Whitelist": "DataPoints BlackList / Whitelist",
     "Choose which datapoint should be included": "Выберите, какой данных должен быть включен",
-    "Choose which datapoint should be excluded": "Выберите, какой данных должен быть исключен"
+    "Choose which datapoint should be excluded": "Выберите, какой данных должен быть исключен",
+    "alive check interval": "живой интервал проверки"
 }
