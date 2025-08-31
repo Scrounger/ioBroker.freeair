@@ -1,123 +1,136 @@
 {
-    "common": {
-        "name": "freeair",
-        "version": "0.0.1",
-        "news": {
-            "0.0.1": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "uk": "Початкова версія",
-                "zh-cn": "首次出版"
-            }
-        },
-        "titleLang": {
-            "en": "FreeAir 100",
-            "de": "Freeair 100",
-            "ru": "Freeair 100",
-            "pt": "Freeair 100",
-            "nl": "Freeai 100",
-            "fr": "Freeair 100",
-            "it": "Freeair 100",
-            "es": "Freeair 100",
-            "pl": "Freeair 100",
-            "uk": "Freeair 100",
-            "zh-cn": "Freeair 100"
-        },
-        "desc": {
-            "en": "locale connection to your BluMartin FreeAir 100 ventilation system",
-            "de": "lokale Verbindung zu Ihrem BluMartin FreeAir 100 Lüftungssystem",
-            "ru": "вентиляционная система BluMartin FreeAir 100",
-            "pt": "ligação local ao seu sistema de ventilação BluMartin FreeAir 100",
-            "nl": "lokale verbinding met uw BluMartin FreeAir 100 ventilatiesysteem",
-            "fr": "connexion locale à votre système de ventilation BluMartin FreeAir 100",
-            "it": "connessione locale al sistema di ventilazione BluMartin FreeAir 100",
-            "es": "conexión local con su sistema de ventilación BluMartin FreeAir 100",
-            "pl": "połączenie lokalne z systemem wentylacji BluMartin FreeAir 100",
-            "uk": "локальне підключення до системи вентиляції BluMartin FreeAir 100",
-            "zh-cn": "连接您的 BluMartin FreeAir 100 通风系统"
-        },
-        "authors": [
-            "Scrounger <scrounger@gmx.net>"
-        ],
-        "keywords": [
-            "freeair",
-            "blumartin",
-            "ventilation"
-        ],
-        "licenseInformation": {
-            "type": "free",
-            "license": "MIT"
-        },
-        "platform": "Javascript/Node.js",
-        "icon": "freeair.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Scrounger/ioBroker.freeair/main/admin/freeair.png",
-        "readme": "https://github.com/Scrounger/ioBroker.freeair/blob/main/README.md",
-        "loglevel": "info",
-        "tier": 3,
-        "mode": "daemon",
-        "type": "iot-systems",
-        "compact": true,
-        "connectionType": "local",
-        "dataSource": "push",
-        "messagebox": true,
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=6.0.11"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=7.4.10"
-            }
-        ]
+  "common": {
+    "name": "freeair",
+    "version": "1.0.0-beta.0",
+    "news": {
+      "1.0.0-beta.0": {
+        "en": "initial release",
+        "de": "erstausstrahlung",
+        "ru": "первоначальное освобождение",
+        "pt": "libertação inicial",
+        "nl": "eerste release",
+        "fr": "libération initiale",
+        "it": "rilascio iniziale",
+        "es": "liberación inicial",
+        "pl": "początkowe zwolnienie",
+        "uk": "початковий реліз",
+        "zh-cn": "初步释放"
+      },
+      "0.0.1": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "uk": "Початкова версія",
+        "zh-cn": "首次出版"
+      }
     },
-    "encryptedNative": [
-        "devices.password"
-    ],
-    "protectedNative": [
-        "devices.password"
-    ],
-    "native": {
-        "port": 80,
-        "aliveCheckInterval": 60,
-        "adapterAddress": "0.0.0.0",
-        "devices": [],
-        "statesIsWhiteList": false,
-        "statesBlackList": []
+    "titleLang": {
+      "en": "FreeAir 100",
+      "de": "Freeair 100",
+      "ru": "Freeair 100",
+      "pt": "Freeair 100",
+      "nl": "Freeai 100",
+      "fr": "Freeair 100",
+      "it": "Freeair 100",
+      "es": "Freeair 100",
+      "pl": "Freeair 100",
+      "uk": "Freeair 100",
+      "zh-cn": "Freeair 100"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "If master connected",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "locale connection to your BluMartin FreeAir 100 ventilation system",
+      "de": "lokale Verbindung zu Ihrem BluMartin FreeAir 100 Lüftungssystem",
+      "ru": "вентиляционная система BluMartin FreeAir 100",
+      "pt": "ligação local ao seu sistema de ventilação BluMartin FreeAir 100",
+      "nl": "lokale verbinding met uw BluMartin FreeAir 100 ventilatiesysteem",
+      "fr": "connexion locale à votre système de ventilation BluMartin FreeAir 100",
+      "it": "connessione locale al sistema di ventilazione BluMartin FreeAir 100",
+      "es": "conexión local con su sistema de ventilación BluMartin FreeAir 100",
+      "pl": "połączenie lokalne z systemem wentylacji BluMartin FreeAir 100",
+      "uk": "локальне підключення до системи вентиляції BluMartin FreeAir 100",
+      "zh-cn": "连接您的 BluMartin FreeAir 100 通风系统"
+    },
+    "authors": [
+      "Scrounger <scrounger@gmx.net>"
+    ],
+    "keywords": [
+      "freeair",
+      "blumartin",
+      "ventilation"
+    ],
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
+    "platform": "Javascript/Node.js",
+    "icon": "freeair.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Scrounger/ioBroker.freeair/main/admin/freeair.png",
+    "readme": "https://github.com/Scrounger/ioBroker.freeair/blob/main/README.md",
+    "loglevel": "info",
+    "tier": 3,
+    "mode": "daemon",
+    "type": "iot-systems",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "push",
+    "messagebox": true,
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=6.0.11"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=7.4.10"
+      }
     ]
+  },
+  "encryptedNative": [
+    "devices.password"
+  ],
+  "protectedNative": [
+    "devices.password"
+  ],
+  "native": {
+    "port": 80,
+    "aliveCheckInterval": 60,
+    "adapterAddress": "0.0.0.0",
+    "devices": [],
+    "statesIsWhiteList": false,
+    "statesBlackList": []
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "If master connected",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
