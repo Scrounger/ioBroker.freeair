@@ -1,9 +1,15 @@
 {
     "freeair adapter settings": "Настройки адаптера для Freair",
     "You like the adapter? Then support me.": "Вам нравится адаптер? Тогда поддержите меня.",
+    "alive check interval": "живой интервал проверки",
     "server settings": "Настройки сервера",
     "Adapter Address": "Адаптер адрес",
     "devices credential": "Устройства учетные данные",
+    "use as whitelist": "Используйте в качестве белого списка",
+    "use as blacklist": "Используйте как черный список",
+    "Datapoints Blacklist / Whitelist": "DataPoints BlackList / Whitelist",
+    "Choose which datapoint should be included": "Выберите, какой данных должен быть включен",
+    "Choose which datapoint should be excluded": "Выберите, какой данных должен быть исключен",
     "air density": "плотность воздуха",
     "air flow": "расход воздуха",
     "bath flap position": "Положение лоскута ванны",
@@ -47,11 +53,5 @@
     "supply flap position": "Положение клапан подача",
     "timestamp": "временная метка",
     "software version": "Версия программного обеспечения",
-    "serial number": "серийный номер",
-    "use as whitelist": "Используйте в качестве белого списка",
-    "use as blacklist": "Используйте как черный список",
-    "Datapoints Blacklist / Whitelist": "DataPoints BlackList / Whitelist",
-    "Choose which datapoint should be included": "Выберите, какой данных должен быть включен",
-    "Choose which datapoint should be excluded": "Выберите, какой данных должен быть исключен",
-    "alive check interval": "живой интервал проверки"
+    "serial number": "серийный номер"
 }

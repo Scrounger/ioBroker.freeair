@@ -1,9 +1,15 @@
 {
     "freeair adapter settings": "Configurações do adaptador para freeair",
     "You like the adapter? Then support me.": "Você gosta do adaptador? Então me apoie.",
+    "alive check interval": "Intervalo de verificação vivo",
     "server settings": "Configurações do servidor",
     "Adapter Address": "Endereço do adaptador",
     "devices credential": "Credencial dos dispositivos",
+    "use as whitelist": "Use como uma lista de permissões",
+    "use as blacklist": "Use como lista negra",
+    "Datapoints Blacklist / Whitelist": "DataPoints Blacklist / Whitelist",
+    "Choose which datapoint should be included": "Escolha qual datapoint deve ser incluído",
+    "Choose which datapoint should be excluded": "Escolha qual ponto de dados deve ser excluído",
     "air density": "densidade do ar",
     "air flow": "fluxo de ar",
     "bath flap position": "Posição do retalho de banho",
@@ -47,11 +53,5 @@
     "supply flap position": "Posição de aba de fornecimento",
     "timestamp": "Timestamp",
     "software version": "Versão de software",
-    "serial number": "número de série",
-    "use as whitelist": "Use como uma lista de permissões",
-    "use as blacklist": "Use como lista negra",
-    "Datapoints Blacklist / Whitelist": "DataPoints Blacklist / Whitelist",
-    "Choose which datapoint should be included": "Escolha qual datapoint deve ser incluído",
-    "Choose which datapoint should be excluded": "Escolha qual ponto de dados deve ser excluído",
-    "alive check interval": "Intervalo de verificação vivo"
+    "serial number": "número de série"
 }

@@ -1,9 +1,15 @@
 {
     "freeair adapter settings": "Freeair的适配器设置",
     "You like the adapter? Then support me.": "你喜欢适配器吗？然后支持我。",
+    "alive check interval": "活着的检查间隔",
     "server settings": "服务器设置",
     "Adapter Address": "适配器地址",
     "devices credential": "设备凭证",
+    "use as whitelist": "用作白名单",
+    "use as blacklist": "用作黑名单",
+    "Datapoints Blacklist / Whitelist": "DataPoints黑名单 /白名单",
+    "Choose which datapoint should be included": "选择应包括哪个数据点",
+    "Choose which datapoint should be excluded": "选择应排除哪个数据点",
     "air density": "空气密度",
     "air flow": "空气流动",
     "bath flap position": "浴皮瓣位置",
@@ -47,11 +53,5 @@
     "supply flap position": "供应皮瓣位置",
     "timestamp": "时间戳",
     "software version": "软件版本",
-    "serial number": "序列号",
-    "use as whitelist": "用作白名单",
-    "use as blacklist": "用作黑名单",
-    "Datapoints Blacklist / Whitelist": "DataPoints黑名单 /白名单",
-    "Choose which datapoint should be included": "选择应包括哪个数据点",
-    "Choose which datapoint should be excluded": "选择应排除哪个数据点",
-    "alive check interval": "活着的检查间隔"
+    "serial number": "序列号"
 }
