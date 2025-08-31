@@ -48,6 +48,11 @@ locale connection to your BluMartin FreeAir 100 ventilation system
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 1.0.0-beta.1 (2025-08-31)
+
+- (Scrounger) i18n translation
+- (Scrounger) dependencies updated
+
 ### 1.0.0-beta.0 (2025-08-31)
 
 - (Scrounger) initial release

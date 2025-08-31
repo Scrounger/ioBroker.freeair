@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.0.0-beta.0",
+    "version": "1.0.0-beta.1",
     "news": {
+      "1.0.0-beta.1": {
+        "en": "i18n translation\ndependencies updated",
+        "de": "i18n übersetzung\naktualisierte abhängigkeiten",
+        "ru": "перевод i18\nобновленные зависимости",
+        "pt": "tradução i18n\ndependências atualizadas",
+        "nl": "i18n vertaling\nafhankelijkheden bijgewerkt",
+        "fr": "i18n traduction\ndépendances mises à jour",
+        "it": "traduzione i18n\ndipendenze aggiornate",
+        "es": "i18n translation\ndependencias actualizadas",
+        "pl": "tłumaczenie i18n\nzaktualizowane zależności",
+        "uk": "i18n переклад\nоновлені залежності",
+        "zh-cn": "i18n 翻译\n更新依赖关系"
+      },
       "1.0.0-beta.0": {
         "en": "initial release",
         "de": "erstausstrahlung",
