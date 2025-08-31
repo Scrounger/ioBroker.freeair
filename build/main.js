@@ -614,7 +614,7 @@ class Freeair extends utils.Adapter {
         try {
             const isOnlineList = await this.getStatesAsync(`*.${tree.FreeAirDevice.get().isOnline.id}`);
             for (const id in isOnlineList) {
-                if (Date.now() - isOnlineList[id].ts > (this.config.aliveCheckInterval) * 1000) {
+                if (Date.now() - isOnlineList[id].ts >= (this.config.aliveCheckInterval) * 1000) {
                     const serialNo = myHelper.getIdLastPart(myHelper.getIdWithoutLastPart(id));
                     if (isOnlineList[id].val) {
                         this.log.warn(`${logPrefix} '${serialNo}' seems to be offline - no data was sent from FreeAir 100 since ${this.config.aliveCheckInterval} s!`);

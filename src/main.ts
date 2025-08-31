@@ -720,7 +720,7 @@ class Freeair extends utils.Adapter {
 			const isOnlineList = await this.getStatesAsync(`*.${(tree.FreeAirDevice.get().isOnline as myCommonState).id}`);
 
 			for (const id in isOnlineList) {
-				if (Date.now() - isOnlineList[id].ts > (this.config.aliveCheckInterval) * 1000) {
+				if (Date.now() - isOnlineList[id].ts >= (this.config.aliveCheckInterval) * 1000) {
 					const serialNo = myHelper.getIdLastPart(myHelper.getIdWithoutLastPart(id));
 
 					if (isOnlineList[id].val) {

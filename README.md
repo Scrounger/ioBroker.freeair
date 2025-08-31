@@ -51,6 +51,8 @@ locale connection to your BluMartin FreeAir 100 ventilation system
 
 ### **WORK IN PROGRESS**
 
+### 0.0.1 (2025-08-30)
+
 - (Scrounger) initial release
 
 ## License
