@@ -13,7 +13,7 @@
 
 ## freeair adapter for ioBroker
 
-locale connection to your BluMartin FreeAir 100 ventilation system
+locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnraumlueftung-freeair-dezentral-mit-waermerueckgewinnung/) ventilation system
 
 ## Settings
 
@@ -48,6 +48,7 @@ locale connection to your BluMartin FreeAir 100 ventilation system
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
 ### 1.0.0-beta.1 (2025-08-31)
 
 - (Scrounger) i18n translation

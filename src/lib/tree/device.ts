@@ -183,18 +183,19 @@ export namespace FreeAirDevice {
                 name: 'operating mode',
                 write: true,
                 states: {
+                    // https://blumartin.de/freeair-support/betriebsarten-freeair100/
                     0: "Comfort",
                     1: "Comfort",
                     2: "Sleep",
                     3: "Turbo",
                     4: "Turbo Cool",
-                    // 5: "Service",
-                    // 6: "Test",
-                    // 7: "Manufacturer",
-                    // 8: "Dehumidification"
+                    5: "Service",
+                    6: "Test",
+                    7: "Manufacturer",
+                    8: "Dehumidification"
                 },
                 min: 0,
-                max: 4,
+                max: 8,
                 def: 1,
             },
             operatingModeName: {

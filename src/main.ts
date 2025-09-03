@@ -55,13 +55,18 @@ class Freeair extends utils.Adapter {
 		try {
 			await utils.I18n.init(`${utils.getAbsoluteDefaultDataDir().replace('iobroker-data/', '')}node_modules/iobroker.${this.name}/admin`, this);
 
-			await this.initServer();
+			if (this.config.aliveCheckInterval >= 60 && this.config.aliveCheckInterval <= 7200) {
+				await this.initServer();
 
-			for (const device of this.config.devices) {
-				await this.createOrUpdateDevice(device.serialNo, device.serialNo, `${this.namespace}.${device.serialNo}.${(tree.FreeAirDevice.get().isOnline as myCommonState).id}`, `${this.namespace}.${device.serialNo}.${(tree.FreeAirDevice.get().hasErrors as myCommonState).id}`, undefined, true, true);
-				await this.createOrUpdateGenericState(device.serialNo, tree.FreeAirDevice.get(), {}, this.config.statesBlackList, this.config.statesIsWhiteList, {}, {}, true);
+				for (const device of this.config.devices) {
+					await this.createOrUpdateDevice(device.serialNo, device.serialNo, `${this.namespace}.${device.serialNo}.${(tree.FreeAirDevice.get().isOnline as myCommonState).id}`, `${this.namespace}.${device.serialNo}.${(tree.FreeAirDevice.get().hasErrors as myCommonState).id}`, undefined, true, true);
+					await this.createOrUpdateGenericState(device.serialNo, tree.FreeAirDevice.get(), {}, this.config.statesBlackList, this.config.statesIsWhiteList, {}, {}, true);
 
-				await this.setState(`${device.serialNo}.isOnline`, true, true);
+					await this.setState(`${device.serialNo}.isOnline`, true, true);
+				}
+			} else {
+				this.log.error(`${logPrefix} alive check interval not correct!`);
+				await this.stop({ reason: 'alive check interval not correct' });
 			}
 
 		} catch (error: any) {
