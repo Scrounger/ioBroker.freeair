@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.0.0-beta.1",
+    "version": "1.0.0",
     "news": {
+      "1.0.0": {
+        "en": "latest fun",
+        "de": "neusten spaß",
+        "ru": "последнее веселье",
+        "pt": "última diversão",
+        "nl": "nieuwste pret",
+        "fr": "dernier plaisir",
+        "it": "ultimo divertimento",
+        "es": "última diversión",
+        "pl": "najnowsza zabawa",
+        "uk": "останні веселощі",
+        "zh-cn": "最新乐趣"
+      },
       "1.0.0-beta.1": {
         "en": "i18n translation\ndependencies updated",
         "de": "i18n übersetzung\naktualisierte abhängigkeiten",
