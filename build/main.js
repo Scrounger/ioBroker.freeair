@@ -220,18 +220,16 @@ class Freeair extends utils.Adapter {
                     }
                     else if (url === this.endpoints.control) {
                         // receiving control request from device -> here we can answer with control commands
-                        // const encoder = new TextEncoder();
-                        // const uint8 = encoder.encode(b_value);
-                        // const dataParser = new DataParser(this, serialNo);
-                        // const result = dataParser.parseControl(uint8, timestamp, version, deviceCred[0].password);
+                        // ack will only be set when the next data arrive
                         await this.setDeviceConnectionStatus(serialNo, true);
-                        this.sendResponse(res, 200, 'OK', logPrefix);
-                        // ToDo: implementation of Control Handler
                         if (this.commandTasks[serialNo]) {
-                            // res.writeHead(200, { 'Content-Type': 'text/plain' });
-                            // res.end(`heart__beat11${this.commandTasks[serialNo].comfortLevel}${this.commandTasks[serialNo].operatingMode}\n`);
+                            res.writeHead(200, { 'Content-Type': 'text/plain' });
+                            res.end(`heart__beat11${this.commandTasks[serialNo].comfortLevel}${this.commandTasks[serialNo].operatingMode}\n`);
                             this.log.info(`${logPrefix} command sent to device '${serialNo}' (${JSON.stringify(this.commandTasks[serialNo])})`);
                             delete this.commandTasks[serialNo];
+                        }
+                        else {
+                            this.sendResponse(res, 200, 'OK', logPrefix);
                         }
                     }
                     else {

@@ -67,6 +67,9 @@ export namespace FreeAirDevice {
                 min: 1,
                 max: 5,
                 step: 1,
+                // ToDo: wenn user Befehl ausgeführt hat und danach direkt ein update der daten kommt (und nicht die abfrage nach command),
+                // dann ändert sich der Wert und wird beim nächsten Durchlauf gesetzt, dies führt beim user sicher zu verwirrung
+                // Prüfung einbauen ob ein Command in der Taskliste ist
             },
             coolingPower: {
                 iobType: 'number',
@@ -184,19 +187,28 @@ export namespace FreeAirDevice {
                 write: true,
                 states: {
                     // https://blumartin.de/freeair-support/betriebsarten-freeair100/
-                    0: "Comfort",
-                    1: "Comfort",
-                    2: "Sleep",
-                    3: "Turbo",
-                    4: "Turbo Cool",
-                    5: "Service",
-                    6: "Test",
-                    7: "Manufacturer",
-                    8: "Dehumidification"
+                    // "0": "Comfort",
+                    "1": "Comfort",
+                    "2": "Sleep",
+                    "3": "Turbo",
+                    "4": "Turbo Cool",
+                    // "5": "Service",
+                    // "6": "Test",
+                    // "7": "Manufacturer",
+                    // "8": "Dehumidification"
                 },
-                min: 0,
-                max: 8,
-                def: 1,
+                min: 1,
+                max: 4,
+                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue | Promise<ioBroker.StateValue> {
+                    if (val === 0) {
+                        // "0" not working as control command, so we only give the option for "1" and override it
+                        return 1;
+                    }
+                    return val;
+                }
+                // ToDo: wenn user Befehl ausgeführt hat und danach direkt ein update der daten kommt (und nicht die abfrage nach command), 
+                // dann ändert sich der Wert und wird beim nächsten Durchlauf gesetzt, dies führt beim user sicher zu verwirrung
+                // Prüfung einbauen ob ein Command in der Taskliste ist
             },
             operatingModeName: {
                 iobType: 'string',
