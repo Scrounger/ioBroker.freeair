@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "news": {
+      "1.0.1": {
+        "en": "bug fixes",
+        "de": "fehlerbehebungen",
+        "ru": "исправление ошибок",
+        "pt": "correções de erros",
+        "nl": "foutherstel",
+        "fr": "corrections des bogues",
+        "it": "correzioni di bug",
+        "es": "bug fixes",
+        "pl": "poprawki błędów",
+        "uk": "виправлення помилок",
+        "zh-cn": "错误修正"
+      },
       "1.0.0": {
         "en": "latest fun",
         "de": "neusten spaß",

@@ -1,6 +1,6 @@
 {
   "name": "iobroker.freeair",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Connect your BluMartin FreeAir 100 ventilation system to ioBroker",
   "author": {
     "name": "Scrounger",
