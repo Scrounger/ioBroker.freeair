@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "news": {
+      "1.0.2": {
+        "en": "automatic role assignment implemented\ncode optimizations\nbug fixes",
+        "de": "Automatische Rollenzuweisung implementiert\nCode-Optimierungen\nFehlerbehebungen",
+        "ru": "реализовано автоматическое назначение ролей\nОптимизация кода\nисправление ошибок",
+        "pt": "Implementada atribuição automática de funções.\notimizações de código\ncorreções de bugs",
+        "nl": "Automatische roltoewijzing geïmplementeerd\nCode optimalisaties\nFoutoplossingen",
+        "fr": "Affectation automatique des rôles mise en place\noptimisations de code\ncorrections de bogues",
+        "it": "implementata l'assegnazione automatica dei ruoli\nottimizzazioni del codice\ncorrezioni di bug",
+        "es": "Implementada la asignación automática de roles\nOptimizaciones de código\ncorrecciones de errores",
+        "pl": "zaimplementowano automatyczne przydzielanie ról\noptymalizacje kodu\nPoprawki błędów",
+        "uk": "Реалізовано автоматичне призначення ролей\nОптимізація коду\nвиправлення помилок",
+        "zh-cn": "自动分配角色已实施\n代码优化\n错误修复"
+      },
       "1.0.1": {
         "en": "bug fixes",
         "de": "fehlerbehebungen",
