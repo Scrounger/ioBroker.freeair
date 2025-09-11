@@ -1,8 +1,9 @@
 import * as utils from '@iobroker/adapter-core';
-import type { JsonConfigAutocompleteSendTo, myCommonState } from './lib/myTypes.js';
+import type { JsonConfigAutocompleteSendTo } from './lib/myTypes.js';
 import type { DeviceControl } from './lib/types-device.js';
+import { myIob } from './lib/myIob.js';
 declare class Freeair extends utils.Adapter {
-    isConnected: boolean;
+    myIob: myIob;
     aliveTimeout: ioBroker.Timeout | undefined;
     subscribedList: string[];
     endpoints: {
@@ -13,6 +14,7 @@ declare class Freeair extends utils.Adapter {
         [serialNo: string]: DeviceControl;
     };
     statesList: JsonConfigAutocompleteSendTo[];
+    statesUsingValAsLastChanged: string[];
     constructor(options?: Partial<utils.AdapterOptions>);
     /**
      * Is called when databases are connected and adapter received configuration.
@@ -36,33 +38,6 @@ declare class Freeair extends utils.Adapter {
     private messageHandler;
     private sendResponse;
     private updateDevice;
-    /**
-     * create or update a channel object, update will only be done on adapter start
-     *
-     * @param id
-     * @param name
-     * @param icon
-     * @param isAdapterStart
-     */
-    private createOrUpdateChannel;
-    /**
-     * create or update a device object, update will only be done on adapter start
-     *
-     * @param id
-     * @param name
-     * @param onlineId
-     * @param errorId
-     * @param icon
-     * @param isAdapterStart
-     * @param logChanges
-     */
-    private createOrUpdateDevice;
-    createOrUpdateGenericState(channel: string, treeDefinition: any, objValues: any, blacklistFilter: {
-        id: string;
-    }[], isWhiteList: boolean, objDevices: any, objChannel: any, isAdapterStart?: boolean, filterId?: string, isChannelOnWhitelist?: boolean): Promise<void>;
-    getCommonGenericState(id: string, treeDefinition: {
-        [key: string]: myCommonState;
-    }, objDevices: any, logMsgState: string): any;
     private base64UrlDecode;
     /**
      * Set adapter info.connection state and internal var

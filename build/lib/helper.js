@@ -9,19 +9,6 @@ import _ from 'lodash';
 export function maxDigits(val, digits) {
     return Number(val.toFixed(digits));
 }
-export function isDeviceCommonEqual(objCommon, myCommon) {
-    return (!myCommon.name || _.isEqual(objCommon.name, myCommon.name)) &&
-        (!myCommon.icon || objCommon.icon === myCommon.icon) &&
-        objCommon.desc === myCommon.desc &&
-        objCommon.role === myCommon.role &&
-        _.isEqual(objCommon.statusStates, myCommon.statusStates);
-}
-export function isChannelCommonEqual(objCommon, myCommon) {
-    return (!myCommon.name || _.isEqual(objCommon.name, myCommon.name)) &&
-        (!myCommon.icon || objCommon.icon === myCommon.icon) &&
-        objCommon.desc === myCommon.desc &&
-        objCommon.role === myCommon.role;
-}
 export function getObjectByString(path, obj, separator = '.') {
     const properties = Array.isArray(path) ? path : path.split(separator);
     return properties.reduce((prev, curr) => prev?.[curr], obj);
@@ -36,27 +23,6 @@ export function getAllowedCommonStates(path, obj, separator = '.') {
         return states;
     }
     return undefined;
-}
-/**
- * Compare common properties of State
- *
- * @param {ioBroker.StateCommon} objCommon
- * @param {ioBroker.StateCommon} myCommon
- * @returns {boolean}
- */
-export function isStateCommonEqual(objCommon, myCommon) {
-    return _.isEqual(objCommon.name, myCommon.name) &&
-        _.isEqual(objCommon.type, myCommon.type) &&
-        _.isEqual(objCommon.read, myCommon.read) &&
-        _.isEqual(objCommon.write, myCommon.write) &&
-        _.isEqual(objCommon.role, myCommon.role) &&
-        _.isEqual(objCommon.def, myCommon.def) &&
-        _.isEqual(objCommon.unit, myCommon.unit) &&
-        _.isEqual(objCommon.icon, myCommon.icon) &&
-        _.isEqual(objCommon.desc, myCommon.desc) &&
-        _.isEqual(objCommon.max, myCommon.max) &&
-        _.isEqual(objCommon.min, myCommon.min) &&
-        _.isEqual(objCommon.states, myCommon.states);
 }
 export function zeroPad(source, places) {
     const zero = places - source.toString().length + 1;
@@ -82,74 +48,6 @@ export function getIdLastPart(id) {
     const result = id.split('.').pop();
     return result ? result : '';
 }
-/**
- * Compare two objects and return properties that are diffrent
- *
- * @param object
- * @param base
- * @param adapter
- * @param allowedKeys
- * @param prefix
- * @returns
- */
-export const deepDiffBetweenObjects = (object, base, adapter, allowedKeys = undefined, prefix = '') => {
-    const logPrefix = '[deepDiffBetweenObjects]:';
-    try {
-        const changes = (object, base, prefixInner = '') => {
-            return _.transform(object, (result, value, key) => {
-                const fullKey = prefixInner ? `${prefixInner}.${key}` : key;
-                try {
-                    if (!_.isEqual(value, base[key]) && ((allowedKeys && allowedKeys.includes(fullKey)) || allowedKeys === undefined)) {
-                        if (_.isArray(value)) {
-                            if (_.some(value, (item) => _.isObject(item))) {
-                                // objects in array exists
-                                const tmp = [];
-                                let empty = true;
-                                for (let i = 0; i <= value.length - 1; i++) {
-                                    const res = deepDiffBetweenObjects(value[i], base[key] && base[key][i] ? base[key][i] : {}, adapter, allowedKeys, fullKey);
-                                    if (!_.isEmpty(res) || res === 0 || res === false) {
-                                        // if (!_.has(result, key)) result[key] = [];
-                                        tmp.push(res);
-                                        empty = false;
-                                    }
-                                    else {
-                                        tmp.push(null);
-                                    }
-                                }
-                                if (!empty) {
-                                    result[key] = tmp;
-                                }
-                            }
-                            else {
-                                // is pure array
-                                if (!_.isEqual(value, base[key])) {
-                                    result[key] = value;
-                                }
-                            }
-                        }
-                        else if (_.isObject(value) && _.isObject(base[key])) {
-                            const res = changes(value, base[key] ? base[key] : {}, fullKey);
-                            if (!_.isEmpty(res) || res === 0 || res === false) {
-                                result[key] = res;
-                            }
-                        }
-                        else {
-                            result[key] = value;
-                        }
-                    }
-                }
-                catch (error) {
-                    adapter.log.error(`${logPrefix} transform error: ${error}, stack: ${error.stack}, fullKey: ${fullKey}, object: ${JSON.stringify(object)}, base: ${JSON.stringify(base)}`);
-                }
-            });
-        };
-        return changes(object, base, prefix);
-    }
-    catch (error) {
-        adapter.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}, object: ${JSON.stringify(object)}, base: ${JSON.stringify(base)}`);
-    }
-    return object;
-};
 /**
  * Collect all properties used in tree defintions
  *

@@ -48,6 +48,13 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+- (Scrounger) automatic role assignment implemented
+- (Scrounger) code optimizations
+- (Scrounger) bug fixes
+
 ### 1.0.1 (2025-09-06)
 
 - (Scrounger) bug fixes

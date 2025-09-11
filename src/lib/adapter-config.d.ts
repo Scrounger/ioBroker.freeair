@@ -1,4 +1,5 @@
 // This file extends the AdapterConfig type from "@types/iobroker"
+import { myIob } from './myIob.js'
 
 // Augment the globally declared type ioBroker.AdapterConfig
 declare global {
@@ -10,6 +11,10 @@ declare global {
 			devices: { serialNo: string, password: string }[];
 			statesIsWhiteList: boolean;
 			statesBlackList: { id: string }[];
+		}
+
+		interface myAdapter extends ioBroker.Adapter {
+			myIob: myIob;
 		}
 	}
 }

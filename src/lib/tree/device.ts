@@ -1,18 +1,18 @@
 import * as myHelper from '../helper.js';
-import type { myCommonChannelArray, myCommonState, myCommoneChannelObject } from '../myTypes.js';
+import type { myTreeDefinition } from '../myTypes.js';
 import type { Device } from '../types-device.js';
 
 
 export namespace FreeAirDevice {
     let keys: string[] | undefined = undefined;
 
-    export function get(): { [key: string]: myCommonState | myCommoneChannelObject | myCommonChannelArray } {
+    export function get(): { [key: string]: myTreeDefinition } {
         return {
             airDensity: {
                 iobType: 'number',
                 name: 'air density',
                 unit: 'kg/m³',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 3);
                 },
             },
@@ -39,7 +39,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'CO2 concentration',
                 unit: 'ppm',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 0);
                 },
             },
@@ -58,11 +58,11 @@ export namespace FreeAirDevice {
                 name: 'comfort level',
                 write: true,
                 states: {
-                    1: 1,
-                    2: 2,
-                    3: 3,
-                    4: 4,
-                    5: 5,
+                    '1': '1',
+                    '2': '2',
+                    '3': '3',
+                    '4': '4',
+                    '5': '5',
                 },
                 min: 1,
                 max: 5,
@@ -75,7 +75,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'cooling power',
                 unit: 'W',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -97,14 +97,14 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'exhaust air temperature',
                 unit: '°C',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 1);
                 }
             },
             extractFilterFul: {
                 iobType: 'boolean',
                 name: 'extract filter full',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return val === 1;
                 },
             },
@@ -112,7 +112,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'fan speed exhaust air',
                 unit: '1/min',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 0);
                 },
             },
@@ -120,7 +120,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'relative humidity of the exhaust air',
                 unit: '%',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 0);
                 },
             },
@@ -128,7 +128,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'absolute humidity of the exhaust air',
                 unit: 'g/m³',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -146,7 +146,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'extract air temperature',
                 unit: '°C',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -199,7 +199,7 @@ export namespace FreeAirDevice {
                 },
                 min: 1,
                 max: 4,
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue | Promise<ioBroker.StateValue> {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue | Promise<ioBroker.StateValue> {
                     if (val === 0) {
                         // "0" not working as control command, so we only give the option for "1" and override it
                         return 1;
@@ -228,7 +228,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'relative humidity of the outdoor air',
                 unit: '%',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 0);
                 },
             },
@@ -236,7 +236,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'absolute humidity of the outdor air',
                 unit: 'g/m³',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -244,7 +244,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'outdor air temperature',
                 unit: '°C',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -252,7 +252,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'power recovery',
                 unit: 'W',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -260,7 +260,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'pressure',
                 unit: 'mbar',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 0);
                 },
             },
@@ -301,14 +301,14 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'fan speed supply air',
                 unit: '1/min',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 0);
                 },
             },
             supplyFilterFul: {
                 iobType: 'boolean',
                 name: 'supply filter full',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return val === 1;
                 },
             },
@@ -316,7 +316,7 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'supply air temperature',
                 unit: '°C',
-                readVal(val: number, adapter: ioBroker.Adapter, device: Device, id: string): ioBroker.StateValue {
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device): ioBroker.StateValue {
                     return myHelper.maxDigits(val, 1);
                 },
             },
