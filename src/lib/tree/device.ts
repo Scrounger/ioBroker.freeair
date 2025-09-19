@@ -1,5 +1,5 @@
 import * as myHelper from '../helper.js';
-import type { myTreeDefinition } from '../myTypes.js';
+import { myTreeDefinition } from '../myIob.js';
 import type { Device } from '../types-device.js';
 
 

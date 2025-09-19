@@ -180,7 +180,7 @@ export class myIob {
                                         this.statesWithWriteFunction[writeValKey] = treeDef.writeVal;
                                     }
                                     if (treeData && (Object.hasOwn(treeData, key) || Object.hasOwn(treeData, treeDef.valFromProperty))) {
-                                        const val = treeDef.readVal ? await treeDef.readVal(treeData[valKey], this.adapter, fullData) : treeData[valKey];
+                                        const val = treeDef.readVal ? await treeDef.readVal(treeData[valKey], this.adapter, fullData, `${channel}.${stateId}`) : treeData[valKey];
                                         let changedObj = undefined;
                                         if (this.statesUsingValAsLastChanged.includes(key)) {
                                             // set lc to last_seen value
@@ -226,7 +226,7 @@ export class myIob {
                                 const idChannel = `${channel}.${idChannelAppendix}`;
                                 if ((Object.hasOwn(treeObjectDef, 'conditionToCreateState') && treeObjectDef.conditionToCreateState(fullData, channelData, this.adapter) === true) || !Object.hasOwn(treeObjectDef, 'conditionToCreateState')) {
                                     if ((!isWhiteList && !_.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` })) || (isWhiteList && _.some(blacklistFilter, x => x.id.startsWith(`${filterId}${idChannelAppendix}`))) || Object.hasOwn(treeObjectDef, 'required')) {
-                                        await this.createOrUpdateChannel(`${idChannel}`, Object.hasOwn(treeObjectDef, 'name') ? treeObjectDef.name : key, Object.hasOwn(treeObjectDef, 'icon') ? treeObjectDef.icon : undefined, updateObject);
+                                        await this.createOrUpdateChannel(`${idChannel}`, Object.hasOwn(treeObjectDef, 'name') ? (typeof treeObjectDef.name === 'function' ? treeObjectDef.name(fullData, channelData[key], this.adapter) : treeObjectDef.name) : key, Object.hasOwn(treeObjectDef, 'icon') ? treeObjectDef.icon : undefined, updateObject);
                                         await this._createOrUpdateStates(`${idChannel}`, deviceId, treeObjectDef.object, treeData[key], blacklistFilter, isWhiteList, fullData, channelData[key], logDeviceName, updateObject, `${filterId}${idChannelAppendix}.`, isWhiteList && _.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` }));
                                     }
                                     else {
@@ -599,8 +599,8 @@ export class myIob {
             for (const key in tree) {
                 if (_.isObject(tree[key]) && !key.includes('events')) {
                     const result = this.tree2Translation(tree[key].get(), this.adapter, this.utils.I18n);
-                    if (result) {
-                        this.log.warn(`${logPrefix} ${key} - missiing translation ${JSON.stringify(result)}`);
+                    if (result && Object.keys(result).length > 0) {
+                        this.log.warn(`${logPrefix} ${key} - missing translations ${JSON.stringify(result)}`);
                     }
                 }
             }

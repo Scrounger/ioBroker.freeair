@@ -1,7 +1,63 @@
 import * as myHelper from './helper.js';
-import type { WriteValFunction, myTreeArray, myTreeDefinition, myTreeState, myTreeObject, myTreeData } from './myTypes.js';
+import type { myTreeData } from './myTypes.js';
 import * as tree from './tree/index.js';
 import _ from 'lodash';
+
+type ReadValFunction = (val: any, adapter: ioBroker.Adapter | ioBroker.myAdapter, device: myTreeData, id: string) => ioBroker.StateValue | Promise<ioBroker.StateValue>
+export type WriteValFunction = (val: ioBroker.StateValue, id?: string, device?: myTreeData, adapter?: ioBroker.Adapter | ioBroker.myAdapter) => any | Promise<any>;
+type ConditionToCreateStateFunction = (objDevice: myTreeData, objChannel: myTreeData, adapter: ioBroker.Adapter | ioBroker.myAdapter) => boolean;
+
+export type myTreeDefinition = myTreeState | myTreeObject | myTreeArray;
+
+export interface myTreeState {
+    id?: string;
+    iobType: ioBroker.CommonType;
+    name?: string;
+    role?: string;
+    read?: boolean;
+    write?: boolean;
+    unit?: string;
+    min?: number;
+    max?: number;
+    step?: number;
+    states?: Record<string, string> | string[] | string;
+    expert?: true;
+    icon?: string;
+    def?: ioBroker.StateValue;
+    desc?: string;
+
+    readVal?: ReadValFunction;
+    writeVal?: WriteValFunction;
+
+    valFromProperty?: string; // Take value from other property in the corresponding tree. If this property is an object, @link ./helper.ts [getAllKeysOfTreeDefinition] must added manual if they should be regoniczed
+    statesFromProperty?(objDevice: myTreeData, objChannel: myTreeData, adapter: ioBroker.Adapter | ioBroker.myAdapter): Record<string, string> | string[] | string; // ToDo: perhaps can be removed
+
+    conditionToCreateState?: ConditionToCreateStateFunction // condition to create state
+
+    subscribeMe?: true; // subscribe
+    required?: true; // required, can not be blacklisted
+}
+
+export interface myTreeObject {
+    idChannel?: string;
+    name?: string | ((objDevice: myTreeData, objChannel: myTreeData, adapter: ioBroker.Adapter | ioBroker.myAdapter) => string);
+    icon?: string;
+    object: { [key: string]: myTreeDefinition };
+    conditionToCreateState?: ConditionToCreateStateFunction // condition to create state
+}
+
+export interface myTreeArray {
+    idChannel?: string;
+    name?: string;
+    icon?: string;
+    arrayChannelIdPrefix?: string; // Array item id get a prefix e.g. myPrefix_0
+    arrayChannelIdZeroPad?: number; // Array item id get a padding for the number
+    arrayChannelIdFromProperty?(objDevice: myTreeData, objChannel: myTreeData, i: number, adapter: ioBroker.Adapter | ioBroker.myAdapter): string; // Array item id is taken from a property in the corresponding tree
+    arrayChannelNamePrefix?: string; // Array item common.name get a prefix e.g. myPrefix_0
+    arrayChannelNameFromProperty?(objDevice: myTreeData, objChannel: myTreeData, adapter: ioBroker.Adapter | ioBroker.myAdapter): string; // Array item common.name is taken from a property in the corresponding tree
+    arrayStartNumber?: number; // Array custom start number of array
+    array: { [key: string]: myTreeDefinition };
+}
 
 export class myIob {
     private adapter: ioBroker.Adapter
@@ -217,7 +273,7 @@ export class myIob {
                                     }
 
                                     if (treeData && (Object.hasOwn(treeData, key) || Object.hasOwn(treeData, treeDef.valFromProperty))) {
-                                        const val = treeDef.readVal ? await treeDef.readVal(treeData[valKey], this.adapter, fullData) : treeData[valKey];
+                                        const val = treeDef.readVal ? await treeDef.readVal(treeData[valKey], this.adapter, fullData, `${channel}.${stateId}`) : treeData[valKey];
 
                                         let changedObj: any = undefined;
 
@@ -265,7 +321,7 @@ export class myIob {
 
                                 if ((Object.hasOwn(treeObjectDef, 'conditionToCreateState') && treeObjectDef.conditionToCreateState(fullData, channelData, this.adapter) === true) || !Object.hasOwn(treeObjectDef, 'conditionToCreateState')) {
                                     if ((!isWhiteList && !_.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` })) || (isWhiteList && _.some(blacklistFilter, x => x.id.startsWith(`${filterId}${idChannelAppendix}`))) || Object.hasOwn(treeObjectDef, 'required')) {
-                                        await this.createOrUpdateChannel(`${idChannel}`, Object.hasOwn(treeObjectDef, 'name') ? treeObjectDef.name : key, Object.hasOwn(treeObjectDef, 'icon') ? treeObjectDef.icon : undefined, updateObject);
+                                        await this.createOrUpdateChannel(`${idChannel}`, Object.hasOwn(treeObjectDef, 'name') ? (typeof treeObjectDef.name === 'function' ? treeObjectDef.name(fullData, channelData[key], this.adapter) : treeObjectDef.name) : key, Object.hasOwn(treeObjectDef, 'icon') ? treeObjectDef.icon : undefined, updateObject);
                                         await this._createOrUpdateStates(`${idChannel}`, deviceId, treeObjectDef.object, treeData[key], blacklistFilter, isWhiteList, fullData, channelData[key], logDeviceName, updateObject, `${filterId}${idChannelAppendix}.`, isWhiteList && _.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` }));
                                     } else {
                                         // channel is on blacklist
@@ -615,7 +671,7 @@ export class myIob {
      * @param prefix
      * @returns
      */
-    private deepDiffBetweenObjects = (object: any, base: any, adapter: ioBroker.Adapter, allowedKeys: any = undefined, prefix: string = ''): any => {
+    public deepDiffBetweenObjects = (object: any, base: any, adapter: ioBroker.Adapter, allowedKeys: any = undefined, prefix: string = ''): any => {
         const logPrefix = '[deepDiffBetweenObjects]:';
 
         try {
@@ -674,8 +730,8 @@ export class myIob {
                 if (_.isObject(tree[key]) && !key.includes('events')) {
                     const result = this.tree2Translation((tree[key] as any).get(), this.adapter, this.utils.I18n);
 
-                    if (result) {
-                        this.log.warn(`${logPrefix} ${key} - missiing translation ${JSON.stringify(result)}`);
+                    if (result && Object.keys(result).length > 0) {
+                        this.log.warn(`${logPrefix} ${key} - missing translations ${JSON.stringify(result)}`);
                     }
                 }
             }

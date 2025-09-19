@@ -10,12 +10,12 @@ import _ from 'lodash';
 import * as http from 'node:http';
 
 // Adapter imports
-import type { JsonConfigAutocompleteSendTo, myTreeState } from './lib/myTypes.js';
+import type { JsonConfigAutocompleteSendTo } from './lib/myTypes.js';
 import { DataParser } from './lib/dataParser.js';
 import type { Device, DeviceControl } from './lib/types-device.js';
 import * as myHelper from './lib/helper.js';
 import * as tree from './lib/tree/index.js'
-import { myIob } from './lib/myIob.js';
+import { myIob, myTreeState } from './lib/myIob.js';
 
 class Freeair extends utils.Adapter {
 

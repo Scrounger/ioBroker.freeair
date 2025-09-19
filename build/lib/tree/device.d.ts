@@ -1,4 +1,4 @@
-import type { myTreeDefinition } from '../myTypes.js';
+import { myTreeDefinition } from '../myIob.js';
 export declare namespace FreeAirDevice {
     function get(): {
         [key: string]: myTreeDefinition;
