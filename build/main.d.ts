@@ -15,6 +15,7 @@ declare class Freeair extends utils.Adapter {
     };
     statesList: JsonConfigAutocompleteSendTo[];
     statesUsingValAsLastChanged: string[];
+    deviceUpdated: any[];
     constructor(options?: Partial<utils.AdapterOptions>);
     /**
      * Is called when databases are connected and adapter received configuration.

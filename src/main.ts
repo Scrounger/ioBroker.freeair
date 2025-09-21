@@ -38,6 +38,8 @@ class Freeair extends utils.Adapter {
 		'timestamp'
 	];
 
+	deviceUpdated = [];
+
 	public constructor(options: Partial<utils.AdapterOptions> = {}) {
 		super({
 			...options,
@@ -322,7 +324,11 @@ class Freeair extends utils.Adapter {
 
 		try {
 			this.log.debug(`${logPrefix} ${JSON.stringify(data)}`);
-			await this.myIob.createOrUpdateStates(serialNo, tree.FreeAirDevice.get(), data, data, this.config.statesBlackList, this.config.statesIsWhiteList, serialNo, true);
+			await this.myIob.createOrUpdateStates(serialNo, tree.FreeAirDevice.get(), data, data, this.config.statesBlackList, this.config.statesIsWhiteList, serialNo, !this.deviceUpdated.includes(serialNo));
+
+			if (!this.deviceUpdated.includes(serialNo)) {
+				this.deviceUpdated.push(serialNo);
+			}
 
 		} catch (error: any) {
 			this.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
@@ -354,8 +360,16 @@ class Freeair extends utils.Adapter {
 		const logPrefix = '[setConnectionStatus]:';
 
 		try {
-			await this.setState('info.connection', isConnected, true);
 			this.connected = isConnected;
+
+			if (this.config.devices.length === 1) {
+				const device = await this.getStateAsync(`${this.config.devices[0].serialNo}.isOnline`);
+
+				await this.setState('info.connection', device.val, true);
+			} else {
+				await this.setState('info.connection', isConnected, true);
+			}
+
 		} catch (error) {
 			this.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
 		}
@@ -372,6 +386,10 @@ class Freeair extends utils.Adapter {
 
 		try {
 			await this.setState(`${serialNo}.${(tree.FreeAirDevice.get().isOnline as myTreeState).id}`, isConnected, true);
+
+			if (this.config.devices.length === 1) {
+				await this.setState('info.connection', isConnected, true);
+			}
 		} catch (error) {
 			this.log.error(`${logPrefix} error: ${error}, stack: ${error.stack} `);
 		}
