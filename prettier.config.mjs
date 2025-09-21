@@ -6,4 +6,4 @@ export default {
     printWidth: 600,
     // uncomment next line if you prefer double quotes
     // singleQuote: false,
-};
+}
