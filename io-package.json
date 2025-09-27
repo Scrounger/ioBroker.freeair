@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "news": {
+      "1.0.4": {
+        "en": "bug fixes",
+        "de": "fehlerbehebungen",
+        "ru": "исправление ошибок",
+        "pt": "correções de erros",
+        "nl": "foutherstel",
+        "fr": "corrections des bogues",
+        "it": "correzioni di bug",
+        "es": "bug fixes",
+        "pl": "poprawki błędów",
+        "uk": "виправлення помилок",
+        "zh-cn": "错误修正"
+      },
       "1.0.3": {
         "en": "if only one devices is configured, show device online status as adapter status\ndependencies updated\nbug fixes",
         "de": "wenn nur eine geräte konfiguriert sind, anzeigen geräte-onlinestatus als adapterstatus\naktualisierte abhängigkeiten\nfehlerbehebungen",
@@ -80,19 +93,6 @@
         "pl": "początkowe zwolnienie",
         "uk": "початковий реліз",
         "zh-cn": "初步释放"
-      },
-      "0.0.1": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "uk": "Початкова версія",
-        "zh-cn": "首次出版"
       }
     },
     "titleLang": {
