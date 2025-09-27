@@ -8,7 +8,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'air density',
                 unit: 'kg/m³',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 3);
                 },
             },
@@ -35,7 +35,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'CO2 concentration',
                 unit: 'ppm',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 0);
                 },
             },
@@ -71,7 +71,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'cooling power',
                 unit: 'W',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -93,14 +93,14 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'exhaust air temperature',
                 unit: '°C',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 1);
                 }
             },
             extractFilterFul: {
                 iobType: 'boolean',
                 name: 'extract filter full',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return val === 1;
                 },
             },
@@ -108,7 +108,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'fan speed exhaust air',
                 unit: '1/min',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 0);
                 },
             },
@@ -116,7 +116,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'relative humidity of the exhaust air',
                 unit: '%',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 0);
                 },
             },
@@ -124,7 +124,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'absolute humidity of the exhaust air',
                 unit: 'g/m³',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -142,7 +142,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'extract air temperature',
                 unit: '°C',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -195,7 +195,7 @@ export var FreeAirDevice;
                 },
                 min: 1,
                 max: 4,
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     if (val === 0) {
                         // "0" not working as control command, so we only give the option for "1" and override it
                         return 1;
@@ -224,7 +224,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'relative humidity of the outdoor air',
                 unit: '%',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 0);
                 },
             },
@@ -232,7 +232,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'absolute humidity of the outdor air',
                 unit: 'g/m³',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -240,7 +240,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'outdor air temperature',
                 unit: '°C',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -248,7 +248,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'power recovery',
                 unit: 'W',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 1);
                 },
             },
@@ -256,7 +256,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'pressure',
                 unit: 'mbar',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 0);
                 },
             },
@@ -297,14 +297,14 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'fan speed supply air',
                 unit: '1/min',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 0);
                 },
             },
             supplyFilterFul: {
                 iobType: 'boolean',
                 name: 'supply filter full',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return val === 1;
                 },
             },
@@ -312,7 +312,7 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'supply air temperature',
                 unit: '°C',
-                readVal(val, adapter, device) {
+                readVal(val, adapter, device, channel, id) {
                     return myHelper.maxDigits(val, 1);
                 },
             },

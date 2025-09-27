@@ -3,8 +3,8 @@ import type { myTreeData } from './myTypes.js';
 import * as tree from './tree/index.js';
 import _ from 'lodash';
 
-type ReadValFunction = (val: any, adapter: ioBroker.Adapter | ioBroker.myAdapter, device: myTreeData, id: string) => ioBroker.StateValue | Promise<ioBroker.StateValue>
-export type WriteValFunction = (val: ioBroker.StateValue, id?: string, device?: myTreeData, adapter?: ioBroker.Adapter | ioBroker.myAdapter) => any | Promise<any>;
+type ReadValFunction = (val: any, adapter: ioBroker.Adapter | ioBroker.myAdapter, device: myTreeData, channel: myTreeData, id: string) => ioBroker.StateValue | Promise<ioBroker.StateValue>
+export type WriteValFunction = (val: ioBroker.StateValue, id: string, device: myTreeData, adapter: ioBroker.Adapter | ioBroker.myAdapter) => any | Promise<any>;
 type ConditionToCreateStateFunction = (objDevice: myTreeData, objChannel: myTreeData, adapter: ioBroker.Adapter | ioBroker.myAdapter) => boolean;
 
 export type myTreeDefinition = myTreeState | myTreeObject | myTreeArray;
@@ -87,8 +87,9 @@ export class myIob {
      * @param icon
      * @param updateObject
      * @param logChanges
+     * @param native
      */
-    public async createOrUpdateDevice(id: string, name: string | undefined, onlineId: string, errorId: string = undefined, icon: string | undefined = undefined, updateObject: boolean = false, logChanges: boolean = true): Promise<void> {
+    public async createOrUpdateDevice(id: string, name: string | undefined, onlineId: string, errorId: string = undefined, icon: string | undefined = undefined, updateObject: boolean = false, logChanges: boolean = true, native: Record<string, any> = {}): Promise<void> {
         const logPrefix = '[createOrUpdateDevice]:';
 
         try {
@@ -114,7 +115,7 @@ export class myIob {
                 await this.adapter.setObject(id, {
                     type: 'device',
                     common: common,
-                    native: {},
+                    native,
                 });
             } else {
                 if (updateObject) {
@@ -146,8 +147,9 @@ export class myIob {
      * @param name
      * @param icon
      * @param updateObject
+     * @param native
      */
-    public async createOrUpdateChannel(id: string, name: string, icon: string = undefined, updateObject: boolean = false): Promise<void> {
+    public async createOrUpdateChannel(id: string, name: string, icon: string = undefined, updateObject: boolean = false, native: Record<string, any> = {}): Promise<void> {
         const logPrefix = '[createOrUpdateChannel]:';
 
         try {
@@ -163,7 +165,7 @@ export class myIob {
                 await this.adapter.setObject(id, {
                     type: 'channel',
                     common: common,
-                    native: {},
+                    native,
                 });
             } else {
                 if (updateObject) {
@@ -206,7 +208,18 @@ export class myIob {
 
                     try {
                         // if we have an own defined state which takes val from other property
-                        const valKey = Object.hasOwn(treeData, treeDef.valFromProperty) && treeDef.valFromProperty ? treeDef.valFromProperty : key;
+                        let valKey = key;
+
+                        if (Object.hasOwn(treeDef, 'valFromProperty')) {
+                            if (Object.hasOwn(treeData, treeDef.valFromProperty)) {
+                                valKey = treeDef.valFromProperty
+                            } else {
+                                if (this.log.level === 'silly') {
+                                    this.log.silly(`${logPrefix} '${logDeviceName}' ${logDetails ? `(${logDetails}) ` : ''} key '${key}' has valFromProperty '${treeDef.valFromProperty}' not exist in data -> skipping!`);
+                                }
+                                continue;
+                            }
+                        }
 
                         const cond1 = (Object.hasOwn(treeData, valKey) && treeData[valKey] !== undefined) || (Object.hasOwn(treeDef, 'id') && !Object.hasOwn(treeDef, 'valFromProperty'));
                         const cond2 = Object.hasOwn(treeDef, 'iobType') && !Object.hasOwn(treeDef, 'object') && !Object.hasOwn(treeDef, 'array');
@@ -273,7 +286,7 @@ export class myIob {
                                     }
 
                                     if (treeData && (Object.hasOwn(treeData, key) || Object.hasOwn(treeData, treeDef.valFromProperty))) {
-                                        const val = treeDef.readVal ? await treeDef.readVal(treeData[valKey], this.adapter, fullData, `${channel}.${stateId}`) : treeData[valKey];
+                                        const val = treeDef.readVal ? await treeDef.readVal(treeData[valKey], this.adapter, fullData, channelData, `${channel}.${stateId}`) : treeData[valKey];
 
                                         let changedObj: any = undefined;
 
@@ -290,7 +303,7 @@ export class myIob {
                                     } else {
                                         if (!Object.hasOwn(treeDef, 'id')) {
                                             // only report it if it's not a custom defined state
-                                            this.log.debug(`${logPrefix} ${logDeviceName} - property '${logMsgState}' not exists in bootstrap values (sometimes this option may first need to be activated / used in the Unifi Network application or will update by an event)`);
+                                            this.log.debug(`${logPrefix} ${logDeviceName} - property '${logMsgState}' not exists in data (sometimes this option may first need to be activated / used or will update by an event)`);
                                         }
                                     }
 

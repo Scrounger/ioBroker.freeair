@@ -48,6 +48,11 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+- (Scrounger) bug fixes
+
 ### 1.0.3 (2025-09-21)
 
 - (Scrounger) if only one devices is configured, show device online status as adapter status

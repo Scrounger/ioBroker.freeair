@@ -1,6 +1,6 @@
 import type { myTreeData } from './myTypes.js';
-type ReadValFunction = (val: any, adapter: ioBroker.Adapter | ioBroker.myAdapter, device: myTreeData, id: string) => ioBroker.StateValue | Promise<ioBroker.StateValue>;
-export type WriteValFunction = (val: ioBroker.StateValue, id?: string, device?: myTreeData, adapter?: ioBroker.Adapter | ioBroker.myAdapter) => any | Promise<any>;
+type ReadValFunction = (val: any, adapter: ioBroker.Adapter | ioBroker.myAdapter, device: myTreeData, channel: myTreeData, id: string) => ioBroker.StateValue | Promise<ioBroker.StateValue>;
+export type WriteValFunction = (val: ioBroker.StateValue, id: string, device: myTreeData, adapter: ioBroker.Adapter | ioBroker.myAdapter) => any | Promise<any>;
 type ConditionToCreateStateFunction = (objDevice: myTreeData, objChannel: myTreeData, adapter: ioBroker.Adapter | ioBroker.myAdapter) => boolean;
 export type myTreeDefinition = myTreeState | myTreeObject | myTreeArray;
 export interface myTreeState {
@@ -70,8 +70,9 @@ export declare class myIob {
      * @param icon
      * @param updateObject
      * @param logChanges
+     * @param native
      */
-    createOrUpdateDevice(id: string, name: string | undefined, onlineId: string, errorId?: string, icon?: string | undefined, updateObject?: boolean, logChanges?: boolean): Promise<void>;
+    createOrUpdateDevice(id: string, name: string | undefined, onlineId: string, errorId?: string, icon?: string | undefined, updateObject?: boolean, logChanges?: boolean, native?: Record<string, any>): Promise<void>;
     /**
      * create or update a channel object, update will only be done on adapter start
      *
@@ -79,8 +80,9 @@ export declare class myIob {
      * @param name
      * @param icon
      * @param updateObject
+     * @param native
      */
-    createOrUpdateChannel(id: string, name: string, icon?: string, updateObject?: boolean): Promise<void>;
+    createOrUpdateChannel(id: string, name: string, icon?: string, updateObject?: boolean, native?: Record<string, any>): Promise<void>;
     createOrUpdateStates(idChannel: string, treeDefinition: {
         [key: string]: myTreeDefinition;
     }, partialData: myTreeData, fullData: myTreeData, blacklistFilter?: {
