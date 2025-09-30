@@ -1,0 +1,12 @@
+name: 'Private Issue'
+description: 'This template is intended for the repository owner only.'
+title: '[Private Issue]'
+labels:
+    - private
+assignees:
+    - your-username
+body: |
+    ## Description
+    This issue template is intended for the repository owner only.
+
+    **Note:** If this template is used by anyone other than the repository owner, the issue will be automatically closed.
