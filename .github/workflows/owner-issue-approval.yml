@@ -1,4 +1,4 @@
-name: Close Unauthorized Issues
+name: Close Unauthorized Owner Issues Template
 
 on:
     issues:
