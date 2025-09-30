@@ -628,6 +628,7 @@ export class myIob {
             for (const key in obj) {
                 if (_.isObject(obj[key]) && !key.includes('events')) {
                     if (Object.hasOwn(obj[key], 'get')) {
+                        //@ts-ignore
                         const result = this.tree2Translation(obj[key].get(), this.adapter, this.utils.I18n);
                         if (result && Object.keys(result).length > 0) {
                             this.log.warn(`${logPrefix} ${key} - missing translations ${JSON.stringify(result)}`);

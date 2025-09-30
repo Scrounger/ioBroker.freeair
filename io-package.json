@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "news": {
+      "1.0.5": {
+        "en": "dependencies updated\nbug fixes",
+        "de": "aktualisierte abhängigkeiten\nfehlerbehebungen",
+        "ru": "обновленные зависимости\nисправление ошибок",
+        "pt": "dependências atualizadas\ncorreções de erros",
+        "nl": "afhankelijkheden bijgewerkt\nfoutherstel",
+        "fr": "dépendances mises à jour\ncorrections des bogues",
+        "it": "dipendenze aggiornate\ncorrezioni di bug",
+        "es": "dependencias actualizadas\nbug fixes",
+        "pl": "zaktualizowane zależności\npoprawki błędów",
+        "uk": "оновлені залежності\nвиправлення помилок",
+        "zh-cn": "更新依赖关系\n错误修正"
+      },
       "1.0.4": {
         "en": "bug fixes",
         "de": "fehlerbehebungen",
@@ -80,19 +93,6 @@
         "pl": "tłumaczenie i18n\nzaktualizowane zależności",
         "uk": "i18n переклад\nоновлені залежності",
         "zh-cn": "i18n 翻译\n更新依赖关系"
-      },
-      "1.0.0-beta.0": {
-        "en": "initial release",
-        "de": "erstausstrahlung",
-        "ru": "первоначальное освобождение",
-        "pt": "libertação inicial",
-        "nl": "eerste release",
-        "fr": "libération initiale",
-        "it": "rilascio iniziale",
-        "es": "liberación inicial",
-        "pl": "początkowe zwolnienie",
-        "uk": "початковий реліз",
-        "zh-cn": "初步释放"
       }
     },
     "titleLang": {
