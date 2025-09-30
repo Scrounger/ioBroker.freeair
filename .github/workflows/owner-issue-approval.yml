@@ -14,10 +14,11 @@ jobs:
               id: check-template
               run: |
                   issue_body="${{ github.event.issue.body }}"
-                  if echo "$issue_body" | grep -q "This template is intended for the repository owner only."; then
+                  if echo "$issue_body" | grep -q "This template is intended for the repository owner only"; then
                     echo "is-owner-template=true" >> $GITHUB_ENV
                   else
                     echo "is-owner-template=false" >> $GITHUB_ENV
+                  fi
 
             - name: Check if issue was created by the repository owner
               id: check-owner
@@ -26,6 +27,7 @@ jobs:
                     echo "not-owner=true" >> $GITHUB_ENV
                   else
                     echo "not-owner=false" >> $GITHUB_ENV
+                  fi
 
             - name: Close issue if not created by the owner and uses the owner-issue template
               if: env.is-owner-template == 'true' && env.not-owner == 'true'
