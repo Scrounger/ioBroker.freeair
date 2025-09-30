@@ -4,7 +4,7 @@ title: '[Private Issue]'
 labels:
     - private
 assignees:
-    - your-username
+    - Scrounger
 body: |
     ## Description
     This issue template is intended for the repository owner only.
