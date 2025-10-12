@@ -91,7 +91,7 @@ export class myIob {
      * @param native
      */
     public async createOrUpdateDevice(id: string, name: string | ioBroker.Translated, onlineId: string, errorId: string = undefined, icon: string | undefined = undefined, updateObject: boolean = false, logChanges: boolean = true, native: Record<string, any> = {}): Promise<void> {
-        const logPrefix = '[createOrUpdateDevice]:';
+        const logPrefix = '[myIob.createOrUpdateDevice]:';
 
         try {
             if (typeof name === 'string') {
@@ -154,7 +154,7 @@ export class myIob {
      * @param native
      */
     public async createOrUpdateChannel(id: string, name: string | ioBroker.Translated, icon: string = undefined, updateObject: boolean = false, native: Record<string, any> = {}): Promise<void> {
-        const logPrefix = '[createOrUpdateChannel]:';
+        const logPrefix = '[myIob.createOrUpdateChannel]:';
 
         try {
             if (typeof name === 'string') {
@@ -202,7 +202,7 @@ export class myIob {
     }
 
     private async _createOrUpdateStates(channel: string, deviceId: string, treeDefinition: { [key: string]: myTreeDefinition }, treeData: myTreeData, blacklistFilter: { id: string }[] | undefined, isWhiteList: boolean, fullData: myTreeData, channelData: myTreeData, logDeviceName: string = 'not defined', updateObject: boolean = false, filterId = '', isChannelOnWhitelist: boolean = false): Promise<boolean> {
-        const logPrefix = '[createOrUpdateStates]:';
+        const logPrefix = '[myIob.createOrUpdateStates]:';
 
         let stateValueChanged = false;
 
@@ -334,7 +334,7 @@ export class myIob {
                                 const idChannel = `${channel}.${idChannelAppendix}`;
 
                                 if ((Object.hasOwn(treeObjectDef, 'conditionToCreateState') && treeObjectDef.conditionToCreateState(fullData, channelData, this.adapter) === true) || !Object.hasOwn(treeObjectDef, 'conditionToCreateState')) {
-                                    if ((!isWhiteList && !_.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` })) || (isWhiteList && _.some(blacklistFilter, x => x.id.startsWith(`${filterId}${idChannelAppendix}`))) || Object.hasOwn(treeObjectDef, 'required')) {
+                                    if ((!isWhiteList && !_.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` })) || (isWhiteList && _.some(blacklistFilter, x => x.id && x.id.startsWith(`${filterId}${idChannelAppendix}`))) || Object.hasOwn(treeObjectDef, 'required')) {
                                         await this.createOrUpdateChannel(`${idChannel}`, Object.hasOwn(treeObjectDef, 'name') ? (typeof treeObjectDef.name === 'function' ? treeObjectDef.name(fullData, channelData[key], this.adapter) : treeObjectDef.name) : key, Object.hasOwn(treeObjectDef, 'icon') ? treeObjectDef.icon : undefined, updateObject);
                                         const result = await this._createOrUpdateStates(`${idChannel}`, deviceId, treeObjectDef.object, treeData[key], blacklistFilter, isWhiteList, fullData, channelData[key], logDeviceName, updateObject, `${filterId}${idChannelAppendix}.`, isWhiteList && _.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` }));
                                         stateValueChanged = result ? result : stateValueChanged;
@@ -361,7 +361,7 @@ export class myIob {
                                     const idChannelAppendix = Object.hasOwn(treeArrayDef, 'idChannel') ? treeArrayDef.idChannel : key;
                                     const idChannel = `${channel}.${idChannelAppendix}`;
 
-                                    if ((!isWhiteList && !_.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` })) || (isWhiteList && _.some(blacklistFilter, x => x.id.startsWith(`${filterId}${idChannelAppendix}`))) || Object.hasOwn(treeArrayDef, 'required')) {
+                                    if ((!isWhiteList && !_.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` })) || (isWhiteList && _.some(blacklistFilter, x => x.id && x.id.startsWith(`${filterId}${idChannelAppendix}`))) || Object.hasOwn(treeArrayDef, 'required')) {
                                         await this.createOrUpdateChannel(`${idChannel}`, Object.hasOwn(treeArrayDef, 'name') ? treeArrayDef.name : key, Object.hasOwn(treeArrayDef, 'icon') ? treeArrayDef.icon : undefined, updateObject);
 
                                         const arrayNumberAdd = Object.hasOwn(treeArrayDef, 'arrayStartNumber') ? treeArrayDef.arrayStartNumber : 0;
@@ -410,7 +410,7 @@ export class myIob {
     }
 
     private getCommonForState(id: string, treeDefinition: { [key: string]: myTreeState }, fullData: myTreeData, channelData: any, logMsgState: string, logDeviceName: string): ioBroker.StateCommon {
-        const logPrefix = '[getCommonForState]:';
+        const logPrefix = '[myIob.getCommonForState]:';
 
         try {
             // i18x translation if exists
@@ -480,7 +480,7 @@ export class myIob {
     private assignPredefinedRoles(common: ioBroker.StateCommon, id: string): string {
         //https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/stateroles.md
 
-        const logPrefix = '[assignPredefinedRoles]:';
+        const logPrefix = '[myIob.assignPredefinedRoles]:';
 
         try {
             id = this.getIdLastPart(id);
@@ -568,6 +568,10 @@ export class myIob {
                     return `level${suffix}`;
                 }
 
+                if (common.read === false && common.write === true) {
+                    return `level${suffix}`;
+                }
+
                 if (common.read === true && common.write === false) {
                     return `value${suffix}`;
                 }
@@ -592,6 +596,8 @@ export class myIob {
                     } else {
                         return 'text';
                     }
+                } else {
+                    return 'text';
                 }
             }
         } catch (error) {
@@ -610,7 +616,7 @@ export class myIob {
      * @param onlyChanges
      */
     public async setStateExists(id: string, val: any, adapter: ioBroker.Adapter, onlyChanges: boolean = false): Promise<void> {
-        const logPrefix = '[setStateExists]:';
+        const logPrefix = '[myIob.setStateExists]:';
 
         try {
             if (await adapter.objectExists(id)) {
@@ -691,7 +697,7 @@ export class myIob {
      * @returns
      */
     public deepDiffBetweenObjects = (object: any, base: any, adapter: ioBroker.Adapter, allowedKeys: any = undefined, prefix: string = ''): any => {
-        const logPrefix = '[deepDiffBetweenObjects]:';
+        const logPrefix = '[myIob.deepDiffBetweenObjects]:';
 
         try {
             const changes = (object, base, prefixInner = ''): any => {
@@ -701,22 +707,32 @@ export class myIob {
                     try {
                         if (!_.isEqual(value, base[key]) && ((allowedKeys && allowedKeys.includes(fullKey)) || allowedKeys === undefined)) {
                             if (_.isArray(value)) {
-                                const tmp = [];
-                                let empty = true;
-                                for (let i = 0; i <= value.length - 1; i++) {
-                                    const res = this.deepDiffBetweenObjects(value[i], base[key] && base[key][i] ? base[key][i] : {}, adapter, allowedKeys, fullKey);
 
-                                    if (!_.isEmpty(res) || res === 0 || res === false) {
-                                        // if (!_.has(result, key)) result[key] = [];
-                                        tmp.push(res);
-                                        empty = false;
-                                    } else {
-                                        tmp.push(null);
+                                if (_.some(value, (item: any) => _.isObject(item))) {
+                                    // objects in array exists
+                                    const tmp = [];
+                                    let empty = true;
+
+                                    for (let i = 0; i <= value.length - 1; i++) {
+                                        const res = this.deepDiffBetweenObjects(value[i], base[key] && base[key][i] ? base[key][i] : {}, adapter, allowedKeys, fullKey);
+
+                                        if (!_.isEmpty(res) || res === 0 || res === false) {
+                                            // if (!_.has(result, key)) result[key] = [];
+                                            tmp.push(res);
+                                            empty = false;
+                                        } else {
+                                            tmp.push(null);
+                                        }
                                     }
-                                }
 
-                                if (!empty) {
-                                    result[key] = tmp;
+                                    if (!empty) {
+                                        result[key] = tmp;
+                                    }
+                                } else {
+                                    // is pure array
+                                    if (!_.isEqual(value, base[key])) {
+                                        result[key] = value;
+                                    }
                                 }
                             } else if (_.isObject(value) && _.isObject(base[key])) {
                                 const res = changes(value, base[key] ? base[key] : {}, fullKey);
@@ -742,7 +758,7 @@ export class myIob {
     };
 
     public findMissingTranslation(): void {
-        const logPrefix = '[findMissingTranslation]:';
+        const logPrefix = '[myIob.findMissingTranslation]:';
 
         try {
             this._findMissingTranslation(tree);
@@ -752,7 +768,7 @@ export class myIob {
     }
 
     public _findMissingTranslation(obj: any, logSuffix = undefined): void {
-        const logPrefix = `[findMissingTranslation]:${logSuffix ? ` ${logSuffix}` : ''}`;
+        const logPrefix = `[myIob.findMissingTranslation]:${logSuffix ? ` ${logSuffix}` : ''}`;
 
         try {
             for (const key in obj) {

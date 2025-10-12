@@ -52,6 +52,7 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 ### **WORK IN PROGRESS**
 
 - (Scrounger) auto translation bug fix
+- (Scrounger) bug fixes
 
 ### 1.0.5 (2025-09-30)
 

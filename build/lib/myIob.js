@@ -27,7 +27,7 @@ export class myIob {
      * @param native
      */
     async createOrUpdateDevice(id, name, onlineId, errorId = undefined, icon = undefined, updateObject = false, logChanges = true, native = {}) {
-        const logPrefix = '[createOrUpdateDevice]:';
+        const logPrefix = '[myIob.createOrUpdateDevice]:';
         try {
             if (typeof name === 'string') {
                 const translation = this.utils.I18n.getTranslatedObject(name);
@@ -83,7 +83,7 @@ export class myIob {
      * @param native
      */
     async createOrUpdateChannel(id, name, icon = undefined, updateObject = false, native = {}) {
-        const logPrefix = '[createOrUpdateChannel]:';
+        const logPrefix = '[myIob.createOrUpdateChannel]:';
         try {
             if (typeof name === 'string') {
                 const translation = this.utils.I18n.getTranslatedObject(name);
@@ -125,7 +125,7 @@ export class myIob {
         return await this._createOrUpdateStates(idChannel, this.getIdLastPart(idChannel), treeDefinition, partialData, blacklistFilter, isWhiteList, fullData, fullData, logDeviceName, updateObject);
     }
     async _createOrUpdateStates(channel, deviceId, treeDefinition, treeData, blacklistFilter, isWhiteList, fullData, channelData, logDeviceName = 'not defined', updateObject = false, filterId = '', isChannelOnWhitelist = false) {
-        const logPrefix = '[createOrUpdateStates]:';
+        const logPrefix = '[myIob.createOrUpdateStates]:';
         let stateValueChanged = false;
         try {
             if (this.adapter.connected) {
@@ -238,7 +238,7 @@ export class myIob {
                                 const idChannelAppendix = Object.hasOwn(treeObjectDef, 'idChannel') ? treeObjectDef.idChannel : key;
                                 const idChannel = `${channel}.${idChannelAppendix}`;
                                 if ((Object.hasOwn(treeObjectDef, 'conditionToCreateState') && treeObjectDef.conditionToCreateState(fullData, channelData, this.adapter) === true) || !Object.hasOwn(treeObjectDef, 'conditionToCreateState')) {
-                                    if ((!isWhiteList && !_.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` })) || (isWhiteList && _.some(blacklistFilter, x => x.id.startsWith(`${filterId}${idChannelAppendix}`))) || Object.hasOwn(treeObjectDef, 'required')) {
+                                    if ((!isWhiteList && !_.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` })) || (isWhiteList && _.some(blacklistFilter, x => x.id && x.id.startsWith(`${filterId}${idChannelAppendix}`))) || Object.hasOwn(treeObjectDef, 'required')) {
                                         await this.createOrUpdateChannel(`${idChannel}`, Object.hasOwn(treeObjectDef, 'name') ? (typeof treeObjectDef.name === 'function' ? treeObjectDef.name(fullData, channelData[key], this.adapter) : treeObjectDef.name) : key, Object.hasOwn(treeObjectDef, 'icon') ? treeObjectDef.icon : undefined, updateObject);
                                         const result = await this._createOrUpdateStates(`${idChannel}`, deviceId, treeObjectDef.object, treeData[key], blacklistFilter, isWhiteList, fullData, channelData[key], logDeviceName, updateObject, `${filterId}${idChannelAppendix}.`, isWhiteList && _.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` }));
                                         stateValueChanged = result ? result : stateValueChanged;
@@ -264,7 +264,7 @@ export class myIob {
                                     const treeArrayDef = treeDefinition[key];
                                     const idChannelAppendix = Object.hasOwn(treeArrayDef, 'idChannel') ? treeArrayDef.idChannel : key;
                                     const idChannel = `${channel}.${idChannelAppendix}`;
-                                    if ((!isWhiteList && !_.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` })) || (isWhiteList && _.some(blacklistFilter, x => x.id.startsWith(`${filterId}${idChannelAppendix}`))) || Object.hasOwn(treeArrayDef, 'required')) {
+                                    if ((!isWhiteList && !_.some(blacklistFilter, { id: `${filterId}${idChannelAppendix}` })) || (isWhiteList && _.some(blacklistFilter, x => x.id && x.id.startsWith(`${filterId}${idChannelAppendix}`))) || Object.hasOwn(treeArrayDef, 'required')) {
                                         await this.createOrUpdateChannel(`${idChannel}`, Object.hasOwn(treeArrayDef, 'name') ? treeArrayDef.name : key, Object.hasOwn(treeArrayDef, 'icon') ? treeArrayDef.icon : undefined, updateObject);
                                         const arrayNumberAdd = Object.hasOwn(treeArrayDef, 'arrayStartNumber') ? treeArrayDef.arrayStartNumber : 0;
                                         for (let i = 0; i <= treeData[key].length - 1; i++) {
@@ -311,7 +311,7 @@ export class myIob {
         return stateValueChanged;
     }
     getCommonForState(id, treeDefinition, fullData, channelData, logMsgState, logDeviceName) {
-        const logPrefix = '[getCommonForState]:';
+        const logPrefix = '[myIob.getCommonForState]:';
         try {
             // i18x translation if exists
             const i18n = this.utils.I18n.getTranslatedObject(treeDefinition[id].name || id);
@@ -365,7 +365,7 @@ export class myIob {
     }
     assignPredefinedRoles(common, id) {
         //https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/stateroles.md
-        const logPrefix = '[assignPredefinedRoles]:';
+        const logPrefix = '[myIob.assignPredefinedRoles]:';
         try {
             id = this.getIdLastPart(id);
             if (common.type === 'boolean') {
@@ -444,6 +444,9 @@ export class myIob {
                 if (common.read === true && common.write === true) {
                     return `level${suffix}`;
                 }
+                if (common.read === false && common.write === true) {
+                    return `level${suffix}`;
+                }
                 if (common.read === true && common.write === false) {
                     return `value${suffix}`;
                 }
@@ -475,6 +478,9 @@ export class myIob {
                         return 'text';
                     }
                 }
+                else {
+                    return 'text';
+                }
             }
         }
         catch (error) {
@@ -491,7 +497,7 @@ export class myIob {
      * @param onlyChanges
      */
     async setStateExists(id, val, adapter, onlyChanges = false) {
-        const logPrefix = '[setStateExists]:';
+        const logPrefix = '[myIob.setStateExists]:';
         try {
             if (await adapter.objectExists(id)) {
                 if (!onlyChanges) {
@@ -567,7 +573,7 @@ export class myIob {
      * @returns
      */
     deepDiffBetweenObjects = (object, base, adapter, allowedKeys = undefined, prefix = '') => {
-        const logPrefix = '[deepDiffBetweenObjects]:';
+        const logPrefix = '[myIob.deepDiffBetweenObjects]:';
         try {
             const changes = (object, base, prefixInner = '') => {
                 return _.transform(object, (result, value, key) => {
@@ -575,21 +581,30 @@ export class myIob {
                     try {
                         if (!_.isEqual(value, base[key]) && ((allowedKeys && allowedKeys.includes(fullKey)) || allowedKeys === undefined)) {
                             if (_.isArray(value)) {
-                                const tmp = [];
-                                let empty = true;
-                                for (let i = 0; i <= value.length - 1; i++) {
-                                    const res = this.deepDiffBetweenObjects(value[i], base[key] && base[key][i] ? base[key][i] : {}, adapter, allowedKeys, fullKey);
-                                    if (!_.isEmpty(res) || res === 0 || res === false) {
-                                        // if (!_.has(result, key)) result[key] = [];
-                                        tmp.push(res);
-                                        empty = false;
+                                if (_.some(value, (item) => _.isObject(item))) {
+                                    // objects in array exists
+                                    const tmp = [];
+                                    let empty = true;
+                                    for (let i = 0; i <= value.length - 1; i++) {
+                                        const res = this.deepDiffBetweenObjects(value[i], base[key] && base[key][i] ? base[key][i] : {}, adapter, allowedKeys, fullKey);
+                                        if (!_.isEmpty(res) || res === 0 || res === false) {
+                                            // if (!_.has(result, key)) result[key] = [];
+                                            tmp.push(res);
+                                            empty = false;
+                                        }
+                                        else {
+                                            tmp.push(null);
+                                        }
                                     }
-                                    else {
-                                        tmp.push(null);
+                                    if (!empty) {
+                                        result[key] = tmp;
                                     }
                                 }
-                                if (!empty) {
-                                    result[key] = tmp;
+                                else {
+                                    // is pure array
+                                    if (!_.isEqual(value, base[key])) {
+                                        result[key] = value;
+                                    }
                                 }
                             }
                             else if (_.isObject(value) && _.isObject(base[key])) {
@@ -616,7 +631,7 @@ export class myIob {
         return object;
     };
     findMissingTranslation() {
-        const logPrefix = '[findMissingTranslation]:';
+        const logPrefix = '[myIob.findMissingTranslation]:';
         try {
             this._findMissingTranslation(tree);
         }
@@ -625,7 +640,7 @@ export class myIob {
         }
     }
     _findMissingTranslation(obj, logSuffix = undefined) {
-        const logPrefix = `[findMissingTranslation]:${logSuffix ? ` ${logSuffix}` : ''}`;
+        const logPrefix = `[myIob.findMissingTranslation]:${logSuffix ? ` ${logSuffix}` : ''}`;
         try {
             for (const key in obj) {
                 if (_.isObject(obj[key]) && !key.includes('events')) {
