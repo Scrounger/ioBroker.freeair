@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "news": {
+      "1.0.6": {
+        "en": "auto translation bug fix\nbug fixes",
+        "de": "automatische übersetzung fehler beheben\nfehlerbehebungen",
+        "ru": "автоматический перевод bug fix\nисправление ошибок",
+        "pt": "correção de erro de tradução automática\ncorreções de erros",
+        "nl": "auto vertaling fout fix\nfoutherstel",
+        "fr": "correction du bug de traduction automatique\ncorrections des bogues",
+        "it": "correzione di bug di traduzione automatica\ncorrezioni di bug",
+        "es": "corrección de error de traducción automática\nbug fixes",
+        "pl": "automatyczne tłumaczenie błąd naprawić\npoprawki błędów",
+        "uk": "автоматичного виправлення помилок перекладу\nвиправлення помилок",
+        "zh-cn": "自动翻译错误修正\n错误修正"
+      },
       "1.0.5": {
         "en": "dependencies updated\nbug fixes",
         "de": "aktualisierte abhängigkeiten\nfehlerbehebungen",
@@ -80,19 +93,6 @@
         "pl": "najnowsza zabawa",
         "uk": "останні веселощі",
         "zh-cn": "最新乐趣"
-      },
-      "1.0.0-beta.1": {
-        "en": "i18n translation\ndependencies updated",
-        "de": "i18n übersetzung\naktualisierte abhängigkeiten",
-        "ru": "перевод i18\nобновленные зависимости",
-        "pt": "tradução i18n\ndependências atualizadas",
-        "nl": "i18n vertaling\nafhankelijkheden bijgewerkt",
-        "fr": "i18n traduction\ndépendances mises à jour",
-        "it": "traduzione i18n\ndipendenze aggiornate",
-        "es": "i18n translation\ndependencias actualizadas",
-        "pl": "tłumaczenie i18n\nzaktualizowane zależności",
-        "uk": "i18n переклад\nоновлені залежності",
-        "zh-cn": "i18n 翻译\n更新依赖关系"
       }
     },
     "titleLang": {
