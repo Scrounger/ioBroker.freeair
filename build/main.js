@@ -175,7 +175,7 @@ class Freeair extends utils.Adapter {
                 this.log.info(`${logPrefix} listening on port: ${this.config.port}`);
                 await this.setConnectionStatus(true);
                 for (const device of this.config.devices) {
-                    await this.myIob.createOrUpdateDevice(device.serialNo, device.serialNo, `${this.namespace}.${device.serialNo}.${tree.FreeAirDevice.get().isOnline.id}`, `${this.namespace}.${device.serialNo}.${tree.FreeAirDevice.get().hasErrors.id}`, undefined, true, true);
+                    await this.myIob.createOrUpdateDevice(device.serialNo, device.serialNo, `${device.serialNo}.${tree.FreeAirDevice.get().isOnline.id}`, `${device.serialNo}.${tree.FreeAirDevice.get().hasErrors.id}`, undefined, true, true);
                     await this.myIob.createOrUpdateStates(device.serialNo, tree.FreeAirDevice.get(), { isOnline: false }, { isOnline: false }, this.config.statesBlackList, this.config.statesIsWhiteList, device.serialNo, true);
                     await this.setState(`${device.serialNo}.isOnline`, false, true);
                 }
