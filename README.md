@@ -6,6 +6,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.freeair.svg)](https://www.npmjs.com/package/iobroker.freeair)
 ![Number of Installations](https://iobroker.live/badges/freeair-installed.svg)
 ![Current version in stable repository](https://iobroker.live/badges/freeair-stable.svg)
+![Weblate](https://weblate.iobroker.net/widgets/adapters/-/freeair/svg-badge.svg)
 
 [![NPM](https://nodei.co/npm/iobroker.freeair.png?downloads=true)](https://nodei.co/npm/iobroker.freeair/)
 
@@ -52,6 +53,8 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 ### **WORK IN PROGRESS**
 
 - (Scrounger) dependencies updated
+- (Scrounger) downgrade @iobroker/adapter-core to v3.3.1 to prevent conflicts with js-controller < v7.1.0 in rare cases #56
+- (Scrounger) device error indicator bug fix
 
 ### 1.0.6 (2025-10-19)
 

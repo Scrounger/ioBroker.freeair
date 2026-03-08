@@ -161,6 +161,7 @@ export namespace FreeAirDevice {
                 unit: 'h'
             },
             hasErrors: {
+                id: 'hasErrors',
                 iobType: 'boolean',
                 name: 'devices reported errors',
             },
