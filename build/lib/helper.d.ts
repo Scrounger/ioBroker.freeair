@@ -1,4 +1,4 @@
-import { myTreeDefinition } from './myIob';
+import { myTreeDefinition } from './myIob.js';
 /**
  * max. Anzahl Nachkommastellen
  *

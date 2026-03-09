@@ -1,4 +1,4 @@
-import type { Device } from "./types-device"
+import type { Device } from "./types-device.js"
 
 export type myTreeData = Device | { isOnline: boolean };
 
