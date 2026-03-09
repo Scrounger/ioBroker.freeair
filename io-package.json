@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "news": {
+      "1.0.7": {
+        "en": "dependencies updated\ndowngrade @iobroker/adapter-core to v3.3.1 to prevent conflicts with js-controller < v7.1.0 in rare cases #56\ndevice error indicator bug fix",
+        "de": "aktualisierte abhängigkeiten\ndowngrade @iobroker/adapter-core to v3.3.1, um konflikte mit js-controller < v7.1.0 in seltenen fällen zu verhindern #56\ngerätefehler-indikator fehler beheben",
+        "ru": "обновленные зависимости\nпонижение @iobroker/adapter-core до v3.3.1 для предотвращения конфликтов с js-контроллером < v7.1.0 в редких случаях #56\nустройство индикатора ошибок bug bug",
+        "pt": "dependências atualizadas\ndowngrade @iobroker/adapter-core para v3.3.1 para evitar conflitos com js-controller < v7.1.0 em casos raros #56\ncorreção de erro do indicador de erro do dispositivo",
+        "nl": "afhankelijkheden bijgewerkt\ndowngrade @iobroker/adapter-core naar v3.3.1 om conflicten met js-controller < v7.1.0 te voorkomen in zeldzame gevallen #56\napparaat fout indicator fout fix",
+        "fr": "dépendances mises à jour\ndowngrade @iobroker/adaptateur-core to v3.3.1 pour prévenir les conflits avec js-controller < v7.1.0 dans de rares cas #56\ncorrection du bug de l'indicateur d'erreur du périphérique",
+        "it": "dipendenze aggiornate\ndowngrade @iobroker/adapter-core a v3.3.1 per prevenire conflitti con js-controller < v7.1.0 in rari casi #56\ndispositivo errore indicatore bug correzione",
+        "es": "dependencias actualizadas\ndowngrade @iobroker/adapter-core to v3.3.1 para prevenir conflictos con js-controller י v7.1.0 en casos raros #56\nerror del dispositivo indicador de error",
+        "pl": "zaktualizowane zależności\ndowngrade @ iobroker / adapter- core do v3.3.1, aby zapobiec konfliktom ze sterownikiem js- controller < v7.1.0 w rzadkich przypadkach # 56\nbłąd wskaźnika błędu urządzenia",
+        "uk": "оновлені залежності\n@iobroker/adapter-core to v3.3.1 для запобігання конфліктів з js-controller < v7.1.0 в рідкісних випадках #56\nіндикатор помилки пристрою",
+        "zh-cn": "更新依赖关系\n将@iobrocco/adapter-core降为v3.3.1,以防止与js-controler < v7.1.0在罕见情况下发生#56\n设备错误指示错误修正"
+      },
       "1.0.6": {
         "en": "auto translation bug fix\nbug fixes",
         "de": "automatische übersetzung fehler beheben\nfehlerbehebungen",
@@ -80,19 +93,6 @@
         "pl": "poprawki błędów",
         "uk": "виправлення помилок",
         "zh-cn": "错误修正"
-      },
-      "1.0.0": {
-        "en": "latest fun",
-        "de": "neusten spaß",
-        "ru": "последнее веселье",
-        "pt": "última diversão",
-        "nl": "nieuwste pret",
-        "fr": "dernier plaisir",
-        "it": "ultimo divertimento",
-        "es": "última diversión",
-        "pl": "najnowsza zabawa",
-        "uk": "останні веселощі",
-        "zh-cn": "最新乐趣"
       }
     },
     "titleLang": {
