@@ -19,7 +19,7 @@
     "url": "https://github.com/Scrounger/ioBroker.freeair.git"
   },
   "engines": {
-    "node": ">= 20"
+    "node": ">= 22"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.4.3",
@@ -32,8 +32,12 @@
     "@alcalzone/release-script-plugin-manual-review": "^5.2.0",
     "@iobroker/adapter-dev": "^1.5.0",
     "@iobroker/eslint-config": "^2.3.4",
+
+    "@tsconfig/node20": "^20.1.11",
+
     "@iobroker/testing": "^6.3.2",
     "@types/lodash": "^4.17.27",
+
     "@types/node": "^24.5.2",
     "rimraf": "^6.1.4",
     "source-map-support": "^0.5.21",
