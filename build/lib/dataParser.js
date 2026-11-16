@@ -1,4 +1,4 @@
-import CryptoJS from "crypto-js";
+import { createDecipheriv } from "node:crypto";
 export class DataParser {
     adapter;
     serialNo;
@@ -78,25 +78,18 @@ export class DataParser {
     parse(encryptedData, timestamp, version, password) {
         const logPrefix = `[${this.clsLogPrefix}.parse]: ${this.serialNo} - `;
         try {
-            // In CryptoJS WordArray konvertieren
-            const ciphertext = CryptoJS.lib.WordArray.create(encryptedData);
-            const key = CryptoJS.enc.Utf8.parse(password.padEnd(16, "0"));
-            const ivHex = '000102030405060708090a0b0c0d0e0f';
-            const iv = CryptoJS.enc.Hex.parse(ivHex);
-            // AES (Rijndael-128/256) CBC ZeroPadding
-            const decrypted = CryptoJS.AES.decrypt({ ciphertext }, key, {
-                iv,
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.ZeroPadding,
-            });
+            // AES-CBC (Rijndael) ohne Padding-Entfernung (entspricht CryptoJS ZeroPadding).
+            // Schlüssellänge bestimmt die Variante: 16 Byte = AES-128, 24 = AES-192, 32 = AES-256
+            const keyBuffer = Buffer.from(password.padEnd(16, "0"), "utf8");
+            const iv = Buffer.from("000102030405060708090a0b0c0d0e0f", "hex");
+            const decipher = createDecipheriv(`aes-${keyBuffer.length * 8}-cbc`, keyBuffer, iv);
+            decipher.setAutoPadding(false);
+            const decrypted = Buffer.concat([
+                decipher.update(Buffer.from(encryptedData)),
+                decipher.final()
+            ]);
             // Messwerte als Uint8Array zurückgeben
-            const decryptedData = Uint8Array.from(decrypted.words.flatMap((word, i) => [
-                (word >>> 24) & 0xff,
-                (word >>> 16) & 0xff,
-                (word >>> 8) & 0xff,
-                word & 0xff,
-            ]));
-            return decryptedData;
+            return new Uint8Array(decrypted);
         }
         catch (error) {
             this.adapter.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
