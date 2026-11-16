@@ -6,6 +6,7 @@
 	"Choose which datapoint should be included": "Виберіть, яка точка даних повинна бути включена",
 	"Datapoints Blacklist / Whitelist": "Точки даних Чорний список / Білий",
 	"Is device online": "Це пристрій в Інтернеті",
+	"Port": "Порт",
 	"WiFi reception strength": "Сила прийому Wi -Fi",
 	"You like the adapter? Then support me.": "Вам подобається адаптер? Потім підтримайте мене.",
 	"absolute humidity of the exhaust air": "Абсолютна вологість вихлопного повітря",
@@ -53,7 +54,6 @@
 	"supply flap position": "положення клаптя живлення",
 	"timestamp": "часова позначка",
 	"use as blacklist": "Використовуйте як чорний список",
-	"use as whitelist / blacklist": "Використовуйте як білий / чорний список",
-	"Port": "Порт",
-	"use as whitelist": "Використовуйте як Білий"
+	"use as whitelist": "Використовуйте як Білий",
+	"use as whitelist / blacklist": "Використовуйте як білий / чорний список"
 }

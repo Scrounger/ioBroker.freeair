@@ -165,6 +165,9 @@ export var FreeAirDevice;
                 iobType: 'number',
                 name: 'heat recovery',
                 unit: '%',
+                readVal(val, adapter, device, channel, id) {
+                    return myHelper.maxDigits(val, 1);
+                },
             },
             isOnline: {
                 id: 'isOnline',

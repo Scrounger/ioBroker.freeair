@@ -6,6 +6,7 @@
 	"Choose which datapoint should be included": "Kies welk DataPoint moet worden opgenomen",
 	"Datapoints Blacklist / Whitelist": "Datapoints Blacklist / Whitelist",
 	"Is device online": "Is apparaat online",
+	"Port": "Poort",
 	"WiFi reception strength": "WiFi -ontvangststerkte",
 	"You like the adapter? Then support me.": "Vind je de adapter leuk? Steun me dan.",
 	"absolute humidity of the exhaust air": "Absolute vochtigheid van de uitlaatlucht",
@@ -53,7 +54,6 @@
 	"supply flap position": "Leveringsflappositie",
 	"timestamp": "tijdstempel",
 	"use as blacklist": "Gebruik als zwarte lijst",
-	"use as whitelist / blacklist": "Gebruik als witte / zwarte lijst",
-	"Port": "Poort",
-	"use as whitelist": "Gebruik als witte lijst"
+	"use as whitelist": "Gebruik als witte lijst",
+	"use as whitelist / blacklist": "Gebruik als witte / zwarte lijst"
 }

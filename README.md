@@ -49,6 +49,11 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+- (Scrounger) fix password decryption cause by js-controller 7.2.5
+
 ### 1.1.1 (2026-11-16)
 - (Scrounger) dependencies updated
 - (Scrounger) resolve repository checker issues (#89)

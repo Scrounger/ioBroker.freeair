@@ -6,6 +6,7 @@
 	"Choose which datapoint should be included": "Выберите, какой данных должен быть включен",
 	"Datapoints Blacklist / Whitelist": "DataPoints BlackList / Whitelist",
 	"Is device online": "Это устройство онлайн",
+	"Port": "Порт",
 	"WiFi reception strength": "Wi -Fi -прием",
 	"You like the adapter? Then support me.": "Вам нравится адаптер? Тогда поддержите меня.",
 	"absolute humidity of the exhaust air": "Абсолютная влажность выхлопного воздуха",
@@ -53,7 +54,6 @@
 	"supply flap position": "Положение клапан подача",
 	"timestamp": "временная метка",
 	"use as blacklist": "Используйте как черный список",
-	"use as whitelist / blacklist": "Используйте как белый / черный список",
-	"Port": "Порт",
-	"use as whitelist": "Используйте в качестве белого списка"
+	"use as whitelist": "Используйте в качестве белого списка",
+	"use as whitelist / blacklist": "Используйте как белый / черный список"
 }

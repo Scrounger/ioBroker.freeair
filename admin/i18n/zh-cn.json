@@ -6,6 +6,7 @@
 	"Choose which datapoint should be included": "选择应包括哪个数据点",
 	"Datapoints Blacklist / Whitelist": "DataPoints黑名单 /白名单",
 	"Is device online": "是在线设备",
+	"Port": "端口",
 	"WiFi reception strength": "WiFi接收强度",
 	"You like the adapter? Then support me.": "你喜欢适配器吗？然后支持我。",
 	"absolute humidity of the exhaust air": "排气的绝对湿度",
@@ -53,7 +54,6 @@
 	"supply flap position": "供应皮瓣位置",
 	"timestamp": "时间戳",
 	"use as blacklist": "用作黑名单",
-	"use as whitelist / blacklist": "用作白名单 / 黑名单",
-	"Port": "端口",
-	"use as whitelist": "用作白名单"
+	"use as whitelist": "用作白名单",
+	"use as whitelist / blacklist": "用作白名单 / 黑名单"
 }

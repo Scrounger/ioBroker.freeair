@@ -6,6 +6,7 @@
 	"Choose which datapoint should be included": "Elija qué punto de datos se debe incluir",
 	"Datapoints Blacklist / Whitelist": "DataPoints Blacklist / Whitelist",
 	"Is device online": "Es dispositivo en línea",
+	"Port": "Puerto",
 	"WiFi reception strength": "Fuerza de recepción wifi",
 	"You like the adapter? Then support me.": "¿Te gusta el adaptador? Entonces apoyarme.",
 	"absolute humidity of the exhaust air": "humedad absoluta del aire de escape",
@@ -53,7 +54,6 @@
 	"supply flap position": "posición de aleta de suministro",
 	"timestamp": "marca de tiempo",
 	"use as blacklist": "Usar como lista negra",
-	"use as whitelist / blacklist": "Usar como lista blanca / negra",
-	"Port": "Puerto",
-	"use as whitelist": "Usar como la lista blanca"
+	"use as whitelist": "Usar como la lista blanca",
+	"use as whitelist / blacklist": "Usar como lista blanca / negra"
 }

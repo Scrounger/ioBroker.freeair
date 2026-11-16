@@ -169,6 +169,9 @@ export namespace FreeAirDevice {
                 iobType: 'number',
                 name: 'heat recovery',
                 unit: '%',
+                readVal(val: any, adapter: ioBroker.Adapter, device: Device, channel: Device, id: string): ioBroker.StateValue {
+                    return myHelper.maxDigits(val, 1);
+                },
             },
             isOnline: {
                 id: 'isOnline',

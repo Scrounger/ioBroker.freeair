@@ -160,12 +160,8 @@
       }
     ]
   },
-  "encryptedNative": [
-    "devices.password"
-  ],
-  "protectedNative": [
-    "devices.password"
-  ],
+  "encryptedNative": [],
+  "protectedNative": [],
   "native": {
     "port": 80,
     "aliveCheckInterval": 60,
