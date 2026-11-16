@@ -5,21 +5,21 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
-import url from 'node:url';
 import _ from 'lodash';
 import * as http from 'node:http';
+import url from 'node:url';
 
 // Adapter imports
-import type { JsonConfigAutocompleteSendTo } from './lib/myTypes.js';
 import { DataParser } from './lib/dataParser.js';
-import type { Device, DeviceControl } from './lib/types-device.js';
 import * as myHelper from './lib/helper.js';
-import * as tree from './lib/tree/index.js'
 import { myIob, myTreeState } from './lib/myIob.js';
+import type { JsonConfigAutocompleteSendTo } from './lib/myTypes.js';
+import * as tree from './lib/tree/index.js';
+import type { Device, DeviceControl } from './lib/types-device.js';
 
 class Freeair extends utils.Adapter {
 
-	myIob: myIob;
+	myIob!: myIob;
 
 	aliveTimeout: ioBroker.Timeout | undefined = undefined;
 
@@ -32,13 +32,13 @@ class Freeair extends utils.Adapter {
 
 	commandTasks: { [serialNo: string]: DeviceControl } = {}
 
-	statesList: JsonConfigAutocompleteSendTo[] = undefined;
+	statesList: JsonConfigAutocompleteSendTo[] | undefined = undefined;
 
 	statesUsingValAsLastChanged = [          // id of states where lc is taken from the value
 		'timestamp'
 	];
 
-	deviceUpdated = [];
+	deviceUpdated: string[] = [];
 
 	public constructor(options: Partial<utils.AdapterOptions> = {}) {
 		super({
@@ -70,7 +70,7 @@ class Freeair extends utils.Adapter {
 				await this.initServer();
 			} else {
 				this.log.error(`${logPrefix} alive check interval not correct!`);
-				await this.stop({ reason: 'alive check interval not correct' });
+				await this.stop?.({ reason: 'alive check interval not correct' });
 			}
 
 			this.myIob.findMissingTranslation();
@@ -136,15 +136,15 @@ class Freeair extends utils.Adapter {
 					const operatingMode = await this.getStateAsync(`${myHelper.getIdWithoutLastPart(id)}.operatingMode`);
 
 					this.commandTasks[serialNo] = {
-						comfortLevel: comfortLevel.val as number,
-						operatingMode: operatingMode.val as number
+						comfortLevel: comfortLevel?.val as number,
+						operatingMode: operatingMode?.val as number
 					};
 
 					this.log.info(`${logPrefix} command added to task list (${serialNo}: ${JSON.stringify(this.commandTasks[serialNo])})`);
 				}
 			}
 
-		} catch (error) {
+		} catch (error: any) {
 			this.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
 		}
 	}
@@ -187,7 +187,7 @@ class Freeair extends utils.Adapter {
 					this.sendTo(obj.from, obj.command, this.statesList, obj.callback);
 				}
 			}
-		} catch (error) {
+		} catch (error: any) {
 			this.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}, obj: ${JSON.stringify(obj)}`);
 		}
 	}
@@ -244,18 +244,19 @@ class Freeair extends utils.Adapter {
 				headers: req.headers,
 			};
 
-			const url = data.url.split("?")[0];
-			const params = new URLSearchParams(data.url.split("?")[1]);
+			const url = data.url?.split("?")[0];
+			const params = new URLSearchParams(data.url?.split("?")[1]);
 
 			const s_value = params.get("s");
 			const b_value = params.get("b");
 
-			const parts = s_value.split('y');
-			const version = parts[1];
-			const serialNo = parts[0].split('x')[2];
+			const parts = s_value?.split('y');
+
+			const version = parts?.[1];
+			const serialNo = parts?.[0].split('x')[2];
 			const timestamp = Date.now();
 
-			if (serialNo) {
+			if (serialNo && b_value && s_value && version) {
 				this.log.debug(`${logPrefix} url: ${url}, s: ${s_value}, b: ${b_value}, version: ${version.replace(/x/g, '.')}, serialNo: ${serialNo}`);
 
 				const deviceCred = this.config.devices.filter(x => x.serialNo === serialNo);
@@ -365,12 +366,14 @@ class Freeair extends utils.Adapter {
 			if (this.config.devices.length === 1) {
 				const device = await this.getStateAsync(`${this.config.devices[0].serialNo}.isOnline`);
 
-				await this.setState('info.connection', device.val, true);
+				if (device) {
+					await this.setState('info.connection', device.val, true);
+				}
 			} else {
 				await this.setState('info.connection', isConnected, true);
 			}
 
-		} catch (error) {
+		} catch (error: any) {
 			this.log.error(`${logPrefix} error: ${error}, stack: ${error.stack}`);
 		}
 	}
@@ -390,7 +393,7 @@ class Freeair extends utils.Adapter {
 			if (this.config.devices.length === 1) {
 				await this.setState('info.connection', isConnected, true);
 			}
-		} catch (error) {
+		} catch (error: any) {
 			this.log.error(`${logPrefix} error: ${error}, stack: ${error.stack} `);
 		}
 	}
@@ -424,7 +427,7 @@ class Freeair extends utils.Adapter {
 				}, (this.config.aliveCheckInterval) * 1000);
 			}
 
-		} catch (error) {
+		} catch (error: any) {
 			this.log.error(`${logPrefix} error: ${error}, stack: ${error.stack} `);
 		}
 	}

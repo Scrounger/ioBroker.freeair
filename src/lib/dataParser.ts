@@ -7,7 +7,7 @@ export class DataParser {
 
     private clsLogPrefix = 'DataParser'
 
-    private operationMode = {
+    private operationMode: Record<number, string> = {
         0: "Comfort",
         1: "Comfort",
         2: "Sleep",
@@ -19,7 +19,7 @@ export class DataParser {
         8: "Dehumidification"
     }
 
-    private program = {
+    private program: Record<number, string> = {
         0: "Minimum ventilation",
         1: "Dehumidification (rel)",
         2: "Dehumidification (abs)",
@@ -106,7 +106,7 @@ export class DataParser {
             const iv = CryptoJS.enc.Hex.parse(ivHex);
 
             // AES (Rijndael-128/256) CBC ZeroPadding
-            const decrypted = CryptoJS.AES.decrypt({ ciphertext }, key,
+            const decrypted = CryptoJS.AES.decrypt({ ciphertext } as unknown as CryptoJS.lib.CipherParams, key,
                 {
                     iv,
                     mode: CryptoJS.mode.CBC,
@@ -501,7 +501,7 @@ export class DataParser {
 
     private divideByte(division: string | any[], byte: any): any[] {
         const bits = this.byteToBits(byte);
-        const dividedByte = [];
+        const dividedByte: number[][] = [];
         let bit = 0;
         for (let i = 0; i < division.length; i++) {
             dividedByte[i] = [];
@@ -703,7 +703,7 @@ export class DataParser {
         return ((airFlow * (tempExtract - tempSupply)) / 3 + 0.5);
     }
 
-    private filterSupplyStatus(fanSupplyRPM: any, fanSpeed: any): 100 | 2 | 1 | 3 | 4 {
+    private filterSupplyStatus(fanSupplyRPM: any, fanSpeed: any): 100 | 2 | 1 | 3 | 4 | undefined {
         const fanSupplyRPMs = {
             0: [20, 870, 1510],
             1: [30, 1000, 1640],
@@ -719,7 +719,7 @@ export class DataParser {
         return this.filterStatus(fanSupplyRPM, fanSpeed, fanSupplyRPMs);
     }
 
-    private filterExtractStatus(fanExtractRPM: any, fanSpeed: any): 100 | 2 | 1 | 4 | 3 {
+    private filterExtractStatus(fanExtractRPM: any, fanSpeed: any): 100 | 2 | 1 | 4 | 3 | undefined {
         const fanExtractRPMs = {
             0: [20, 920, 1560],
             1: [30, 1040, 1680],
@@ -735,7 +735,7 @@ export class DataParser {
         return this.filterStatus(fanExtractRPM, fanSpeed, fanExtractRPMs);
     }
 
-    private filterStatus(fanRPM: number, fanSpeed: number, filterRPMs: any): 100 | 2 | 1 | 4 | 3 {
+    private filterStatus(fanRPM: number, fanSpeed: number, filterRPMs: any): 100 | 2 | 1 | 4 | 3 | undefined {
         // fillOverviewAndDetails.js
 
         fanSpeed = fanSpeed * 10;
@@ -762,7 +762,7 @@ export class DataParser {
         return undefined;
     }
 
-    private correctVersion(versionFrBlob: string): string {
+    private correctVersion(versionFrBlob: string): string | undefined {
         const indexDot = versionFrBlob.indexOf('.');
         let wantSubversion = false;
         const indexUnderscore = versionFrBlob.indexOf('x');

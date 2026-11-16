@@ -51,7 +51,7 @@ export function getIdLastPart(id) {
 /**
  * Collect all properties used in tree defintions
  *
- * @param treefDefintion @see tree-devices.ts @see tree-clients.ts
+ * @param treefDefintion tree-devices.ts
  * @returns
  */
 export function getAllKeysOfTreeDefinition(treefDefintion) {

@@ -4,13 +4,14 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
-import url from 'node:url';
 import _ from 'lodash';
 import * as http from 'node:http';
+import url from 'node:url';
+// Adapter imports
 import { DataParser } from './lib/dataParser.js';
 import * as myHelper from './lib/helper.js';
-import * as tree from './lib/tree/index.js';
 import { myIob } from './lib/myIob.js';
+import * as tree from './lib/tree/index.js';
 class Freeair extends utils.Adapter {
     myIob;
     aliveTimeout = undefined;
@@ -51,7 +52,7 @@ class Freeair extends utils.Adapter {
             }
             else {
                 this.log.error(`${logPrefix} alive check interval not correct!`);
-                await this.stop({ reason: 'alive check interval not correct' });
+                await this.stop?.({ reason: 'alive check interval not correct' });
             }
             this.myIob.findMissingTranslation();
         }
@@ -109,8 +110,8 @@ class Freeair extends utils.Adapter {
                     const comfortLevel = await this.getStateAsync(`${myHelper.getIdWithoutLastPart(id)}.comfortLevel`);
                     const operatingMode = await this.getStateAsync(`${myHelper.getIdWithoutLastPart(id)}.operatingMode`);
                     this.commandTasks[serialNo] = {
-                        comfortLevel: comfortLevel.val,
-                        operatingMode: operatingMode.val
+                        comfortLevel: comfortLevel?.val,
+                        operatingMode: operatingMode?.val
                     };
                     this.log.info(`${logPrefix} command added to task list (${serialNo}: ${JSON.stringify(this.commandTasks[serialNo])})`);
                 }
@@ -202,15 +203,15 @@ class Freeair extends utils.Adapter {
                 url: req.url,
                 headers: req.headers,
             };
-            const url = data.url.split("?")[0];
-            const params = new URLSearchParams(data.url.split("?")[1]);
+            const url = data.url?.split("?")[0];
+            const params = new URLSearchParams(data.url?.split("?")[1]);
             const s_value = params.get("s");
             const b_value = params.get("b");
-            const parts = s_value.split('y');
-            const version = parts[1];
-            const serialNo = parts[0].split('x')[2];
+            const parts = s_value?.split('y');
+            const version = parts?.[1];
+            const serialNo = parts?.[0].split('x')[2];
             const timestamp = Date.now();
-            if (serialNo) {
+            if (serialNo && b_value && s_value && version) {
                 this.log.debug(`${logPrefix} url: ${url}, s: ${s_value}, b: ${b_value}, version: ${version.replace(/x/g, '.')}, serialNo: ${serialNo}`);
                 const deviceCred = this.config.devices.filter(x => x.serialNo === serialNo);
                 if (deviceCred && deviceCred.length === 1) {
@@ -304,7 +305,9 @@ class Freeair extends utils.Adapter {
             this.connected = isConnected;
             if (this.config.devices.length === 1) {
                 const device = await this.getStateAsync(`${this.config.devices[0].serialNo}.isOnline`);
-                await this.setState('info.connection', device.val, true);
+                if (device) {
+                    await this.setState('info.connection', device.val, true);
+                }
             }
             else {
                 await this.setState('info.connection', isConnected, true);
