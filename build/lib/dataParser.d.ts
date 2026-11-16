@@ -3,8 +3,6 @@ export declare class DataParser {
     private adapter;
     private serialNo;
     private clsLogPrefix;
-    private operationMode;
-    private program;
     constructor(adapter: ioBroker.Adapter, serialNo: string);
     parseData(encryptedData: Uint8Array, timestamp: number, version: string, password: string): Device | undefined;
     parseControl(encryptedData: Uint8Array, timestamp: number, version: string, password: string): DeviceControl | undefined;
@@ -16,7 +14,6 @@ export declare class DataParser {
     private getIndicatorLevel;
     private lowPlusHigh;
     private divideByte;
-    private byteToBits;
     private getNumberFrBits;
     private getPressure;
     private getSecondRoomFlow;

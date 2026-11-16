@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.0.8",
+    "version": "1.1.0",
     "news": {
+      "1.1.0": {
+        "en": "Adapter requires node.js >= 22 now.\nAdapter requires node.js >= 22 now\nupdated to typescript 6.x\ndependencies updated",
+        "de": "Adapter benötigt jetzt node.js >= 22.\nAdapter benötigt jetzt node.js >= 22\nUpdate auf TypoScript 6.x\nAbhängigkeiten aktualisiert",
+        "ru": "Теперь для адаптера требуется файл node.js >= 22.\nТеперь для адаптера требуется файл node.js >= 22\nобновлено до машинописного текста 6.x\nзависимости обновлены",
+        "pt": "O adaptador exige node.js >= 2.\nO adaptador exige node.js >= 2\natualizado para 6.x\ndependências atualizadas",
+        "nl": "Voor de adapter is nu node.js >= 22 nodig.\nVoor de adapter is nu node.js >= 22 nodig\nbijgewerkt naar typescript 6.x\nafhankelijkheden bijgewerkt",
+        "fr": "Adapter nécessite node.js >= 22.\nAdapter nécessite node.js >= 22\nmise à jour vers Typescript 6.x\ndépendances mises à jour",
+        "it": "Adapter richiede node.js >= 2 ora.\nAdapter richiede node.js =2 ora\naggiornato a Typescript 6.x\ndipendenze aggiornate",
+        "es": "El adaptador necesita node.js >= 22 ahora.\nEl adaptador necesita node.js >= 22 ahora\nactualizado a TypeScript 6.x\ndependencias actualizadas",
+        "pl": "Adapter wymaga teraz node.js >= 22.\nAdapter wymaga teraz node.js >= 22\nzaktualizowany do typescript 6.x\naktualizacja zależności",
+        "uk": "Тепер адаптер вимагає node.js >= 22.\nАдаптер вимагає node.js >= 22 зараз\nоновлено до машинописного тексту 6.x\nзалежності оновлені",
+        "zh-cn": "适配器现在需要 node.js >= 22。\n适配器现在需要 node.js >= 22\n更新到 typescript 6.x\n依赖关系已更新"
+      },
       "1.0.8": {
         "en": "dependencies updated",
         "de": "aktualisierte abhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "jeśli tylko jedno urządzenie jest skonfigurowane, pokaż urządzenie status online jako status adaptera\nzaktualizowane zależności\npoprawki błędów",
         "uk": "якщо тільки один пристрій налаштований, показати пристрій онлайн статус як статус адаптера\nоновлені залежності\nвиправлення помилок",
         "zh-cn": "如果配置只有一个设备, 将设备在线状态显示为适配器状态\n更新依赖关系\n错误修正"
-      },
-      "1.0.2": {
-        "en": "automatic role assignment implemented\ncode optimizations\nbug fixes",
-        "de": "Automatische Rollenzuweisung implementiert\nCode-Optimierungen\nFehlerbehebungen",
-        "ru": "реализовано автоматическое назначение ролей\nОптимизация кода\nисправление ошибок",
-        "pt": "Implementada atribuição automática de funções.\notimizações de código\ncorreções de bugs",
-        "nl": "Automatische roltoewijzing geïmplementeerd\nCode optimalisaties\nFoutoplossingen",
-        "fr": "Affectation automatique des rôles mise en place\noptimisations de code\ncorrections de bogues",
-        "it": "implementata l'assegnazione automatica dei ruoli\nottimizzazioni del codice\ncorrezioni di bug",
-        "es": "Implementada la asignación automática de roles\nOptimizaciones de código\ncorrecciones de errores",
-        "pl": "zaimplementowano automatyczne przydzielanie ról\noptymalizacje kodu\nPoprawki błędów",
-        "uk": "Реалізовано автоматичне призначення ролей\nОптимізація коду\nвиправлення помилок",
-        "zh-cn": "自动分配角色已实施\n代码优化\n错误修复"
       }
     },
     "titleLang": {

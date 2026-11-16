@@ -45,16 +45,13 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 
 ## Changelog
 
-### **WORK IN PROGRESS**
-- (iobroker-bot) Adapter requires node.js >= 22 now.
-
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 1.1.0 (2026-11-16)
 
-### **WORK IN PROGRESS**
-
+- (iobroker-bot) Adapter requires node.js >= 22 now.
 - (copilot) Adapter requires node.js >= 22 now
 - (Scrounger) updated to typescript 6.x
 - (Scrounger) dependencies updated
@@ -78,39 +75,6 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 
 - (Scrounger) dependencies updated
 - (Scrounger) bug fixes
-
-### 1.0.4 (2025-09-27)
-
-- (Scrounger) bug fixes
-
-### 1.0.3 (2025-09-21)
-
-- (Scrounger) if only one devices is configured, show device online status as adapter status
-- (Scrounger) dependencies updated
-- (Scrounger) bug fixes
-
-### 1.0.2 (2025-09-11)
-
-- (Scrounger) automatic role assignment implemented
-- (Scrounger) code optimizations
-- (Scrounger) bug fixes
-
-### 1.0.1 (2025-09-06)
-
-- (Scrounger) bug fixes
-
-### 1.0.0 (2025-09-03)
-
-- (Scrounger) latest fun
-
-### 1.0.0-beta.1 (2025-08-31)
-
-- (Scrounger) i18n translation
-- (Scrounger) dependencies updated
-
-### 1.0.0-beta.0 (2025-08-31)
-
-- (Scrounger) initial release
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
