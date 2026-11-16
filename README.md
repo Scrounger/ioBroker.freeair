@@ -52,6 +52,7 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 
 ### **WORK IN PROGRESS**
 
+- (copilot) Adapter requires node.js >= 22 now
 - (Scrounger) updated to typescript 6.x
 - (Scrounger) dependencies updated
 
