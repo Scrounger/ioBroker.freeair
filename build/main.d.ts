@@ -1,7 +1,7 @@
 import * as utils from '@iobroker/adapter-core';
+import { myIob } from './lib/myIob.js';
 import type { JsonConfigAutocompleteSendTo } from './lib/myTypes.js';
 import type { DeviceControl } from './lib/types-device.js';
-import { myIob } from './lib/myIob.js';
 declare class Freeair extends utils.Adapter {
     myIob: myIob;
     aliveTimeout: ioBroker.Timeout | undefined;
@@ -13,9 +13,9 @@ declare class Freeair extends utils.Adapter {
     commandTasks: {
         [serialNo: string]: DeviceControl;
     };
-    statesList: JsonConfigAutocompleteSendTo[];
+    statesList: JsonConfigAutocompleteSendTo[] | undefined;
     statesUsingValAsLastChanged: string[];
-    deviceUpdated: any[];
+    deviceUpdated: string[];
     constructor(options?: Partial<utils.AdapterOptions>);
     /**
      * Is called when databases are connected and adapter received configuration.

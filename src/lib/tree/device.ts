@@ -6,7 +6,7 @@ import type { Device } from '../types-device.js';
 export namespace FreeAirDevice {
     let keys: string[] | undefined = undefined;
 
-    export function get(): { [key: string]: myTreeDefinition } {
+    export function get(): { [key: string]: myTreeDefinition<any, Device, ioBroker.myAdapter> } {
         return {
             airDensity: {
                 iobType: 'number',

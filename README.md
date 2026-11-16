@@ -49,6 +49,13 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+- (copilot) Adapter requires node.js >= 22 now
+- (Scrounger) updated to typescript 6.x
+- (Scrounger) dependencies updated
+
 ### 1.0.8 (2026-03-17)
 
 - (Scrounger) dependencies updated
@@ -101,6 +108,8 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 ### 1.0.0-beta.0 (2025-08-31)
 
 - (Scrounger) initial release
+
+[Older changelogs can be found there](CHANGELOG_OLD.md)
 
 ## License
 
