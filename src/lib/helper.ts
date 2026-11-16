@@ -63,15 +63,15 @@ export function getIdLastPart(id: string): string {
 /**
  * Collect all properties used in tree defintions
  *
- * @param treefDefintion @see tree-devices.ts @see tree-clients.ts
+ * @param treefDefintion tree-devices.ts
  * @returns
  */
-export function getAllKeysOfTreeDefinition(treefDefintion: { [key: string]: myTreeDefinition }): string[] {
+export function getAllKeysOfTreeDefinition(treefDefintion: { [key: string]: myTreeDefinition<any, any, any> }): string[] {
     const keys: any = [];
 
     // Hilfsfunktion für rekursive Durchsuchung des Objekts
     function recurse(currentObj: any, prefix = ''): void {
-        _.forOwn(currentObj, (value, key) => {
+        _.forOwn(currentObj, (value: any, key: string) => {
             const fullKey = (prefix ? `${prefix}.${key}` : key).replace('.array', '').replace('.object', '');
 
             // Wenn der Wert ein Objekt ist (und kein Array), dann weiter rekursiv gehen
@@ -98,12 +98,12 @@ export function getAllKeysOfTreeDefinition(treefDefintion: { [key: string]: myTr
     return _.uniq(keys);
 }
 
-export function getAllIdsOfTreeDefinition(treefDefintion: { [key: string]: myTreeDefinition }): string[] {
+export function getAllIdsOfTreeDefinition(treefDefintion: { [key: string]: myTreeDefinition<any, any, any> }): string[] {
     const keys: any = [];
 
     // Hilfsfunktion für rekursive Durchsuchung des Objekts
     function recurse(currentObj: any, prefix = ''): void {
-        _.forOwn(currentObj, (value, key) => {
+        _.forOwn(currentObj, (value: any, key: string) => {
             let fullKey = prefix ? `${prefix}.${key}` : key;
 
             if (Object.hasOwn(value, 'idChannel') && !_.isObject(value.idChannel)) {

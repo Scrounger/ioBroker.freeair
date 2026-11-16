@@ -27,12 +27,12 @@ export declare function getIdLastPart(id: string): string;
 /**
  * Collect all properties used in tree defintions
  *
- * @param treefDefintion @see tree-devices.ts @see tree-clients.ts
+ * @param treefDefintion tree-devices.ts
  * @returns
  */
 export declare function getAllKeysOfTreeDefinition(treefDefintion: {
-    [key: string]: myTreeDefinition;
+    [key: string]: myTreeDefinition<any, any, any>;
 }): string[];
 export declare function getAllIdsOfTreeDefinition(treefDefintion: {
-    [key: string]: myTreeDefinition;
+    [key: string]: myTreeDefinition<any, any, any>;
 }): string[];
