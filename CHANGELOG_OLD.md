@@ -1,4 +1,10 @@
 # Older changes
+## 1.0.5 (2025-09-30)
+
+- (Scrounger) dependencies updated
+- (Scrounger) bug fixes
+
+
 ## 1.0.4 (2025-09-27)
 
 - (Scrounger) bug fixes

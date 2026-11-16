@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "news": {
+      "1.1.1": {
+        "en": "dependencies updated\nresolve repository checker issues (#89)",
+        "de": "Abhängigkeiten aktualisiert\nRepository-Checker-Probleme lösen (#89)",
+        "ru": "зависимости обновлены\nрешить проблемы с проверкой репозитория (#89)",
+        "pt": "dependências atualizadas\nresolver problemas com o repositório (#89)",
+        "nl": "afhankelijkheden bijgewerkt\nproblemen met de repository checker oplossen (#89)",
+        "fr": "dépendances mises à jour\nrésoudre les problèmes du Repository Checker (#89)",
+        "it": "dipendenze aggiornate\nrisolvere problemi con Repository Checker (#89)",
+        "es": "dependencias actualizadas\nresolver problemas con el revisor de repositorios (#89)",
+        "pl": "aktualizacja zależności\nrozwiązywanie problemów z kontrolą repozytorium (#89)",
+        "uk": "залежності оновлені\nвирішити проблеми перевірки сховища (#89)",
+        "zh-cn": "依赖关系已更新\n解决存储库检查器问题 (#89)"
+      },
       "1.0.8": {
         "en": "dependencies updated",
         "de": "aktualisierte abhängigkeiten",
