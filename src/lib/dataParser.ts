@@ -1,34 +1,106 @@
 import { createDecipheriv } from "node:crypto";
 import type { Device, DeviceControl } from "./types-device.js";
 
+/** AES-CBC initialization vector of the device protocol. */
+const AES_IV = Buffer.from("000102030405060708090a0b0c0d0e0f", "hex");
+
+const OPERATION_MODE: Record<number, string> = {
+    0: "Comfort",
+    1: "Comfort",
+    2: "Sleep",
+    3: "Turbo",
+    4: "Turbo Cool",
+    5: "Service",
+    6: "Test",
+    7: "Manufacturer",
+    8: "Dehumidification"
+};
+
+const PROGRAM: Record<number, string> = {
+    0: "Minimum ventilation",
+    1: "Dehumidification (rel)",
+    2: "Dehumidification (abs)",
+    3: "Active cooling",
+    4: "co2 reduction",
+    5: "Water input",
+    6: "Outside air < -22 ℃",
+    7: "Humidity entry",
+};
+
+/**
+ * Bit layout of the data bytes: byte index -> [field name, number of bits].
+ * Bits are assigned consecutively, starting with the least significant bit.
+ */
+const BIT_LAYOUT: Record<number, [string, number][]> = {
+    23: [["uErrorFileNr", 6], ["uDeicing", 1]],
+    24: [["uErrorState", 5], ["uDefrostExhaust", 2]],
+    25: [["uVentPosSupply", 5], ["uCtrlSetSupVent", 2]],
+    26: [["uVentPosExtract", 5], ["uCtrlSetExtVent", 2]],
+    27: [["uVentPosBath", 5], ["uCtrlSet2ndVent", 2]],
+    28: [["uVentPosBypass", 5], ["uCtrlSetBypVent", 2]],
+    29: [["uTempSupplyHigh", 4], ["uComfortLevel", 3]],
+    30: [["uTempExtractHigh", 4], ["uState", 3]],
+    31: [["uTempExhaustHigh", 4], ["uControlAuto", 3]],
+    32: [["uTempOutdoorHigh", 4], ["uDummy1", 3]],
+    33: [["uTempVirtSupExitHigh", 4], ["uDummy2", 3]],
+    34: [["uPressure4LSB", 4], ["uCFAHigh", 1], ["uFilterSupplyFul", 1], ["uFilterExtractFul", 1]],
+    35: [["uAirFlowAve", 5], ["u2ndRoomOnly20", 1], ["uFanLim2ndRoom", 1]],
+    36: [["uFanExtractRPMHigh", 5], ["uCO2High", 1], ["uDIPSwitchHigh", 1]],
+    37: [["uFanSupplyRPMHigh", 5], ["uHumRedMode", 1], ["uSumCooling", 1]],
+    38: [["uFanSpeed", 4], ["uFSCHigh", 1], ["uFECHigh", 1], ["uCSUHigh", 1]],
+    39: [["uPressure5MSB", 5], ["uErrorLineNrSuperHigh", 2]],
+    40: [["uOperatingHoursSuperHigh", 4], ["uFilterHoursSuperHigh", 2], ["uErrorCodeHigh", 1]],
+};
+
+/** Second room flow [m³/h] by code (2 * DIP7 + DIP8). */
+const SECOND_ROOM_FLOW = [0, 30, 60, 100];
+
+/** Room area [m²] by code (4 * DIP2 + 2 * DIP3 + DIP4). */
+const ROOM_AREA = [20, 25, 35, 45, 60, 75, 30, 50];
+
+/** Absolute humidity [g/m³] for temperatures 0..50 °C (index = temperature). */
+const AH_PLUS_G10M3 = [
+    49, 52, 56, 60, 64, 69, 73, 78, 84, 89, 95, 102, 108, 115, 123,
+    131, 139, 148, 157, 167, 177, 188, 199, 212, 224, 238, 252, 267,
+    283, 299, 317, 335, 354, 375, 396, 419, 442, 467, 494, 521, 550,
+    581, 613, 647, 683, 721, 760, 802, 846, 893, 942
+];
+
+/** Absolute humidity [g/m³] for temperatures -0..-20 °C (index = |temperature|). */
+const AH_MINUS_G10M3 = [
+    49, 45, 42, 39, 37, 34, 32, 29, 27, 25, 23, 21, 20, 18, 17,
+    15, 14, 13, 12, 11, 10
+];
+
+/** Filter thresholds for the supply fan: [min. fan speed * 10, RPM reference, RPM upper reference]. */
+const FILTER_RPM_SUPPLY: [number, number, number][] = [
+    [20, 870, 1510],
+    [30, 1000, 1640],
+    [40, 1230, 1870],
+    [50, 1460, 2100],
+    [60, 1690, 2410],
+    [70, 1910, 2630],
+    [85, 2230, 2950],
+    [100, 2540, 3260],
+];
+
+/** Filter thresholds for the extract fan: [min. fan speed * 10, RPM reference, RPM upper reference]. */
+const FILTER_RPM_EXTRACT: [number, number, number][] = [
+    [20, 920, 1560],
+    [30, 1040, 1680],
+    [40, 1260, 1900],
+    [50, 1480, 2200],
+    [60, 1700, 2420],
+    [70, 1910, 2710],
+    [85, 2210, 2930],
+    [100, 2480, 3200],
+];
+
 export class DataParser {
     private adapter: ioBroker.Adapter;
     private serialNo: string;
 
     private clsLogPrefix = 'DataParser'
-
-    private operationMode: Record<number, string> = {
-        0: "Comfort",
-        1: "Comfort",
-        2: "Sleep",
-        3: "Turbo",
-        4: "Turbo Cool",
-        5: "Service",
-        6: "Test",
-        7: "Manufacturer",
-        8: "Dehumidification"
-    }
-
-    private program: Record<number, string> = {
-        0: "Minimum ventilation",
-        1: "Dehumidification (rel)",
-        2: "Dehumidification (abs)",
-        3: "Active cooling",
-        4: "co2 reduction",
-        5: "Water input",
-        6: "Outside air < -22 ℃",
-        7: "Humidity entry",
-    }
 
     constructor(adapter: ioBroker.Adapter, serialNo: string) {
         this.adapter = adapter;
@@ -100,9 +172,8 @@ export class DataParser {
             // AES-CBC (Rijndael) ohne Padding-Entfernung (entspricht CryptoJS ZeroPadding).
             // Schlüssellänge bestimmt die Variante: 16 Byte = AES-128, 24 = AES-192, 32 = AES-256
             const keyBuffer = Buffer.from(password.padEnd(16, "0"), "utf8");
-            const iv = Buffer.from("000102030405060708090a0b0c0d0e0f", "hex");
 
-            const decipher = createDecipheriv(`aes-${keyBuffer.length * 8}-cbc`, keyBuffer, iv);
+            const decipher = createDecipheriv(`aes-${keyBuffer.length * 8}-cbc`, keyBuffer, AES_IV);
             decipher.setAutoPadding(false);
 
             const decrypted = Buffer.concat([
@@ -126,61 +197,14 @@ export class DataParser {
         try {
             const blobObject: Record<string, any> = {};
 
-            // Mapping: Byte-Index -> [Feldnamen...], Reihenfolge = Bits von divideByte
-            const bitMappings: Record<number, string[]> = {
-                23: ["uErrorFileNr", "uDeicing"],
-                24: ["uErrorState", "uDefrostExhaust"],
-                25: ["uVentPosSupply", "uCtrlSetSupVent"],
-                26: ["uVentPosExtract", "uCtrlSetExtVent"],
-                27: ["uVentPosBath", "uCtrlSet2ndVent"],
-                28: ["uVentPosBypass", "uCtrlSetBypVent"],
-                29: ["uTempSupplyHigh", "uComfortLevel"],
-                30: ["uTempExtractHigh", "uState"],
-                31: ["uTempExhaustHigh", "uControlAuto"],
-                32: ["uTempOutdoorHigh", "uDummy1"],
-                33: ["uTempVirtSupExitHigh", "uDummy2"],
-                34: ["uPressure4LSB", "uCFAHigh", "uFilterSupplyFul", "uFilterExtractFul"],
-                35: ["uAirFlowAve", "u2ndRoomOnly20", "uFanLim2ndRoom"],
-                36: ["uFanExtractRPMHigh", "uCO2High", "uDIPSwitchHigh"],
-                37: ["uFanSupplyRPMHigh", "uHumRedMode", "uSumCooling"],
-                38: ["uFanSpeed", "uFSCHigh", "uFECHigh", "uCSUHigh"],
-                39: ["uPressure5MSB", "uErrorLineNrSuperHigh"],
-                40: ["uOperatingHoursSuperHigh", "uFilterHoursSuperHigh", "uErrorCodeHigh"],
-            };
+            // Bitfelder aus den Datenbytes extrahieren (siehe BIT_LAYOUT)
+            const values: Record<string, any> = {};
 
-            const divisions: Record<number, number[]> = {
-                23: [6, 1],
-                24: [5, 2],
-                25: [5, 2],
-                26: [5, 2],
-                27: [5, 2],
-                28: [5, 2],
-                29: [4, 3],
-                30: [4, 3],
-                31: [4, 3],
-                32: [4, 3],
-                33: [4, 3],
-                34: [4, 1, 1, 1],
-                35: [5, 1, 1],
-                36: [5, 1, 1],
-                37: [5, 1, 1],
-                38: [4, 1, 1, 1],
-                39: [5, 2],
-                40: [4, 2, 1],
-            };
-
-            // Ergebnisse in Map sammeln
-            const values: Record<string, number> = {};
-
-            for (const [idxStr, div] of Object.entries(divisions)) {
-                const idx = +idxStr;
-                const parts = this.divideByte(div, decryptedData[idx]);
-                const fields = bitMappings[idx];
-                if (fields) {
-                    fields.forEach((f, i) => {
-                        values[f] = parts[i];
-                    });
-                }
+            for (const [idxStr, fields] of Object.entries(BIT_LAYOUT)) {
+                const parts = this.divideByte(fields.map(([, bits]) => bits), decryptedData[+idxStr]);
+                fields.forEach(([name], i) => {
+                    values[name] = parts[i];
+                });
             }
 
             // Direktbytes (keine Division nötig)
@@ -387,13 +411,13 @@ export class DataParser {
                 version: this.correctVersion(version),
                 board_version, timestamp,
                 operatingMode: state,
-                operatingModeName: humRedMode ? this.operationMode[8] : this.operationMode[state] || "unknown",
+                operatingModeName: humRedMode ? OPERATION_MODE[8] : OPERATION_MODE[state] || "unknown",
                 deicing: isDeicing
             };
 
             if (state === 0 || state === 1) {
                 obj.program = controlAuto;
-                obj.programName = this.program[controlAuto] || "unknown";
+                obj.programName = PROGRAM[controlAuto] || "unknown";
             }
 
             const sorted = this.sortByKey(obj);
@@ -448,189 +472,76 @@ export class DataParser {
         return 0; // fallback
     }
 
-    private lowPlusHigh(low: number, high: any, superHigh: any = undefined): number {
-        const arBitsTotal = [];
-        for (let i = 0; i < 21; i++) {
-            arBitsTotal.push(0);
+    // Combines a 7-bit low byte with the high part.
+    // - superHigh given: high is a byte (bits 7..13), superHigh is a bit array (bits 14 and up).
+    // - otherwise: high is a bit array (bits 7 and up); a plain number contributes nothing.
+    private lowPlusHigh(low: number, high: any, superHigh?: any): number {
+        const lowPart = low & 0x7f;
+        if (superHigh !== undefined) {
+            return lowPart + ((high & 0x7f) << 7) + (this.getNumberFrBits(superHigh) << 14);
         }
-        const LSB7 = this.byteToBits(low);
-        let MSB7;
-        for (let i = 0; i < 7; i++) {
-            arBitsTotal[i] = LSB7[i];
-        }
-        if (superHigh != void 0) {
-            MSB7 = this.byteToBits(high);
-            // if (MSB7.length != 8) {
-            for (let i = 0; i < 7; i++) {
-                arBitsTotal[i + 7] = MSB7[i];
-            }
-            // }
-            let superHighBit = 0;
-            for (let i = 14; i < superHigh.length + 14; i++) {
-                arBitsTotal[i] = superHigh[superHighBit];
-                superHighBit = superHighBit + 1;
-            }
-        } else {
-            let highBit = 0;
-            for (let i = 7; i < high.length + 7; i++) {
-                arBitsTotal[i] = high[highBit];
-                highBit = highBit + 1;
-            }
-        }
-        let value = 0;
-        let potenz = 1;
-        for (let i = 0; i < 20; i++) {
-            value = value + arBitsTotal[i] * potenz;
-            potenz = potenz * 2;
-        }
-        return value;
+        return lowPart + this.getNumberFrBits(high) * 128;
     }
 
-    private divideByte(division: string | any[], byte: any): any[] {
-        const bits = this.byteToBits(byte);
+    // Splits a byte into consecutive bit groups of the given widths (LSB first).
+    private divideByte(widths: number[], byte: any): number[][] {
         const dividedByte: number[][] = [];
         let bit = 0;
-        for (let i = 0; i < division.length; i++) {
-            dividedByte[i] = [];
-            for (let b = 0; b < division[i]; b++) {
-                dividedByte[i].push(bits[bit]);
+        for (const width of widths) {
+            const group: number[] = [];
+            for (let b = 0; b < width; b++) {
+                group.push((byte >> bit) & 1);
                 bit += 1;
             }
-        }
-        let checkSumByte = 0;
-        for (let i = 0; i < division.length; i++) {
-            checkSumByte += dividedByte[i].length;
+            dividedByte.push(group);
         }
         return dividedByte;
     }
 
-    private byteToBits(byte: any): number[] {
-        const bits = [0, 0, 0, 0, 0, 0, 0, 0];
-        let potenz = 128;
-        for (let i = 7; i >= 0; i--) {
-            if (byte / potenz >= 1) {
-                bits[i] = 1;
-                byte = byte - potenz;
-            }
-            potenz = potenz / 2;
-        }
-        return bits;
-    }
-
     private getNumberFrBits(arBits: any): number {
-        let potenz = 1;
         let uNumber = 0;
         for (let i = 0; i < arBits.length; i++) {
-            uNumber += arBits[i] * potenz;
-            potenz = potenz * 2;
+            uNumber += arBits[i] * 2 ** i;
         }
         return uNumber;
     }
 
+    // 4 LSB bits and 5 MSB bits form a 9-bit value, offset by 700.
     private getPressure(Pressure5MSB: any, Pressure4LSB: any): number {
-        const arBitsTotal = [];
-        for (let i = 0; i < 21; i++) {
-            arBitsTotal.push(0);
-        }
-        for (let i = 0; i < 4; i++) {
-            arBitsTotal[i] = Pressure4LSB[i];
-        }
-        for (let i = 0; i < 5; i++) {
-            arBitsTotal[i + 4] = Pressure5MSB[i];
-        }
-        let value = 0;
-        let potenz = 1;
-        for (let i = 0; i < 20; i++) {
-            value = value + arBitsTotal[i] * potenz;
-            potenz = potenz * 2;
-        }
-        return value + 700;
+        return this.getNumberFrBits(Pressure4LSB) + this.getNumberFrBits(Pressure5MSB) * 16 + 700;
     }
 
     private getSecondRoomFlow(dip7: number, dip8: number): any {
-        const secRoomFlowCode = 2 * dip7 + dip8;
-        let secondRoomFlow;
-        switch (secRoomFlowCode) {
-            case 0:
-                secondRoomFlow = 0;
-                break;
-            case 1:
-                secondRoomFlow = 30;
-                break;
-            case 2:
-                secondRoomFlow = 60;
-                break;
-            case 3:
-                secondRoomFlow = 100;
-                break;
-            default:
-                this.adapter.log.error(`invalid value of second room flow`);
-                break;
+        const secondRoomFlow = SECOND_ROOM_FLOW[2 * dip7 + dip8];
+        if (secondRoomFlow === undefined) {
+            this.adapter.log.error(`invalid value of second room flow`);
         }
         return secondRoomFlow;
     }
 
     private getRoomArea(dip2: number, dip3: number, dip4: number): number {
-        const roomAreaCode = 4 * dip2 + 2 * dip3 + dip4;
-        let roomArea = 0;
-        switch (roomAreaCode) {
-            case 0:
-                roomArea = 20;
-                break;
-            case 1:
-                roomArea = 25;
-                break;
-            case 2:
-                roomArea = 35;
-                break;
-            case 3:
-                roomArea = 45;
-                break;
-            case 4:
-                roomArea = 60;
-                break;
-            case 5:
-                roomArea = 75;
-                break;
-            case 6:
-                roomArea = 30;
-                break;
-            case 7:
-                roomArea = 50;
-                break;
-            default:
-                this.adapter.log.error('invalid value of room area');
-                break;
+        const roomArea = ROOM_AREA[4 * dip2 + 2 * dip3 + dip4];
+        if (roomArea === undefined) {
+            this.adapter.log.error('invalid value of room area');
+            return 0;
         }
         return roomArea;
     }
 
     private getAbsHum(relHum: number, temp: number): any {
-        const ahPlusG10m3 = [
-            49, 52, 56, 60, 64, 69, 73, 78, 84, 89, 95, 102, 108, 115, 123,
-            131, 139, 148, 157, 167, 177, 188, 199, 212, 224, 238, 252, 267,
-            283, 299, 317, 335, 354, 375, 396, 419, 442, 467, 494, 521, 550,
-            581, 613, 647, 683, 721, 760, 802, 846, 893, 942
-        ];
-
-        const ahMinusG10m3 = [
-            49, 45, 42, 39, 37, 34, 32, 29, 27, 25, 23, 21, 20, 18, 17,
-            15, 14, 13, 12, 11, 10
-        ];
-
         let absHum;
         if (temp >= 0) {
             if (temp > 50) {
                 absHum = ((1e3 / 10) * relHum) / 100;
             } else {
-                absHum = ((ahPlusG10m3[temp] / 10) * relHum) / 100;
+                absHum = ((AH_PLUS_G10M3[temp] / 10) * relHum) / 100;
             }
         } else {
             temp = Math.abs(temp);
             if (temp > 20) {
                 absHum = ((5 / 10) * relHum) / 100;
             } else {
-                absHum = ((ahMinusG10m3[temp] / 10) * relHum) / 100;
+                absHum = ((AH_MINUS_G10M3[temp] / 10) * relHum) / 100;
             }
         }
         return absHum;
@@ -647,23 +558,18 @@ export class DataParser {
     }
 
     private parseDIP(DIP: any, typ: number): any {
-        const DIPbits = this.byteToBits(DIP);
+        const bit = (index: number): number => (DIP >> index) & 1;
         if (typ == 0) {
-            return this.getRoomArea(DIPbits[6], DIPbits[5], DIPbits[4]);
+            return this.getRoomArea(bit(6), bit(5), bit(4));
         } else {
-            return this.getSecondRoomFlow(DIPbits[1], DIPbits[0]);
+            return this.getSecondRoomFlow(bit(1), bit(0));
         }
     }
 
-    private toSigned(num: number, potenz: number): number {
-        let maxUn = 2;
-        for (let i = 2; i <= potenz; i++) {
-            maxUn = maxUn * 2;
-        }
-        if (num >= maxUn / 2) {
-            num = num - maxUn;
-        }
-        return num;
+    // Interprets the lowest `bits` bits of `num` as two's complement value.
+    private toSigned(num: number, bits: number): number {
+        const range = 2 ** bits;
+        return num >= range / 2 ? num - range : num;
     }
 
     private getHeatRecoveryPercentage(tempExtract: number, tempOutdoor: number, tempSupply: number, airFlow: number): number {
@@ -691,58 +597,34 @@ export class DataParser {
     }
 
     private filterSupplyStatus(fanSupplyRPM: any, fanSpeed: any): 100 | 2 | 1 | 3 | 4 | undefined {
-        const fanSupplyRPMs = {
-            0: [20, 870, 1510],
-            1: [30, 1000, 1640],
-            2: [40, 1230, 1870],
-            3: [50, 1460, 2100],
-            4: [60, 1690, 2410],
-            5: [70, 1910, 2630],
-            6: [85, 2230, 2950],
-            7: [100, 2540, 3260],
-            8: [0, 0, 0]
-        };
-
-        return this.filterStatus(fanSupplyRPM, fanSpeed, fanSupplyRPMs);
+        return this.filterStatus(fanSupplyRPM, fanSpeed, FILTER_RPM_SUPPLY);
     }
 
     private filterExtractStatus(fanExtractRPM: any, fanSpeed: any): 100 | 2 | 1 | 4 | 3 | undefined {
-        const fanExtractRPMs = {
-            0: [20, 920, 1560],
-            1: [30, 1040, 1680],
-            2: [40, 1260, 1900],
-            3: [50, 1480, 2200],
-            4: [60, 1700, 2420],
-            5: [70, 1910, 2710],
-            6: [85, 2210, 2930],
-            7: [100, 2480, 3200],
-            8: [0, 0, 0]
-        };
-
-        return this.filterStatus(fanExtractRPM, fanSpeed, fanExtractRPMs);
+        return this.filterStatus(fanExtractRPM, fanSpeed, FILTER_RPM_EXTRACT);
     }
 
-    private filterStatus(fanRPM: number, fanSpeed: number, filterRPMs: any): 100 | 2 | 1 | 4 | 3 | undefined {
+    private filterStatus(fanRPM: number, fanSpeed: number, filterRPMs: [number, number, number][]): 100 | 2 | 1 | 4 | 3 | undefined {
         // fillOverviewAndDetails.js
 
-        fanSpeed = fanSpeed * 10;
-        for (let i = 0; filterRPMs[i][0]; i++) {
-            if (filterRPMs[i][0] < fanSpeed) {
+        const speed = fanSpeed * 10;
+        for (const [minSpeed, rpm, rpmMax] of filterRPMs) {
+            if (minSpeed < speed) {
                 continue;
             }
-            const nDiff = filterRPMs[i][2] - filterRPMs[i][1];
-            if (fanRPM < filterRPMs[i][1] - nDiff / 2) {
-                return 100
-            };
-            if (fanRPM < filterRPMs[i][1] + nDiff * 0.4) {
-                return 1
-            };
-            if (fanRPM < filterRPMs[i][1] + nDiff * 0.7) {
-                return 2
-            };
-            if (fanRPM < filterRPMs[i][1] + nDiff * 0.95) {
-                return 3
-            };
+            const nDiff = rpmMax - rpm;
+            if (fanRPM < rpm - nDiff / 2) {
+                return 100;
+            }
+            if (fanRPM < rpm + nDiff * 0.4) {
+                return 1;
+            }
+            if (fanRPM < rpm + nDiff * 0.7) {
+                return 2;
+            }
+            if (fanRPM < rpm + nDiff * 0.95) {
+                return 3;
+            }
             return 4;
         }
 
@@ -755,7 +637,7 @@ export class DataParser {
         const indexUnderscore = versionFrBlob.indexOf('x');
         let length = versionFrBlob.length;
         if (indexUnderscore > 0) {
-            const strPoUnderscore = versionFrBlob.substr(indexUnderscore + 1);
+            const strPoUnderscore = versionFrBlob.slice(indexUnderscore + 1);
             if (strPoUnderscore != '0') {
                 wantSubversion = true;
             }
@@ -763,8 +645,8 @@ export class DataParser {
         }
         let versionNew: string;
         if (((length - indexDot) <= 3) && ((length - indexDot) >= 1)) {
-            const strDoDot = versionFrBlob.substr(0, indexDot + 1);
-            let strPoDot = versionFrBlob.substr(indexDot + 1);
+            const strDoDot = versionFrBlob.slice(0, indexDot + 1);
+            let strPoDot = versionFrBlob.slice(indexDot + 1);
             if (wantSubversion) {
                 //versionNew = strDoDot + '0' + strPoDot;
 
@@ -777,10 +659,10 @@ export class DataParser {
             } else {
 
                 if ((length - indexDot) == 3) {
-                    strPoDot = strPoDot.substr(0, 2);
+                    strPoDot = strPoDot.slice(0, 2);
                     versionNew = strDoDot + strPoDot;
                 } else {
-                    strPoDot = strPoDot.substr(0, 1);
+                    strPoDot = strPoDot.slice(0, 1);
                     versionNew = `${strDoDot}0${strPoDot}`;
                 }
             }
@@ -795,6 +677,6 @@ export class DataParser {
             keyA.localeCompare(keyB)
         );
 
-        return Object.fromEntries(new Map(sortedEntries));
+        return Object.fromEntries(sortedEntries);
     }
 }

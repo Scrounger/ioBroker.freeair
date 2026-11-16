@@ -71,5 +71,14 @@
         "build/**",
         "node_modules",
         "widgets/**"
-    ]
+    ],
+    // ts-node (used by mocha) only: package is "type": "module", but mocha loads TS tests via require()
+    "ts-node": {
+        "compilerOptions": {
+            "module": "commonjs"
+        },
+        "moduleTypes": {
+            "src/**/*.ts": "cjs"
+        }
+    }
 }
