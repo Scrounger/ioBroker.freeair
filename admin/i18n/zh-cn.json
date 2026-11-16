@@ -53,5 +53,7 @@
 	"supply flap position": "供应皮瓣位置",
 	"timestamp": "时间戳",
 	"use as blacklist": "用作黑名单",
+	"use as whitelist / blacklist": "用作白名单 / 黑名单",
+	"Port": "端口",
 	"use as whitelist": "用作白名单"
 }

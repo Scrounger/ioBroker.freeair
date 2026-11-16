@@ -53,5 +53,7 @@
 	"supply flap position": "Leveringsflappositie",
 	"timestamp": "tijdstempel",
 	"use as blacklist": "Gebruik als zwarte lijst",
+	"use as whitelist / blacklist": "Gebruik als witte / zwarte lijst",
+	"Port": "Poort",
 	"use as whitelist": "Gebruik als witte lijst"
 }

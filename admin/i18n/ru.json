@@ -53,5 +53,7 @@
 	"supply flap position": "Положение клапан подача",
 	"timestamp": "временная метка",
 	"use as blacklist": "Используйте как черный список",
+	"use as whitelist / blacklist": "Используйте как белый / черный список",
+	"Port": "Порт",
 	"use as whitelist": "Используйте в качестве белого списка"
 }

@@ -53,5 +53,7 @@
 	"supply flap position": "Pozycja klapy zaopatrzenia",
 	"timestamp": "znacznik czasu",
 	"use as blacklist": "Użyj jako czarnej listy",
+	"use as whitelist / blacklist": "Użyj jako białej / czarnej listy",
+	"Port": "Port",
 	"use as whitelist": "Użyj jako białej"
 }

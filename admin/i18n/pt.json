@@ -53,5 +53,7 @@
 	"supply flap position": "Posição de aba de fornecimento",
 	"timestamp": "Timestamp",
 	"use as blacklist": "Use como lista negra",
+	"use as whitelist / blacklist": "Use como lista de permissões / negra",
+	"Port": "Porta",
 	"use as whitelist": "Use como uma lista de permissões"
 }

@@ -53,5 +53,7 @@
 	"supply flap position": "Position du rabat d'alimentation",
 	"timestamp": "horodatage",
 	"use as blacklist": "Utiliser comme liste noire",
+	"use as whitelist / blacklist": "Utiliser comme liste blanche / noire",
+	"Port": "Port",
 	"use as whitelist": "Utiliser comme liste blanche"
 }

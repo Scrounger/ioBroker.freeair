@@ -53,5 +53,7 @@
 	"supply flap position": "Zuluftklappe Position",
 	"timestamp": "Zeitstempel",
 	"use as blacklist": "als Blacklist verwenden",
+	"use as whitelist / blacklist": "als Whitelist / Blacklist verwenden",
+	"Port": "Port",
 	"use as whitelist": "als Whitelist verwenden"
 }

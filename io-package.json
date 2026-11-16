@@ -3,19 +3,6 @@
     "name": "freeair",
     "version": "1.1.0",
     "news": {
-      "1.1.0": {
-        "en": "Adapter requires node.js >= 22 now.\nAdapter requires node.js >= 22 now\nupdated to typescript 6.x\ndependencies updated",
-        "de": "Adapter benötigt jetzt node.js >= 22.\nAdapter benötigt jetzt node.js >= 22\nUpdate auf TypoScript 6.x\nAbhängigkeiten aktualisiert",
-        "ru": "Теперь для адаптера требуется файл node.js >= 22.\nТеперь для адаптера требуется файл node.js >= 22\nобновлено до машинописного текста 6.x\nзависимости обновлены",
-        "pt": "O adaptador exige node.js >= 2.\nO adaptador exige node.js >= 2\natualizado para 6.x\ndependências atualizadas",
-        "nl": "Voor de adapter is nu node.js >= 22 nodig.\nVoor de adapter is nu node.js >= 22 nodig\nbijgewerkt naar typescript 6.x\nafhankelijkheden bijgewerkt",
-        "fr": "Adapter nécessite node.js >= 22.\nAdapter nécessite node.js >= 22\nmise à jour vers Typescript 6.x\ndépendances mises à jour",
-        "it": "Adapter richiede node.js >= 2 ora.\nAdapter richiede node.js =2 ora\naggiornato a Typescript 6.x\ndipendenze aggiornate",
-        "es": "El adaptador necesita node.js >= 22 ahora.\nEl adaptador necesita node.js >= 22 ahora\nactualizado a TypeScript 6.x\ndependencias actualizadas",
-        "pl": "Adapter wymaga teraz node.js >= 22.\nAdapter wymaga teraz node.js >= 22\nzaktualizowany do typescript 6.x\naktualizacja zależności",
-        "uk": "Тепер адаптер вимагає node.js >= 22.\nАдаптер вимагає node.js >= 22 зараз\nоновлено до машинописного тексту 6.x\nзалежності оновлені",
-        "zh-cn": "适配器现在需要 node.js >= 22。\n适配器现在需要 node.js >= 22\n更新到 typescript 6.x\n依赖关系已更新"
-      },
       "1.0.8": {
         "en": "dependencies updated",
         "de": "aktualisierte abhängigkeiten",
@@ -151,7 +138,7 @@
     },
     "dependencies": [
       {
-        "js-controller": ">=6.0.11"
+        "js-controller": ">=7.0.7"
       }
     ],
     "globalDependencies": [

@@ -7,6 +7,8 @@
 	"devices credential": "devices credential",
 	"use as whitelist": "use as whitelist",
 	"use as blacklist": "use as blacklist",
+	"use as whitelist / blacklist": "use as whitelist / blacklist",
+	"Port": "Port",
 	"Datapoints Blacklist / Whitelist": "Datapoints Blacklist / Whitelist",
 	"Choose which datapoint should be included": "Choose which datapoint should be included",
 	"Choose which datapoint should be excluded": "Choose which datapoint should be excluded",

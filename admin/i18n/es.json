@@ -53,5 +53,7 @@
 	"supply flap position": "posición de aleta de suministro",
 	"timestamp": "marca de tiempo",
 	"use as blacklist": "Usar como lista negra",
+	"use as whitelist / blacklist": "Usar como lista blanca / negra",
+	"Port": "Puerto",
 	"use as whitelist": "Usar como la lista blanca"
 }

@@ -53,5 +53,7 @@
 	"supply flap position": "положення клаптя живлення",
 	"timestamp": "часова позначка",
 	"use as blacklist": "Використовуйте як чорний список",
+	"use as whitelist / blacklist": "Використовуйте як білий / чорний список",
+	"Port": "Порт",
 	"use as whitelist": "Використовуйте як Білий"
 }

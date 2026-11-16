@@ -53,5 +53,7 @@
 	"supply flap position": "Posizione del lembo di alimentazione",
 	"timestamp": "timestamp",
 	"use as blacklist": "Usa come lista nera",
+	"use as whitelist / blacklist": "Usa come whitelist / blacklist",
+	"Port": "Porta",
 	"use as whitelist": "Usa come whitelist"
 }

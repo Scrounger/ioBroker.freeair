@@ -97,7 +97,7 @@
 		"statesIsWhiteList": {
 			"newLine": true,
 			"type": "checkbox",
-			"label": "${data.statesIsWhiteList ? 'use as whitelist' : 'use as blacklist'}",
+			"label": "use as whitelist / blacklist",
 			"xl": 2,
 			"lg": 2,
 			"md": 2,
