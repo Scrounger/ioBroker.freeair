@@ -49,8 +49,7 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.1.2 (2026-11-16)
 
 - (Scrounger) fix password decryption cause by js-controller 7.2.5
 
@@ -74,11 +73,6 @@ locale connection to your [BluMartin FreeAir 100](https://blumartin.de/wohnrauml
 - (Scrounger) dependencies updated
 - (Scrounger) downgrade @iobroker/adapter-core to v3.3.1 to prevent conflicts with js-controller < v7.1.0 in rare cases #56
 - (Scrounger) device error indicator bug fix
-
-### 1.0.6 (2025-10-19)
-
-- (Scrounger) auto translation bug fix
-- (Scrounger) bug fixes
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "news": {
+      "1.1.2": {
+        "en": "fix password decryption cause by js-controller 7.2.5",
+        "de": "Passwortentschlüsselung durch JS-Controller behoben 7.2.5",
+        "ru": "исправить причину дешифрования пароля с помощью js-controller 7.2.5",
+        "pt": "corrija a decodificação de senha do js-controller 7.2.5",
+        "nl": "de oorzaak van het ontcijferen van wachtwoorden herstellen door js-controller 7.2.5",
+        "fr": "corriger le mot de passe déchiffré par JS-Controller 7.2.5",
+        "it": "risolto il problema della password con js-controller 7.2.5",
+        "es": "corregir el descifrado de contraseñas por js-controller 7.2.5",
+        "pl": "naprawić przyczynę odszyfrowywania hasła przez js-controller 7.2.5",
+        "uk": "виправлено причину розшифровки пароля js-контролером 7.2.5",
+        "zh-cn": "修复 js-controller 7.2.5 导致的密码解密问题"
+      },
       "1.1.1": {
         "en": "dependencies updated\nresolve repository checker issues (#89)",
         "de": "Abhängigkeiten aktualisiert\nRepository-Checker-Probleme lösen (#89)",
@@ -80,19 +93,6 @@
         "pl": "poprawki błędów",
         "uk": "виправлення помилок",
         "zh-cn": "错误修正"
-      },
-      "1.0.3": {
-        "en": "if only one devices is configured, show device online status as adapter status\ndependencies updated\nbug fixes",
-        "de": "wenn nur eine geräte konfiguriert sind, anzeigen geräte-onlinestatus als adapterstatus\naktualisierte abhängigkeiten\nfehlerbehebungen",
-        "ru": "если настроено только одно устройство, покажите его онлайн-статус в качестве адаптера\nобновленные зависимости\nисправление ошибок",
-        "pt": "se apenas um dispositivo estiver configurado, mostrar o estado online do dispositivo como estado do adaptador\ndependências atualizadas\ncorreções de erros",
-        "nl": "als er maar één apparaat is geconfigureerd, toon apparaat online status als adapterstatus\nafhankelijkheden bijgewerkt\nfoutherstel",
-        "fr": "si un seul appareil est configuré, afficher l'état en ligne de l'appareil comme état de l'adaptateur\ndépendances mises à jour\ncorrections des bogues",
-        "it": "se solo un dispositivo è configurato, mostrare lo stato online del dispositivo come stato dell'adattatore\ndipendenze aggiornate\ncorrezioni di bug",
-        "es": "si sólo uno de los dispositivos está configurado, muestre el estado del dispositivo en línea como estado del adaptador\ndependencias actualizadas\nbug fixes",
-        "pl": "jeśli tylko jedno urządzenie jest skonfigurowane, pokaż urządzenie status online jako status adaptera\nzaktualizowane zależności\npoprawki błędów",
-        "uk": "якщо тільки один пристрій налаштований, показати пристрій онлайн статус як статус адаптера\nоновлені залежності\nвиправлення помилок",
-        "zh-cn": "如果配置只有一个设备, 将设备在线状态显示为适配器状态\n更新依赖关系\n错误修正"
       }
     },
     "titleLang": {
