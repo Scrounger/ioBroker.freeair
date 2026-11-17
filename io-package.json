@@ -151,17 +151,21 @@
     },
     "dependencies": [
       {
-        "js-controller": ">=7.0.7"
+        "js-controller": ">=7.2.4"
       }
     ],
     "globalDependencies": [
       {
-        "admin": ">=7.6.20"
+        "admin": ">=8.1.0"
       }
     ]
   },
-  "encryptedNative": [],
-  "protectedNative": [],
+  "encryptedNative": [
+    "devices.password"
+  ],
+  "protectedNative": [
+    "devices.password"
+  ],
   "native": {
     "port": 80,
     "aliveCheckInterval": 60,
