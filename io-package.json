@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "freeair",
-    "version": "1.1.2",
+    "version": "1.1.3",
     "news": {
+      "1.1.3": {
+        "en": "fix password encryption (js-controller >= 7.2.4 and Admin>= 8.1.0 requiered)\ndependencies updated",
+        "de": "Passwort korrigieren (js-controller >= 7.2.4 und Admin>= 8.1.0 nötig)\nAbhängigkeiten aktualisiert",
+        "ru": "исправить шифрование паролей (требуется js-контроллер >= 7.2.4 и Admin>= 8.1.0)\nзависимости обновлены",
+        "pt": "corrigir senha criptografada (requer js-controller >= 7.2.4 e Admin>= 8.1.0)\ndependências atualizadas",
+        "nl": "wachtwoordversleuteling herstellen (js-controller >= 7.2.4 en Admin>= 8.1.0 vereist)\nafhankelijkheden bijgewerkt",
+        "fr": "corriger le cryptage du mot de passe (js-controller >= 7.2.4 et Admin>= 8.1.0 requis)\ndépendances mises à jour",
+        "it": "fissa la password (js-controller >= 7.2.4 e Admin>= 8.1.0 richiesti)\ndipendenze aggiornate",
+        "es": "corregir el cifrado de contraseñas (se requiere js-controller >= 7.2.4 y Admin>= 8.1.0)\ndependencias actualizadas",
+        "pl": "naprawić szyfrowanie hasła (wymagane jest js-controller >= 7.2.4 i Admin>= 8.1.0)\naktualizacja zależności",
+        "uk": "виправлено шифрування пароля (потрібно js-контролер> = 7.2.4 і Admin> = 8.1.0)\nзалежності оновлені",
+        "zh-cn": "修复密码加密（需要 js-controller >= 7.2.4 和 Admin>= 8.1.0）\n依赖关系已更新"
+      },
       "1.1.2": {
         "en": "fix password decryption cause by js-controller 7.2.5",
         "de": "Passwortentschlüsselung durch JS-Controller behoben 7.2.5",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowane zależności\npoprawki błędów",
         "uk": "оновлені залежності\nвиправлення помилок",
         "zh-cn": "更新依赖关系\n错误修正"
-      },
-      "1.0.4": {
-        "en": "bug fixes",
-        "de": "fehlerbehebungen",
-        "ru": "исправление ошибок",
-        "pt": "correções de erros",
-        "nl": "foutherstel",
-        "fr": "corrections des bogues",
-        "it": "correzioni di bug",
-        "es": "bug fixes",
-        "pl": "poprawki błędów",
-        "uk": "виправлення помилок",
-        "zh-cn": "错误修正"
       }
     },
     "titleLang": {
