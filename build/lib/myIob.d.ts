@@ -4,6 +4,8 @@ export type WriteValFunction<Type extends ioBroker.StateValue = ioBroker.StateVa
 type ConditionToCreateStateFunction<Device extends myTreeData = myTreeData, Adapter extends ioBroker.Adapter | ioBroker.myAdapter = ioBroker.Adapter | ioBroker.myAdapter> = (objDevice: Device, objChannel: Device, adapter: Adapter) => boolean;
 export type myTreeDefinition<Type extends ioBroker.StateValue = ioBroker.StateValue, Device extends myTreeData = myTreeData, Adapter extends ioBroker.Adapter | ioBroker.myAdapter = ioBroker.Adapter | ioBroker.myAdapter> = myTreeState<Type, Device, Adapter> | myTreeObject<Type, Device, Adapter> | myTreeArray<Type, Device, Adapter>;
 export type unitDefinition<Device extends myTreeData = myTreeData, Adapter extends ioBroker.Adapter | ioBroker.myAdapter = ioBroker.Adapter | ioBroker.myAdapter> = string | ((objDevice: Device, objChannel: Device, adapter: Adapter) => string);
+/** required state, channel or array: true or false, or a function of device, channel and adapter that returns true or false. Required items can not be blacklisted. */
+export type requiredDefinition<Device extends myTreeData = myTreeData, Adapter extends ioBroker.Adapter | ioBroker.myAdapter = ioBroker.Adapter | ioBroker.myAdapter> = boolean | ((objDevice: Device, objChannel: Device, adapter: Adapter) => boolean);
 export interface myTreeState<Type extends ioBroker.StateValue = ioBroker.StateValue, Device extends myTreeData = myTreeData, Adapter extends ioBroker.Adapter | ioBroker.myAdapter = ioBroker.Adapter | ioBroker.myAdapter> {
     id?: string;
     iobType: ioBroker.CommonType;
@@ -26,7 +28,7 @@ export interface myTreeState<Type extends ioBroker.StateValue = ioBroker.StateVa
     statesFromProperty?(objDevice: myTreeData, objChannel: myTreeData, adapter: ioBroker.Adapter | ioBroker.myAdapter): Record<string, string> | string[] | string;
     conditionToCreateState?: ConditionToCreateStateFunction<Device, Adapter>;
     subscribeMe?: true;
-    required?: true;
+    required?: requiredDefinition<Device, Adapter>;
     updateTs?: true;
 }
 export type nameDefinition<Device extends myTreeData = myTreeData, Adapter extends ioBroker.Adapter | ioBroker.myAdapter = ioBroker.Adapter | ioBroker.myAdapter> = string | ((objDevice: Device, objChannel: Device, adapter: Adapter) => string | ioBroker.Translated);
@@ -37,6 +39,7 @@ export interface myTreeObject<Type extends ioBroker.StateValue = ioBroker.StateV
     object: {
         [key: string]: myTreeDefinition<Type, Device, Adapter>;
     };
+    required?: requiredDefinition<Device, Adapter>;
     conditionToCreateState?: ConditionToCreateStateFunction<Device, Adapter>;
 }
 export type arrayChannelIdFromPropertyFunction<Device extends myTreeData = myTreeData, Adapter extends ioBroker.Adapter | ioBroker.myAdapter = ioBroker.Adapter | ioBroker.myAdapter> = (objDevice: Device, objChannel: Device, i: number, adapter: Adapter) => string | undefined;
@@ -53,6 +56,7 @@ export interface myTreeArray<Type extends ioBroker.StateValue = ioBroker.StateVa
     array: {
         [key: string]: myTreeDefinition<Type, Device, Adapter>;
     };
+    required?: requiredDefinition<Device, Adapter>;
     conditionToCreateState?: ConditionToCreateStateFunction<Device, Adapter>;
 }
 export declare class myIob {
@@ -88,6 +92,14 @@ export declare class myIob {
      * @param native
      */
     createOrUpdateChannel(id: string, name: string | ioBroker.Translated | undefined, icon?: string | undefined, updateObject?: boolean, native?: Record<string, any>): Promise<void>;
+    /**
+     * true if the state, channel or array is required. A required function is called with the device, the channel and the adapter.
+     *
+     * @param required the `required` value of the tree definition
+     * @param objDevice the device data
+     * @param objChannel the channel data
+     */
+    private isRequired;
     createOrUpdateStates(idChannel: string, treeDefinition: {
         [key: string]: myTreeDefinition<any, any, ioBroker.myAdapter>;
     }, partialData: myTreeData, fullData: myTreeData, blacklistFilter?: {
